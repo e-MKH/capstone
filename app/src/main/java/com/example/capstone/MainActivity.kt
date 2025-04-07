@@ -38,6 +38,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
+// 예시용 주석입니다
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
