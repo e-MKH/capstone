@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.capstone"
+    namespace = "com.example.sample"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.capstone"
+        applicationId = "com.example.sample"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -56,4 +56,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 }
