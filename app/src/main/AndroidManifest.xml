@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ✅ GNews API 등 외부 서버와 통신하기 위해 인터넷 권한 필요 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,15 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sample"
         tools:targetApi="31">
-        <activity android:name="com.example.capstone.MainActivity"
+
+        <!-- ✅ 앱의 진입점인 MainActivity 등록 -->
+        <activity
+            android:name="com.example.capstone.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Sample">
 
+            <!-- ✅ 앱이 실행될 때 시작 화면으로 지정 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!-- 위 두 줄은 앱 아이콘 클릭 시 실행되도록 함 -->
             </intent-filter>
+
         </activity>
 
     </application>
