@@ -15,7 +15,8 @@ data class GNewsArticle(
     val description: String,
     val url: String,
     val image: String?,
-    val publishedAt: String
+    val publishedAt: String,
+    var difficulty: String? = null
 )
 
 /**
