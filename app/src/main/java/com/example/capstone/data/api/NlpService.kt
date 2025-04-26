@@ -27,3 +27,4 @@ interface NlpService {
     @POST("/analyze")
     fun analyzeText(@Body request: NlpRequest): Call<NlpResponse>
 }
+
