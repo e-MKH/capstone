@@ -19,7 +19,7 @@ data class NlpEntity(
 data class NlpResponse(
     val difficulty: String?,
     val entities: List<NlpEntity>,
-    val text: String = "" // 서버 응답에 따라 없어도 무방하게 기본값 추가
+    val text: String = ""
 )
 
 
