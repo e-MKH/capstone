@@ -1,5 +1,8 @@
 package com.example.capstone.data.api
 
+class NlpService {
+}
+=======
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.Call
@@ -19,7 +22,7 @@ data class NlpEntity(
 data class NlpResponse(
     val difficulty: String?,
     val entities: List<NlpEntity>,
-    val text: String = ""
+    val text: String = "" // 서버 응답에 따라 없어도 무방하게 기본값 추가
 )
 
 
