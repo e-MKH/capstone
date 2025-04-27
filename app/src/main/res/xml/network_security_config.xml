@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
   
 </PreferenceScreen>
@@ -9,4 +9,4 @@
         <domain includeSubdomains="true">10.0.2.2</domain>
     </domain-config>
 </network-security-config>
->>>>>>> 7e1ef8bb2f88217eec3f51966f580b6a5f761385
+

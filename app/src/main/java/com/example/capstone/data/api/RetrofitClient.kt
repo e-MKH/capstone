@@ -1,6 +1,5 @@
 package com.example.capstone.data.api
 
-<<<<<<< HEAD
 class RetrofitClient {
 }
 =======
@@ -18,4 +17,4 @@ object RetrofitClient {
             .create(NlpService::class.java)
     }
 }
->>>>>>> 7e1ef8bb2f88217eec3f51966f580b6a5f761385
+

@@ -1,6 +1,5 @@
 package com.example.capstone.navigation
 
-<<<<<<< HEAD
 class NavGraph {
 }
 =======
@@ -65,4 +64,4 @@ fun NavGraph(
         }
     }
 }
->>>>>>> 7e1ef8bb2f88217eec3f51966f580b6a5f761385
+

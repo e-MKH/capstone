@@ -1,6 +1,5 @@
 package com.example.capstone.data.api
 
-<<<<<<< HEAD
 class NlpService {
 }
 =======
@@ -31,4 +30,4 @@ interface NlpService {
     @POST("/analyze")
     fun analyzeText(@Body request: NlpRequest): Call<NlpResponse>
 }
->>>>>>> 7e1ef8bb2f88217eec3f51966f580b6a5f761385
+
