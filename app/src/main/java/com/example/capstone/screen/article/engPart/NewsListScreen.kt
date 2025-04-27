@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,21 @@ import com.example.capstone.viewmodel.SharedUrlViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+
+fun formatDate(isoTime: String): String {
+    return try {
+        if (isoTime.length >= 16) {
+            isoTime.substring(0, 16).replace("T", " ")
+        } else {
+            isoTime
+        }
+    } catch (e: Exception) {
+        isoTime
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +47,7 @@ fun NewsListScreen(
     modifier: Modifier = Modifier,
     language: String,
     navController: NavController,
-    sharedUrlViewModel: SharedUrlViewModel, // ✅ 새로 추가
+    sharedUrlViewModel: SharedUrlViewModel,
     viewModel: NewsViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -148,6 +164,15 @@ fun NewsListScreen(
                                     )
                                 }
                             }
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Text(
+                                text = formatDate(article.publishedAt),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray,
+                                modifier = Modifier.align(Alignment.Start)
+                            )
 
                             Spacer(modifier = Modifier.height(8.dp))
 
