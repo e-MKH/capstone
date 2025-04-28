@@ -1,8 +1,6 @@
 package com.example.capstone.data.api
 
-class NlpService {
-}
-=======
+
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.Call
