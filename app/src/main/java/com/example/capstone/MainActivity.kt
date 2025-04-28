@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.capstone.navigation.NavGraph
 import com.example.capstone.ui.theme.SampleTheme
 import com.example.capstone.viewmodel.SharedUrlViewModel
+import com.example.capstone.viewmodel.SharedTextViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
 fun MyApp() {
     val navController = rememberNavController()
     val sharedUrlViewModel: SharedUrlViewModel = viewModel()
+    val sharedTextViewModel: SharedTextViewModel = viewModel()
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -98,6 +100,7 @@ fun MyApp() {
             NavGraph(
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel, 
                 modifier = Modifier.padding(innerPadding)
             )
         }

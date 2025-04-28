@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.capstone.data.api.NlpRequest
 import com.example.capstone.data.api.NlpResponse
-import com.example.capstone.data.api.RetrofitClient
-import com.example.capstone.data.api.RetrofitInstance
+import com.example.capstone.data.api.GNewsApiService
 import com.example.capstone.data.model.GNewsArticle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import com.example.sample.BuildConfig
 
 class NewsViewModel : ViewModel() {
 
@@ -25,22 +23,29 @@ class NewsViewModel : ViewModel() {
     fun fetchNews(language: String, topic: String = "politics") {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitInstance.api.getTopHeadlines(
+                val response = GNewsApiService.api.getTopHeadlines(
                     lang = language,
                     topic = topic,
-                    token = BuildConfig.GNEWS_API_KEY
+                    token = GNewsApiService.apiKey
                 )
 
-                val originalArticles = response.articles.take(5)
-                val enrichedArticles = originalArticles.map { article ->
-                    async { analyzeDifficulty(article) }
-                }.awaitAll()
+                if (response.articles.isNotEmpty()) {
+                    // ① 가져온 기사 리스트
+                    val originalArticles = response.articles
 
-                _articles.value = enrichedArticles
+                    // ② NLP 서버로 난이도 분석 병렬 요청
+                    val analyzedArticles = originalArticles.map { article ->
+                        async { analyzeDifficulty(article) }
+                    }.awaitAll()
 
+                    // ③ 결과를 articles에 반영
+                    _articles.value = analyzedArticles
+                    Log.d("NewsViewModel", "뉴스 ${analyzedArticles.size}개 분석 및 저장 완료")
+                } else {
+                    Log.d("NewsViewModel", "뉴스 데이터 없음")
+                }
             } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("❌ NewsViewModel", "에러 발생: ${e.message}")
+                Log.e("NewsViewModel", "뉴스 불러오기 실패: ${e.message}")
             }
         }
     }
@@ -48,7 +53,7 @@ class NewsViewModel : ViewModel() {
     private suspend fun analyzeDifficulty(article: GNewsArticle): GNewsArticle {
         Log.d("NLP_ANALYZE", "분석할 URL: ${article.url}")
 
-        val call = RetrofitClient.nlpService.analyzeText(NlpRequest(article.url))
+        val call = com.example.capstone.data.api.RetrofitClient.nlpService.analyzeText(NlpRequest(article.url))
         val response: Response<NlpResponse> = try {
             call.execute()
         } catch (e: Exception) {
@@ -66,4 +71,3 @@ class NewsViewModel : ViewModel() {
         }
     }
 }
-

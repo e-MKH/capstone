@@ -13,9 +13,9 @@ object RetrofitInstance {
     // ✅ lazy: 처음 사용할 때 초기화됨 (지연 초기화)
     val api: GNewsService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://gnews.io/api/v4/") // ✅ GNews API 기본 URL
-            .addConverterFactory(GsonConverterFactory.create()) // ✅ JSON 파싱을 위한 GSON 설정
+            .baseUrl("https://gnews.io/api/v4/")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(GNewsService::class.java) // ✅ GNewsService 인터페이스와 연결
+            .create(GNewsService::class.java)
     }
 }

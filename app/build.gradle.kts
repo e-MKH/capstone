@@ -1,14 +1,13 @@
 import java.util.Properties
 import java.io.FileInputStream
 
+// ✅ local.properties 파일 읽기
 val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
         load(FileInputStream(localPropertiesFile))
     }
 }
-
-val GNEWS_API_KEY = localProperties.getProperty("GNEWS_API_KEY") ?: ""
 
 plugins {
     alias(libs.plugins.android.application)
@@ -27,14 +26,17 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-
-        buildConfigField("String", "GNEWS_API_KEY", "\"$GNEWS_API_KEY\"")
+        // ✅ GNEWS_API_KEY를 BuildConfig에 삽입
+        val gnewsApiKey = localProperties.getProperty("GNEWS_API_KEY") ?: ""
+        buildConfigField("String", "GNEWS_API_KEY", "\"$gnewsApiKey\"")
     }
 
     buildTypes {
+        getByName("debug") {
+            isMinifyEnabled = false
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
@@ -67,17 +69,23 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+
     implementation("androidx.compose.material:material:1.5.4")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
     implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.28.0")
+
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.28.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

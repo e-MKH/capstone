@@ -7,7 +7,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,12 +24,12 @@ import androidx.navigation.NavController
 import com.example.capstone.viewmodel.NewsViewModel
 import com.example.capstone.viewmodel.WordViewModel
 import com.example.capstone.viewmodel.SharedUrlViewModel
+import com.example.capstone.viewmodel.SharedTextViewModel
+import com.example.capstone.data.api.RetrofitClient
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-
+import kotlinx.coroutines.launch
 
 fun formatDate(isoTime: String): String {
     return try {
@@ -48,9 +50,11 @@ fun NewsListScreen(
     language: String,
     navController: NavController,
     sharedUrlViewModel: SharedUrlViewModel,
+    sharedTextViewModel: SharedTextViewModel,
     viewModel: NewsViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val articles by viewModel.articles.collectAsState()
 
     val wordViewModel: WordViewModel = viewModel(
@@ -70,8 +74,9 @@ fun NewsListScreen(
     var selectedCategory by remember { mutableStateOf(categories[0]) }
     var expanded by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier.fillMaxSize()) {
+    val listState = rememberLazyListState() // ✨ 리스트 스크롤 상태 추가
 
+    Column(modifier = modifier.fillMaxSize()) {
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
@@ -96,6 +101,9 @@ fun NewsListScreen(
                             selectedCategory = label to query
                             expanded = false
                             viewModel.fetchNews(language, query)
+                            coroutineScope.launch {
+                                listState.scrollToItem(0) // ✨ 카테고리 바꿀 때 맨 위로 스크롤
+                            }
                         }
                     )
                 }
@@ -112,6 +120,7 @@ fun NewsListScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn(
+                state = listState, // ✨ 리스트에 state 연결
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
@@ -124,12 +133,24 @@ fun NewsListScreen(
                             .clickable {
                                 val url = article.url
                                 if (!url.isNullOrBlank() && (url.startsWith("http://") || url.startsWith("https://"))) {
-                                    try {
-                                        sharedUrlViewModel.setUrl(url)
-                                        navController.navigate("detail")
-                                    } catch (e: Exception) {
-                                        Log.e("NAV_ERROR", "URL 저장/이동 실패: ${e.message}")
-                                        Toast.makeText(context, "URL 이동 실패", Toast.LENGTH_SHORT).show()
+                                    sharedUrlViewModel.setUrl(url)
+
+                                    coroutineScope.launch {
+                                        try {
+                                            val response = RetrofitClient.extractService.extractArticle(
+                                                mapOf("url" to url)
+                                            )
+                                            if (response.isSuccessful) {
+                                                val body = response.body()
+                                                sharedTextViewModel.setText(body?.text ?: "")
+                                                sharedTextViewModel.setTitle(article.title) // ✨ 제목 저장 추가
+                                                navController.navigate("detail")
+                                            } else {
+                                                Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
+                                            }
+                                        } catch (e: Exception) {
+                                            Toast.makeText(context, "본문 추출 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 } else {
                                     Toast.makeText(context, "잘못된 기사 URL입니다.", Toast.LENGTH_SHORT).show()
