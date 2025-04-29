@@ -14,21 +14,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capstone.viewmodel.WordViewModel
 import com.example.capstone.data.local.WordEntity
 
-/**
- * ✅ [WordBookScreen]
- * 저장된 단어들을 리스트로 보여주는 단어장 화면입니다.
- * - Room DB에서 단어 목록을 불러옴
- * - 각 단어 옆에 삭제 버튼을 제공하여 단어 제거 가능
- */
+
 @Composable
 fun WordBookScreen(
     modifier: Modifier = Modifier,
     wordViewModel: WordViewModel = viewModel()
 ) {
-    // ✅ 단어 리스트 상태를 기억함
+
     var wordList by remember { mutableStateOf(listOf<WordEntity>()) }
 
-    // ✅ 컴포저블 진입 시 단어 전체 불러오기
+
     LaunchedEffect(Unit) {
         wordList = wordViewModel.getAllWords()
     }
@@ -56,13 +51,22 @@ fun WordBookScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // ✅ 단어 표시
-                        Text(
-                            text = word.word,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
 
-                        // ✅ 삭제 버튼 클릭 시 단어 삭제 및 리스트 갱신
+                        Column {
+                            Text(
+                                text = word.word,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            word.meaning?.let { meaning ->
+                                Text(
+                                    text = meaning,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            }
+                        }
+
+
                         IconButton(onClick = {
                             wordViewModel.deleteWord(word)
                             wordList = wordList.filter { it.word != word.word }

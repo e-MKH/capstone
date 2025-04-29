@@ -30,15 +30,15 @@ class NewsViewModel : ViewModel() {
                 )
 
                 if (response.articles.isNotEmpty()) {
-                    // ① 가져온 기사 리스트
+
                     val originalArticles = response.articles
 
-                    // ② NLP 서버로 난이도 분석 병렬 요청
+
                     val analyzedArticles = originalArticles.map { article ->
                         async { analyzeDifficulty(article) }
                     }.awaitAll()
 
-                    // ③ 결과를 articles에 반영
+
                     _articles.value = analyzedArticles
                     Log.d("NewsViewModel", "뉴스 ${analyzedArticles.size}개 분석 및 저장 완료")
                 } else {

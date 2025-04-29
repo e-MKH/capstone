@@ -1,25 +1,33 @@
 package com.example.capstone.screen.article
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.capstone.viewmodel.SharedTextViewModel
+import com.example.capstone.viewmodel.WordViewModel
 import com.example.capstone.data.api.RetrofitTranslateClient
 import com.example.capstone.data.api.TranslateRequest
 import kotlinx.coroutines.launch
+import com.google.accompanist.flowlayout.FlowRow
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun ArticleDetailScreen(
     navController: NavHostController,
     url: String,
-    sharedTextViewModel: SharedTextViewModel
+    sharedTextViewModel: SharedTextViewModel,
+    wordViewModel: WordViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+    val context = LocalContext.current
     val textState by sharedTextViewModel.text.collectAsState()
     val titleState by sharedTextViewModel.title.collectAsState()
     var translatedText by remember { mutableStateOf<String?>(null) }
@@ -99,10 +107,41 @@ fun ArticleDetailScreen(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                Text(
-                    text = if (isTranslated) (translatedText ?: "번역 실패") else textState,
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                // 🔥 여기가 핵심 수정 부분: FlowRow + 단어 클릭 + 번역 + 저장
+                val words = (if (isTranslated) (translatedText ?: "번역 실패") else textState).split(" ")
+
+                FlowRow(modifier = Modifier.fillMaxWidth()) {
+                    words.forEach { word ->
+                        Text(
+                            text = "$word ",
+                            modifier = Modifier
+                                .padding(end = 4.dp, bottom = 4.dp)
+                                .clickable {
+                                    val cleanWord = word.trim().replace("[^A-Za-z0-9]".toRegex(), "")
+                                    if (cleanWord.isNotBlank()) {
+                                        coroutineScope.launch {
+                                            try {
+                                                val response = RetrofitTranslateClient.translateService
+                                                    .translateText(TranslateRequest(cleanWord))
+                                                if (response.isSuccessful) {
+                                                    val translatedWord = response.body()?.translated_text ?: "번역 실패"
+                                                    wordViewModel.saveWord(cleanWord, translatedWord) // ✅ 영어+한글 저장
+                                                    Toast.makeText(context, "'$cleanWord' 저장됨", Toast.LENGTH_SHORT).show()
+                                                } else {
+                                                    Toast.makeText(context, "번역 실패", Toast.LENGTH_SHORT).show()
+                                                }
+                                            } catch (e: Exception) {
+                                                Toast.makeText(context, "에러: ${e.message}", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    }
+                                },
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
             }
 
             if (isLoading) {

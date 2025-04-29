@@ -74,7 +74,7 @@ fun NewsListScreen(
     var selectedCategory by remember { mutableStateOf(categories[0]) }
     var expanded by remember { mutableStateOf(false) }
 
-    val listState = rememberLazyListState() // ✨ 리스트 스크롤 상태 추가
+    val listState = rememberLazyListState()
 
     Column(modifier = modifier.fillMaxSize()) {
         ExposedDropdownMenuBox(
@@ -102,7 +102,7 @@ fun NewsListScreen(
                             expanded = false
                             viewModel.fetchNews(language, query)
                             coroutineScope.launch {
-                                listState.scrollToItem(0) // ✨ 카테고리 바꿀 때 맨 위로 스크롤
+                                listState.scrollToItem(0)
                             }
                         }
                     )
@@ -120,7 +120,7 @@ fun NewsListScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn(
-                state = listState, // ✨ 리스트에 state 연결
+                state = listState,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
@@ -143,7 +143,7 @@ fun NewsListScreen(
                                             if (response.isSuccessful) {
                                                 val body = response.body()
                                                 sharedTextViewModel.setText(body?.text ?: "")
-                                                sharedTextViewModel.setTitle(article.title) // ✨ 제목 저장 추가
+                                                sharedTextViewModel.setTitle(article.title)
                                                 navController.navigate("detail")
                                             } else {
                                                 Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
@@ -198,11 +198,15 @@ fun NewsListScreen(
                             Spacer(modifier = Modifier.height(8.dp))
 
                             article.description?.let { description ->
-                                ClickableWordText(description) { clickedWord ->
-                                    wordViewModel.saveWord(clickedWord)
-                                    Toast.makeText(context, "'$clickedWord' 저장됨", Toast.LENGTH_SHORT).show()
-                                }
+                                Text(
+                                    text = description,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 3,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
                             }
+
                         }
                     }
                 }
@@ -215,31 +219,7 @@ fun NewsListScreen(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun ClickableWordText(
-    content: String,
-    onWordClick: (String) -> Unit
-) {
-    val words = content.split(" ")
 
-    FlowRow(modifier = Modifier.fillMaxWidth()) {
-        words.forEach { word ->
-            Text(
-                text = "$word ",
-                modifier = Modifier
-                    .padding(end = 4.dp, bottom = 4.dp)
-                    .clickable {
-                        val cleanWord = word.trim().replace("[^A-Za-z0-9]".toRegex(), "")
-                        onWordClick(cleanWord)
-                    },
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
 
 
 

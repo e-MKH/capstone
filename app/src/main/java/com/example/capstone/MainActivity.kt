@@ -88,7 +88,7 @@ fun MyApp() {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("News App") },
+                    title = { Text("NewsPeed") },
                     navigationIcon = {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(Icons.Default.Menu, contentDescription = "메뉴")
