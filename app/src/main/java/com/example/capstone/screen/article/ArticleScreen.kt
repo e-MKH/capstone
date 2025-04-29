@@ -60,7 +60,7 @@ fun ArticleButton(
             .height(140.dp),
         shape = shape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFAEDFF7),
+            containerColor = Color(0xFF4169E1),
             contentColor = Color.White
         ),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)

@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -70,6 +71,10 @@ fun ArticleDetailScreen(
                             }
                         }
                     },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4169E1),
+                        contentColor = Color.White
+                    ),
                     enabled = !isTranslated && !isLoading,
                     modifier = Modifier.weight(1f)
                 ) {
@@ -82,6 +87,10 @@ fun ArticleDetailScreen(
                     onClick = {
                         isTranslated = false
                     },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4169E1),
+                        contentColor = Color.White
+                    ),
                     enabled = isTranslated && !isLoading,
                     modifier = Modifier.weight(1f)
                 ) {
@@ -107,7 +116,7 @@ fun ArticleDetailScreen(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // 🔥 여기가 핵심 수정 부분: FlowRow + 단어 클릭 + 번역 + 저장
+
                 val words = (if (isTranslated) (translatedText ?: "번역 실패") else textState).split(" ")
 
                 FlowRow(modifier = Modifier.fillMaxWidth()) {
@@ -125,7 +134,7 @@ fun ArticleDetailScreen(
                                                     .translateText(TranslateRequest(cleanWord))
                                                 if (response.isSuccessful) {
                                                     val translatedWord = response.body()?.translated_text ?: "번역 실패"
-                                                    wordViewModel.saveWord(cleanWord, translatedWord) // ✅ 영어+한글 저장
+                                                    wordViewModel.saveWord(cleanWord, translatedWord)
                                                     Toast.makeText(context, "'$cleanWord' 저장됨", Toast.LENGTH_SHORT).show()
                                                 } else {
                                                     Toast.makeText(context, "번역 실패", Toast.LENGTH_SHORT).show()
@@ -155,4 +164,3 @@ fun ArticleDetailScreen(
         }
     }
 }
-
