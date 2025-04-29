@@ -31,7 +31,7 @@ class NewsViewModel : ViewModel() {
 
                 if (response.articles.isNotEmpty()) {
 
-                    val originalArticles = response.articles
+                    val originalArticles = response.articles.take(7)
 
 
                     val analyzedArticles = originalArticles.map { article ->
