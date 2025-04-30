@@ -87,6 +87,7 @@ dependencies {
 
     // ✅ Room Database (단어장 저장 기능)
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.navigation.compose)
     kapt("androidx.room:room-compiler:2.6.1") // annotation processor
     implementation("androidx.room:room-ktx:2.6.1") // 코루틴, Flow 지원
 
