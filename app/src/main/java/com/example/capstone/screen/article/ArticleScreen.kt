@@ -7,18 +7,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.capstone.navigation.Screen
 
+/**
+ * [ArticleScreen]
+ * 앱의 메인 진입 화면으로, 뉴스 언어 선택 버튼들을 배치
+ *
+ * @param navController Navigation을 위한 컨트롤러 (언어별 기사 화면으로 이동)
+ */
 @Composable
 fun ArticleScreen(
     navController: NavController
 ) {
-    val cardShape = RoundedCornerShape(32.dp)
+    val cardShape = RoundedCornerShape(32.dp) // 버튼 모양 둥글게 설정
 
     Column(
         modifier = Modifier
@@ -27,18 +32,25 @@ fun ArticleScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // 영어 뉴스 버튼
         ArticleButton(
             text = "영어 기사",
             onClick = { navController.navigate(Screen.EnglishNews.route) },
             shape = cardShape
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // 일본어 뉴스 버튼 (향후 확장 예정)
         ArticleButton(
             text = "일본어 기사",
             onClick = { /* 일본어 이동 예정 */ },
             shape = cardShape
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // 중국어 뉴스 버튼 (향후 확장 예정)
         ArticleButton(
             text = "중국어 기사",
             onClick = { /* 중국어 이동 예정 */ },
@@ -47,6 +59,13 @@ fun ArticleScreen(
     }
 }
 
+/**
+ * 언어 버튼 공통 UI 컴포저블
+ *
+ * @param text 버튼에 표시할 텍스트
+ * @param onClick 클릭 시 실행할 동작
+ * @param shape 버튼 모양 (RoundedCornerShape 등)
+ */
 @Composable
 fun ArticleButton(
     text: String,
@@ -73,4 +92,3 @@ fun ArticleButton(
         )
     }
 }
-

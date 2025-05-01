@@ -16,6 +16,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import android.util.Log
 
+/**
+ * [NavGraph]
+ * 앱 전체의 Navigation 구조를 정의
+ * 각 화면(Composable)을 특정 route와 매핑
+ *
+ * @param navController        네비게이션을 제어하는 컨트롤러
+ * @param sharedUrlViewModel   기사 URL을 화면 간 공유하기 위한 ViewModel
+ * @param sharedTextViewModel  기사 본문 텍스트를 공유하기 위한 ViewModel
+ * @param modifier             NavHost에 적용할 Modifier (기본값 있음)
+ */
 @Composable
 fun NavGraph(
     navController: NavHostController,
@@ -23,23 +33,33 @@ fun NavGraph(
     sharedTextViewModel: SharedTextViewModel,
     modifier: Modifier = Modifier
 ) {
+    // NavHost: 시작 화면을 설정하고, 각 route에 해당하는 Composable 등록
     NavHost(
         navController = navController,
-        startDestination = Screen.Article.route,
+        startDestination = Screen.Article.route, // 앱 시작 시 Article 화면부터 시작
         modifier = modifier
     ) {
+        // 언어 선택 화면
         composable(Screen.Article.route) {
             ArticleScreen(navController)
         }
+
+        // 단어장 화면
         composable(Screen.WordBook.route) {
             WordBookScreen()
         }
+
+        // 설정 화면
         composable(Screen.Settings.route) {
             Settings()
         }
+
+        // 정보 화면
         composable(Screen.Info.route) {
             Info()
         }
+
+        // 영어 뉴스 리스트 화면
         composable(Screen.EnglishNews.route) {
             LanguageArticleScreenEng(
                 navController = navController,
@@ -47,9 +67,12 @@ fun NavGraph(
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+
+        // 기사 상세 화면 (URL 기반 WebView)
         composable(Screen.ArticleDetail.route) {
-            val url = sharedUrlViewModel.url.collectAsState().value
+            val url = sharedUrlViewModel.url.collectAsState().value // 공유 ViewModel에서 URL 가져오기
             Log.d("DETAIL_SCREEN", "받은 URL: $url")
+
             ArticleDetailScreen(
                 navController = navController,
                 url = url,

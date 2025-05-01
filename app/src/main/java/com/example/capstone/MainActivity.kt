@@ -19,13 +19,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.ui.unit.dp
 
+/**
+ * [MainActivity]
+ * 앱의 진입점이자 전체 UI를 Compose로 구성하는 액티비티
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             SampleTheme {
-                MyApp()
+                MyApp() // 앱 메인 UI 시작
             }
         }
     }
@@ -35,12 +39,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp() {
     val navController = rememberNavController()
+
+    // 공유 ViewModel 초기화
     val sharedUrlViewModel: SharedUrlViewModel = viewModel()
     val sharedTextViewModel: SharedTextViewModel = viewModel()
 
+    // Drawer 상태 및 코루틴 스코프 설정
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    // 사이드 메뉴 Drawer
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -50,6 +58,7 @@ fun MyApp() {
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(16.dp)
                 )
+                // 메뉴 항목: 홈
                 NavigationDrawerItem(
                     label = { Text("Home") },
                     selected = false,
@@ -58,6 +67,7 @@ fun MyApp() {
                         navController.navigate("article")
                     }
                 )
+                // 메뉴 항목: 단어장
                 NavigationDrawerItem(
                     label = { Text("WordBook") },
                     selected = false,
@@ -66,6 +76,7 @@ fun MyApp() {
                         navController.navigate("wordbook")
                     }
                 )
+                // 메뉴 항목: 설정
                 NavigationDrawerItem(
                     label = { Text("Settings") },
                     selected = false,
@@ -74,6 +85,7 @@ fun MyApp() {
                         navController.navigate("settings")
                     }
                 )
+                // 메뉴 항목: 앱 정보
                 NavigationDrawerItem(
                     label = { Text("Info") },
                     selected = false,
@@ -85,6 +97,7 @@ fun MyApp() {
             }
         }
     ) {
+        // 상단 앱바 + 본문 영역을 포함하는 Scaffold
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -97,14 +110,13 @@ fun MyApp() {
                 )
             }
         ) { innerPadding ->
+            // 실제 화면 라우팅은 NavGraph에서 처리
             NavGraph(
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,
-                sharedTextViewModel = sharedTextViewModel, 
+                sharedTextViewModel = sharedTextViewModel,
                 modifier = Modifier.padding(innerPadding)
             )
         }
     }
 }
-
-
