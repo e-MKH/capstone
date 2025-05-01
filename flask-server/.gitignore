@@ -6,7 +6,7 @@ __pycache__/
 venv/
 
 # 환경변수 파일
-.env.*
+.env
 
 # Google Cloud Service Account 키
 *.json
