@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.capstone.data.local.WordDatabase
-import com.example.capstone.data.local.WordEntity
+import com.example.capstone.data.local.entity.WordEntity
 import kotlinx.coroutines.launch
 
 /**

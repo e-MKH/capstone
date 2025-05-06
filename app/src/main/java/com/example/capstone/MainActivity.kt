@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.capstone.navigation.NavGraph
-import com.example.capstone.ui.theme.SampleTheme
+import com.example.capstone.theme.SampleTheme
 import com.example.capstone.viewmodel.SharedUrlViewModel
 import com.example.capstone.viewmodel.SharedTextViewModel
 import kotlinx.coroutines.launch
