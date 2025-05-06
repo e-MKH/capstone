@@ -1,15 +1,19 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+// local.properties 파일에서 GNEWS_API_KEY 읽기
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(FileInputStream(localPropertiesFile))
+    }
+}
+
 plugins {
-    // ✅ Android 애플리케이션 빌드를 위한 플러그인
     alias(libs.plugins.android.application)
-
-    // ✅ Kotlin Android 지원 플러그인
     alias(libs.plugins.kotlin.android)
-
-    // ✅ Jetpack Compose용 Kotlin 플러그인
     alias(libs.plugins.kotlin.compose)
-
-    // ✅ Room Database 등에서 필요한 annotation processor
-    id("kotlin-kapt")
+    id("kotlin-kapt") // Room DB 등 Annotation 기반 라이브러리용
 }
 
 android {
@@ -22,14 +26,19 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // BuildConfig를 통해 API 키를 코드 내에서 안전하게 사용 가능
+        val gnewsApiKey = localProperties.getProperty("GNEWS_API_KEY") ?: ""
+        buildConfigField("String", "GNEWS_API_KEY", "\"$gnewsApiKey\"")
     }
 
     buildTypes {
-        release {
+        getByName("debug") {
             isMinifyEnabled = false
-            // ProGuard 설정
+        }
+        getByName("release") {
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -37,69 +46,59 @@ android {
         }
     }
 
-    // ✅ Java 11 사용 설정
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    // ✅ Kotlin 11 버전으로 설정
     kotlinOptions {
         jvmTarget = "11"
     }
 
-    // ✅ Jetpack Compose 활성화
     buildFeatures {
-        compose = true
+        compose = true        // Jetpack Compose 활성화
+        buildConfig = true    // BuildConfig.* 접근 허용 (API 키 포함)
     }
 }
 
 dependencies {
-    // ✅ Android 기본 코어 및 생명주기 지원
+    // 기본 Android 및 Compose 구성 요소
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-
-    // ✅ Jetpack Compose BOM (버전 관리 통합)
     implementation(platform(libs.androidx.compose.bom))
-
-    // ✅ Compose UI 관련 구성 요소
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
 
-    // ✅ Material 2 (Compose 기본 컴포넌트)
+    // Compose Material2 & Material3
     implementation("androidx.compose.material:material:1.5.4")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
-
-    // ✅ Material 3 최신 디자인 컴포넌트
     implementation("androidx.compose.material3:material3:1.2.1")
 
-    // ✅ Jetpack Navigation for Compose
+    // Navigation for Compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
-    // ✅ Retrofit2 - REST API 통신
+    // 네트워크 (Retrofit + Gson + Logging)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // JSON 자동 파싱
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
-    // ✅ SwipeRefresh 기능 (뉴스 새로고침)
+    // Accompanist: SwipeRefresh & FlowLayout
     implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.28.0")
 
-    // ✅ Room Database (단어장 저장 기능)
+    // Room DB
     implementation("androidx.room:room-runtime:2.6.1")
-    implementation(libs.androidx.navigation.compose)
-    kapt("androidx.room:room-compiler:2.6.1") // annotation processor
-    implementation("androidx.room:room-ktx:2.6.1") // 코루틴, Flow 지원
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 
-    // ✅ 테스트 관련 라이브러리
+    // 테스트 라이브러리
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // ✅ Compose UI 테스트
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
-

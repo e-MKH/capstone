@@ -1,5 +1,6 @@
 package com.example.capstone.screen.article
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -9,63 +10,85 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
+import com.example.capstone.navigation.Screen
 
 /**
- * ✅ [ArticleScreen]
- * 앱 메인 화면: 사용자에게 뉴스 언어를 선택하게 하는 버튼 UI입니다.
- * 각 버튼을 누르면 해당 언어에 맞는 뉴스 화면으로 이동합니다.
+ * [ArticleScreen]
+ * 앱의 메인 진입 화면으로, 뉴스 언어 선택 버튼들을 배치
  *
- * @param navController Navigation을 위한 컨트롤러
+ * @param navController Navigation을 위한 컨트롤러 (언어별 기사 화면으로 이동)
  */
 @Composable
-fun ArticleScreen(navController: NavHostController) {
+fun ArticleScreen(
+    navController: NavController
+) {
+    val cardShape = RoundedCornerShape(32.dp) // 버튼 모양 둥글게 설정
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 32.dp),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val buttonModifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-
-        // ✅ 영어 뉴스 버튼
-        Button(
-            onClick = { navController.navigate("eng") },
-            modifier = buttonModifier,
-            shape = RoundedCornerShape(24.dp),
-            elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCCE5FF))
-        ) {
-            Text("영어 기사", fontSize = 20.sp, color = Color.White)
-        }
+        // 영어 뉴스 버튼
+        ArticleButton(
+            text = "영어 기사",
+            onClick = { navController.navigate(Screen.EnglishNews.route) },
+            shape = cardShape
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ✅ 일본어 뉴스 버튼
-        Button(
-            onClick = { navController.navigate("jap") },
-            modifier = buttonModifier,
-            shape = RoundedCornerShape(24.dp),
-            elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCCE5FF))
-        ) {
-            Text("일본어 기사", fontSize = 20.sp, color = Color.White)
-        }
+        // 일본어 뉴스 버튼 (향후 확장 예정)
+        ArticleButton(
+            text = "일본어 기사",
+            onClick = { /* 일본어 이동 예정 */ },
+            shape = cardShape
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ✅ 중국어 뉴스 버튼
-        Button(
-            onClick = { navController.navigate("ch") },
-            modifier = buttonModifier,
-            shape = RoundedCornerShape(24.dp),
-            elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCCE5FF))
-        ) {
-            Text("중국어 기사", fontSize = 20.sp, color = Color.White)
-        }
+        // 중국어 뉴스 버튼 (향후 확장 예정)
+        ArticleButton(
+            text = "중국어 기사",
+            onClick = { /* 중국어 이동 예정 */ },
+            shape = cardShape
+        )
     }
 }
 
+/**
+ * 언어 버튼 공통 UI 컴포저블
+ *
+ * @param text 버튼에 표시할 텍스트
+ * @param onClick 클릭 시 실행할 동작
+ * @param shape 버튼 모양 (RoundedCornerShape 등)
+ */
+@Composable
+fun ArticleButton(
+    text: String,
+    onClick: () -> Unit,
+    shape: RoundedCornerShape
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(140.dp),
+        shape = shape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF4169E1),
+            contentColor = Color.White
+        ),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
+    ) {
+        Text(
+            text = text,
+            fontSize = 28.sp,
+            color = Color.White,
+            style = MaterialTheme.typography.titleLarge
+        )
+    }
+}

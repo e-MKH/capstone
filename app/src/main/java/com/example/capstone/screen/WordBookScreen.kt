@@ -15,20 +15,23 @@ import com.example.capstone.viewmodel.WordViewModel
 import com.example.capstone.data.local.WordEntity
 
 /**
- * ✅ [WordBookScreen]
- * 저장된 단어들을 리스트로 보여주는 단어장 화면입니다.
- * - Room DB에서 단어 목록을 불러옴
- * - 각 단어 옆에 삭제 버튼을 제공하여 단어 제거 가능
+ * [WordBookScreen]
+ * 사용자가 저장한 단어들을 목록으로 보여주는 화면입니다.
+ * - 단어 클릭 시 아무 동작은 없고,
+ * - 우측 쓰레기통 버튼으로 삭제 가능
+ *
+ * @param modifier 화면 전체 레이아웃에 적용할 Modifier
+ * @param wordViewModel Room DB 연동을 위한 ViewModel
  */
 @Composable
 fun WordBookScreen(
     modifier: Modifier = Modifier,
     wordViewModel: WordViewModel = viewModel()
 ) {
-    // ✅ 단어 리스트 상태를 기억함
+    // 단어장에 저장된 단어 리스트 상태
     var wordList by remember { mutableStateOf(listOf<WordEntity>()) }
 
-    // ✅ 컴포저블 진입 시 단어 전체 불러오기
+    // 화면 진입 시 단어 불러오기 (1회 실행)
     LaunchedEffect(Unit) {
         wordList = wordViewModel.getAllWords()
     }
@@ -38,9 +41,11 @@ fun WordBookScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // 화면 상단 제목
         Text("📘 내 단어장", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
 
+        // 단어 리스트 표시
         LazyColumn {
             items(wordList) { word ->
                 Card(
@@ -56,16 +61,28 @@ fun WordBookScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // ✅ 단어 표시
-                        Text(
-                            text = word.word,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
 
-                        // ✅ 삭제 버튼 클릭 시 단어 삭제 및 리스트 갱신
+                        Column {
+                            // 단어 본문
+                            Text(
+                                text = word.word,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                            // 단어 뜻이 있다면 함께 표시
+                            word.meaning?.let { meaning ->
+                                Text(
+                                    text = meaning,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            }
+                        }
+
+                        // 삭제 버튼
                         IconButton(onClick = {
-                            wordViewModel.deleteWord(word)
-                            wordList = wordList.filter { it.word != word.word }
+                            wordViewModel.deleteWord(word) // DB에서 삭제
+                            wordList = wordList.filter { it.word != word.word } // UI에서도 제거
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "삭제")
                         }
