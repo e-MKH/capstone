@@ -1,6 +1,7 @@
-package com.example.capstone.data.local
+package com.example.capstone.data.local.dao
 
 import androidx.room.*
+import com.example.capstone.data.local.entity.WordEntity
 
 /**
  * ✅ [WordDao]

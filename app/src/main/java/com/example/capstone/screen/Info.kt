@@ -3,7 +3,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.capstone.ui.theme.SampleTheme
+import com.example.capstone.theme.SampleTheme
 
 @Composable
 fun Info() {

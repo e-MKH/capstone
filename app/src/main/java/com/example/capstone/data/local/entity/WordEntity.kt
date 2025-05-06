@@ -1,4 +1,4 @@
-package com.example.capstone.data.local
+package com.example.capstone.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

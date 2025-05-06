@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capstone.viewmodel.WordViewModel
-import com.example.capstone.data.local.WordEntity
+import com.example.capstone.data.local.entity.WordEntity
 
 /**
  * [WordBookScreen]

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.capstone.data.local.dao.WordDao
+import com.example.capstone.data.local.entity.WordEntity
 
 /**
  * [WordDatabase]
