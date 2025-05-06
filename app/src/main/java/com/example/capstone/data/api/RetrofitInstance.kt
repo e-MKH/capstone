@@ -1,5 +1,9 @@
 package com.example.capstone.data.api
 
+import com.example.capstone.data.api.service.EasyNewsService
+import com.example.capstone.data.api.service.ExtractService
+import com.example.capstone.data.api.service.GNewsService
+import com.example.capstone.data.api.service.NlpService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

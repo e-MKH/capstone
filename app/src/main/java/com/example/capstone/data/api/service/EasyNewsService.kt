@@ -1,4 +1,4 @@
-package com.example.capstone.data.api
+package com.example.capstone.data.api.service
 
 import com.example.capstone.data.model.EasyNewsArticle
 import retrofit2.http.GET

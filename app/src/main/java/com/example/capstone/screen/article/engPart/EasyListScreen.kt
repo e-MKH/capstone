@@ -73,7 +73,7 @@ fun EasyListScreen(
                             selectedLevel = level
                             expanded = false
                             when (level) {
-                                "초급~고급" -> navController.navigate("news")
+                                "초급~고급" -> navController.navigate("eng")
                                 "전문가" -> navController.navigate("expert")
                                 // "입문"은 현재 화면이므로 그대로 유지
                             }

@@ -1,5 +1,6 @@
 package com.example.capstone.data.api
 
+import com.example.capstone.data.api.service.TranslateService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

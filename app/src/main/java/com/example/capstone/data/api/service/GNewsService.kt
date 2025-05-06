@@ -1,6 +1,6 @@
-package com.example.capstone.data.api
+package com.example.capstone.data.api.service
 
-import com.example.capstone.data.model.GNewsResponse
+import com.example.capstone.data.api.model.GNewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

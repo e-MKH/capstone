@@ -61,7 +61,7 @@ fun ExpertListScreen(
                                 expanded = false
                                 when (level) {
                                     "입문" -> navController.navigate("easy")
-                                    "초급~고급" -> navController.navigate("news")
+                                    "초급~고급" -> navController.navigate("eng")
                                     "전문가" -> {} // 현재 화면
                                 }
                             }

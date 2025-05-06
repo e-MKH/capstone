@@ -1,6 +1,5 @@
 package com.example.capstone.screen.article
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.example.capstone.viewmodel.SharedTextViewModel
 // import com.example.capstone.viewmodel.WordViewModel
 import com.example.capstone.data.api.RetrofitTranslateClient
-import com.example.capstone.data.api.TranslateRequest
+import com.example.capstone.data.api.service.TranslateRequest
 import kotlinx.coroutines.launch
 import com.google.accompanist.flowlayout.FlowRow
 import androidx.compose.ui.text.style.TextOverflow

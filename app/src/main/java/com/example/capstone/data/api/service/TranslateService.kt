@@ -1,4 +1,4 @@
-package com.example.capstone.data.api
+package com.example.capstone.data.api.service
 
 import retrofit2.Response
 import retrofit2.http.Body

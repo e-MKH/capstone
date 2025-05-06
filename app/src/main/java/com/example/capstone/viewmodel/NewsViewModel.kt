@@ -3,10 +3,10 @@ package com.example.capstone.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.capstone.data.api.ExtractResponse
-import com.example.capstone.data.api.NlpRequest
-import com.example.capstone.data.api.NlpResponse
-import com.example.capstone.data.api.GNewsApiService
+import com.example.capstone.data.api.model.ExtractResponse
+import com.example.capstone.data.api.service.NlpRequest
+import com.example.capstone.data.api.model.NlpResponse
+import com.example.capstone.data.api.service.GNewsApiService
 import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.data.model.GNewsArticle
 import kotlinx.coroutines.Dispatchers
