@@ -86,7 +86,7 @@ def analyze_text():
         # ✅ 로그 출력
         print(
             f"✅ 분석 완료 | 점수: {score:.2f} | 난이도: {difficulty} | 문장수: {sentence_count} | "
-            f"평균문장길이: {avg_sentence_length:.2f} | 접속사수: {conjunction_count} | 수동태문장수: {passive_count}",
+            f"평균문장길이: {avg_sentence_length:.2f} | 접속사수: {conjunction_count} | 수동태문장수: {passive_count} | 엔터티 수: {entity_count} | 평균 중요도: {avg_salience}",
             flush=True
         )
 

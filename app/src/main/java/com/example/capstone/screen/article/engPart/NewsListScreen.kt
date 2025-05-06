@@ -28,9 +28,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 
-/**
- * ISO 8601 형식 날짜를 간단하게 변환해주는 함수
- */
 fun formatDate(isoTime: String): String {
     return try {
         if (isoTime.length >= 16) {
@@ -45,7 +42,7 @@ fun formatDate(isoTime: String): String {
 @Composable
 fun NewsListScreen(
     modifier: Modifier = Modifier,
-    language: String, // 언어 코드 ("en", "ja", "zh")
+    language: String,
     navController: NavController,
     sharedUrlViewModel: SharedUrlViewModel,
     sharedTextViewModel: SharedTextViewModel,
@@ -53,10 +50,9 @@ fun NewsListScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val articles by viewModel.articles.collectAsState() // 뉴스 목록
-    val isLoading by viewModel.isLoading.collectAsState() // 로딩 상태
+    val articles by viewModel.articles.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
-    // 단어장 ViewModel (Room DB 사용)
     val wordViewModel: WordViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory(LocalContext.current.applicationContext as Application)
     )
@@ -65,51 +61,92 @@ fun NewsListScreen(
     val refreshState = rememberSwipeRefreshState(isRefreshing)
     val listState = rememberLazyListState()
 
-    // 카테고리 목록 및 드롭다운 상태
+    val levels = listOf("초급~고급", "입문", "전문가")
+    var selectedLevel by remember { mutableStateOf(levels[0]) }
+    var levelExpanded by remember { mutableStateOf(false) }
+
     val categories = listOf(
         "정치" to "politics", "경제" to "business", "사회" to "world",
         "기술" to "technology", "과학" to "science"
     )
     var selectedCategory by remember { mutableStateOf(categories[0]) }
-    var expanded by remember { mutableStateOf(false) }
+    var categoryExpanded by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.fillMaxSize()) {
-
-        // 카테고리 드롭다운 메뉴
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
-            modifier = Modifier.padding(12.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            TextField(
-                value = selectedCategory.first,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text("카테고리 선택") },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                modifier = Modifier.menuAnchor()
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
+            ExposedDropdownMenuBox(
+                expanded = levelExpanded,
+                onExpandedChange = { levelExpanded = !levelExpanded },
+                modifier = Modifier.weight(1f)
             ) {
-                categories.forEach { (label, query) ->
-                    DropdownMenuItem(
-                        text = { Text(label) },
-                        onClick = {
-                            selectedCategory = label to query
-                            expanded = false
-                            viewModel.fetchNews(language, query)
-                            coroutineScope.launch {
-                                listState.scrollToItem(0)
+                TextField(
+                    value = selectedLevel,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("난이도 선택") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(levelExpanded) },
+                    modifier = Modifier.menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = levelExpanded,
+                    onDismissRequest = { levelExpanded = false }
+                ) {
+                    levels.forEach { level ->
+                        DropdownMenuItem(
+                            text = { Text(level) },
+                            onClick = {
+                                selectedLevel = level
+                                levelExpanded = false
+                                when (level) {
+                                    "입문" -> navController.navigate("easy")
+                                    "전문가" -> navController.navigate("expert")
+                                    "초급~고급" -> viewModel.fetchNews(language, selectedCategory.second)
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
+                }
+            }
+
+            ExposedDropdownMenuBox(
+                expanded = categoryExpanded,
+                onExpandedChange = { categoryExpanded = !categoryExpanded },
+                modifier = Modifier.weight(1f)
+            ) {
+                TextField(
+                    value = selectedCategory.first,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("카테고리 선택") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(categoryExpanded) },
+                    modifier = Modifier.menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = categoryExpanded,
+                    onDismissRequest = { categoryExpanded = false }
+                ) {
+                    categories.forEach { (label, query) ->
+                        DropdownMenuItem(
+                            text = { Text(label) },
+                            onClick = {
+                                selectedCategory = label to query
+                                categoryExpanded = false
+                                viewModel.fetchNews(language, query)
+                                coroutineScope.launch {
+                                    listState.scrollToItem(0)
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
 
-        // Swipe-to-Refresh 기능
         SwipeRefresh(
             state = refreshState,
             onRefresh = {
@@ -120,7 +157,6 @@ fun NewsListScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             if (isLoading && articles.isEmpty()) {
-                // 로딩 중일 때 로딩 인디케이터 표시
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -128,7 +164,6 @@ fun NewsListScreen(
                     CircularProgressIndicator()
                 }
             } else {
-                // 뉴스 기사 리스트 표시
                 LazyColumn(
                     state = listState,
                     modifier = Modifier
@@ -146,13 +181,12 @@ fun NewsListScreen(
                                         sharedUrlViewModel.setUrl(url)
                                         coroutineScope.launch {
                                             try {
-                                                // Flask 서버에서 본문 추출 요청
                                                 val response = RetrofitClient.extractService.extractArticle(mapOf("url" to url))
                                                 if (response.isSuccessful) {
                                                     val body = response.body()
                                                     sharedTextViewModel.setText(body?.text ?: "")
                                                     sharedTextViewModel.setTitle(article.title)
-                                                    navController.navigate("detail") // 상세화면으로 이동
+                                                    navController.navigate("detail")
                                                 } else {
                                                     Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
                                                 }
@@ -165,7 +199,6 @@ fun NewsListScreen(
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                // ✅ 제목 + 난이도 표시
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.fillMaxWidth()
@@ -186,7 +219,7 @@ fun NewsListScreen(
                                             "고급" -> MaterialTheme.colorScheme.error
                                             "중급" -> MaterialTheme.colorScheme.primary
                                             "초급" -> MaterialTheme.colorScheme.secondary
-                                            "분석불가", "에러" -> Color.Gray
+                                            in listOf("분석불가", "에러") -> Color.Gray
                                             else -> Color.Gray
                                         },
                                         modifier = Modifier
@@ -198,7 +231,6 @@ fun NewsListScreen(
 
                                 Spacer(modifier = Modifier.height(4.dp))
 
-                                // 게시일 표시
                                 Text(
                                     text = formatDate(article.publishedAt),
                                     style = MaterialTheme.typography.bodySmall,
@@ -208,7 +240,6 @@ fun NewsListScreen(
 
                                 Spacer(modifier = Modifier.height(8.dp))
 
-                                // 기사 요약(설명)
                                 article.description?.let {
                                     Text(
                                         text = it,
@@ -221,7 +252,6 @@ fun NewsListScreen(
                             }
                         }
 
-                        // 난이도 미분석된 기사만 백그라운드 분석
                         LaunchedEffect(article.url) {
                             if (article.difficulty == null) {
                                 coroutineScope.launch {
@@ -235,10 +265,8 @@ fun NewsListScreen(
         }
     }
 
-    // 초기 진입 시 뉴스 데이터 로딩
     LaunchedEffect(language) {
         viewModel.fetchNews(language, selectedCategory.second)
     }
 }
-
 

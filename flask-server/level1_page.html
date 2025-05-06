@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+  <script>
+   if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}
+  </script>
+  <script>
+   (()=>{class RocketLazyLoadScripts{constructor(){this.v="1.2.6",this.triggerEvents=["keydown","mousedown","mousemove","touchmove","touchstart","touchend","wheel"],this.userEventHandler=this.t.bind(this),this.touchStartHandler=this.i.bind(this),this.touchMoveHandler=this.o.bind(this),this.touchEndHandler=this.h.bind(this),this.clickHandler=this.u.bind(this),this.interceptedClicks=[],this.interceptedClickListeners=[],this.l(this),window.addEventListener("pageshow",(t=>{this.persisted=t.persisted,this.everythingLoaded&&this.m()})),this.CSPIssue=sessionStorage.getItem("rocketCSPIssue"),document.addEventListener("securitypolicyviolation",(t=>{this.CSPIssue||"script-src-elem"!==t.violatedDirective||"data"!==t.blockedURI||(this.CSPIssue=!0,sessionStorage.setItem("rocketCSPIssue",!0))})),document.addEventListener("DOMContentLoaded",(()=>{this.k()})),this.delayedScripts={normal:[],async:[],defer:[]},this.trash=[],this.allJQueries=[]}p(t){document.hidden?t.t():(this.triggerEvents.forEach((e=>window.addEventListener(e,t.userEventHandler,{passive:!0}))),window.addEventListener("touchstart",t.touchStartHandler,{passive:!0}),window.addEventListener("mousedown",t.touchStartHandler),document.addEventListener("visibilitychange",t.userEventHandler))}_(){this.triggerEvents.forEach((t=>window.removeEventListener(t,this.userEventHandler,{passive:!0}))),document.removeEventListener("visibilitychange",this.userEventHandler)}i(t){"HTML"!==t.target.tagName&&(window.addEventListener("touchend",this.touchEndHandler),window.addEventListener("mouseup",this.touchEndHandler),window.addEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.addEventListener("mousemove",this.touchMoveHandler),t.target.addEventListener("click",this.clickHandler),this.L(t.target,!0),this.S(t.target,"onclick","rocket-onclick"),this.C())}o(t){window.removeEventListener("touchend",this.touchEndHandler),window.removeEventListener("mouseup",this.touchEndHandler),window.removeEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",this.touchMoveHandler),t.target.removeEventListener("click",this.clickHandler),this.L(t.target,!1),this.S(t.target,"rocket-onclick","onclick"),this.M()}h(){window.removeEventListener("touchend",this.touchEndHandler),window.removeEventListener("mouseup",this.touchEndHandler),window.removeEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",this.touchMoveHandler)}u(t){t.target.removeEventListener("click",this.clickHandler),this.L(t.target,!1),this.S(t.target,"rocket-onclick","onclick"),this.interceptedClicks.push(t),t.preventDefault(),t.stopPropagation(),t.stopImmediatePropagation(),this.M()}O(){window.removeEventListener("touchstart",this.touchStartHandler,{passive:!0}),window.removeEventListener("mousedown",this.touchStartHandler),this.interceptedClicks.forEach((t=>{t.target.dispatchEvent(new MouseEvent("click",{view:t.view,bubbles:!0,cancelable:!0}))}))}l(t){EventTarget.prototype.addEventListenerWPRocketBase=EventTarget.prototype.addEventListener,EventTarget.prototype.addEventListener=function(e,i,o){"click"!==e||t.windowLoaded||i===t.clickHandler||t.interceptedClickListeners.push({target:this,func:i,options:o}),(this||window).addEventListenerWPRocketBase(e,i,o)}}L(t,e){this.interceptedClickListeners.forEach((i=>{i.target===t&&(e?t.removeEventListener("click",i.func,i.options):t.addEventListener("click",i.func,i.options))})),t.parentNode!==document.documentElement&&this.L(t.parentNode,e)}D(){return new Promise((t=>{this.P?this.M=t:t()}))}C(){this.P=!0}M(){this.P=!1}S(t,e,i){t.hasAttribute&&t.hasAttribute(e)&&(event.target.setAttribute(i,event.target.getAttribute(e)),event.target.removeAttribute(e))}t(){this._(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this.R.bind(this)):this.R()}k(){let t=[];document.querySelectorAll("script[type=rocketlazyloadscript][data-rocket-src]").forEach((e=>{let i=e.getAttribute("data-rocket-src");if(i&&!i.startsWith("data:")){0===i.indexOf("//")&&(i=location.protocol+i);try{const o=new URL(i).origin;o!==location.origin&&t.push({src:o,crossOrigin:e.crossOrigin||"module"===e.getAttribute("data-rocket-type")})}catch(t){}}})),t=[...new Map(t.map((t=>[JSON.stringify(t),t]))).values()],this.T(t,"preconnect")}async R(){this.lastBreath=Date.now(),this.j(this),this.F(this),this.I(),this.W(),this.q(),await this.A(this.delayedScripts.normal),await this.A(this.delayedScripts.defer),await this.A(this.delayedScripts.async);try{await this.U(),await this.H(this),await this.J()}catch(t){console.error(t)}window.dispatchEvent(new Event("rocket-allScriptsLoaded")),this.everythingLoaded=!0,this.D().then((()=>{this.O()})),this.N()}W(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((t=>{t.hasAttribute("data-rocket-src")?t.hasAttribute("async")&&!1!==t.async?this.delayedScripts.async.push(t):t.hasAttribute("defer")&&!1!==t.defer||"module"===t.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(t):this.delayedScripts.normal.push(t):this.delayedScripts.normal.push(t)}))}async B(t){if(await this.G(),!0!==t.noModule||!("noModule"in HTMLScriptElement.prototype))return new Promise((e=>{let i;function o(){(i||t).setAttribute("data-rocket-status","executed"),e()}try{if(navigator.userAgent.indexOf("Firefox/")>0||""===navigator.vendor||this.CSPIssue)i=document.createElement("script"),[...t.attributes].forEach((t=>{let e=t.nodeName;"type"!==e&&("data-rocket-type"===e&&(e="type"),"data-rocket-src"===e&&(e="src"),i.setAttribute(e,t.nodeValue))})),t.text&&(i.text=t.text),i.hasAttribute("src")?(i.addEventListener("load",o),i.addEventListener("error",(function(){i.setAttribute("data-rocket-status","failed-network"),e()})),setTimeout((()=>{i.isConnected||e()}),1)):(i.text=t.text,o()),t.parentNode.replaceChild(i,t);else{const i=t.getAttribute("data-rocket-type"),s=t.getAttribute("data-rocket-src");i?(t.type=i,t.removeAttribute("data-rocket-type")):t.removeAttribute("type"),t.addEventListener("load",o),t.addEventListener("error",(i=>{this.CSPIssue&&i.target.src.startsWith("data:")?(console.log("WPRocket: data-uri blocked by CSP -> fallback"),t.removeAttribute("src"),this.B(t).then(e)):(t.setAttribute("data-rocket-status","failed-network"),e())})),s?(t.removeAttribute("data-rocket-src"),t.src=s):t.src="data:text/javascript;base64,"+window.btoa(unescape(encodeURIComponent(t.text)))}}catch(i){t.setAttribute("data-rocket-status","failed-transform"),e()}}));t.setAttribute("data-rocket-status","skipped")}async A(t){const e=t.shift();return e&&e.isConnected?(await this.B(e),this.A(t)):Promise.resolve()}q(){this.T([...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async],"preload")}T(t,e){var i=document.createDocumentFragment();t.forEach((t=>{const o=t.getAttribute&&t.getAttribute("data-rocket-src")||t.src;if(o&&!o.startsWith("data:")){const s=document.createElement("link");s.href=o,s.rel=e,"preconnect"!==e&&(s.as="script"),t.getAttribute&&"module"===t.getAttribute("data-rocket-type")&&(s.crossOrigin=!0),t.crossOrigin&&(s.crossOrigin=t.crossOrigin),t.integrity&&(s.integrity=t.integrity),i.appendChild(s),this.trash.push(s)}})),document.head.appendChild(i)}j(t){let e={};function i(i,o){return e[o].eventsToRewrite.indexOf(i)>=0&&!t.everythingLoaded?"rocket-"+i:i}function o(t,o){!function(t){e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=i(arguments[0],t),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=i(arguments[0],t),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(o)}function s(e,i){let o=e[i];e[i]=null,Object.defineProperty(e,i,{get:()=>o||function(){},set(s){t.everythingLoaded?o=s:e["rocket"+i]=o=s}})}o(document,"DOMContentLoaded"),o(window,"DOMContentLoaded"),o(window,"load"),o(window,"pageshow"),o(document,"readystatechange"),s(document,"onreadystatechange"),s(window,"onload"),s(window,"onpageshow");try{Object.defineProperty(document,"readyState",{get:()=>t.rocketReadyState,set(e){t.rocketReadyState=e},configurable:!0}),document.readyState="loading"}catch(t){console.log("WPRocket DJE readyState conflict, bypassing")}}F(t){let e;function i(e){return t.everythingLoaded?e:e.split(" ").map((t=>"load"===t||0===t.indexOf("load.")?"rocket-jquery-load":t)).join(" ")}function o(o){function s(t){const e=o.fn[t];o.fn[t]=o.fn.init.prototype[t]=function(){return this[0]===window&&("string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=i(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{const e=arguments[0][t];delete arguments[0][t],arguments[0][i(t)]=e}))),e.apply(this,arguments),this}}o&&o.fn&&!t.allJQueries.includes(o)&&(o.fn.ready=o.fn.init.prototype.ready=function(e){return t.domReadyFired?e.bind(document)(o):document.addEventListener("rocket-DOMContentLoaded",(()=>e.bind(document)(o))),o([])},s("on"),s("one"),t.allJQueries.push(o)),e=o}o(window.jQuery),Object.defineProperty(window,"jQuery",{get:()=>e,set(t){o(t)}})}async H(t){const e=document.querySelector("script[data-webpack]");e&&(await async function(){return new Promise((t=>{e.addEventListener("load",t),e.addEventListener("error",t)}))}(),await t.K(),await t.H(t))}async U(){this.domReadyFired=!0;try{document.readyState="interactive"}catch(t){}await this.G(),document.dispatchEvent(new Event("rocket-readystatechange")),await this.G(),document.rocketonreadystatechange&&document.rocketonreadystatechange(),await this.G(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this.G(),window.dispatchEvent(new Event("rocket-DOMContentLoaded"))}async J(){try{document.readyState="complete"}catch(t){}await this.G(),document.dispatchEvent(new Event("rocket-readystatechange")),await this.G(),document.rocketonreadystatechange&&document.rocketonreadystatechange(),await this.G(),window.dispatchEvent(new Event("rocket-load")),await this.G(),window.rocketonload&&window.rocketonload(),await this.G(),this.allJQueries.forEach((t=>t(window).trigger("rocket-jquery-load"))),await this.G();const t=new Event("rocket-pageshow");t.persisted=this.persisted,window.dispatchEvent(t),await this.G(),window.rocketonpageshow&&window.rocketonpageshow({persisted:this.persisted}),this.windowLoaded=!0}m(){document.onreadystatechange&&document.onreadystatechange(),window.onload&&window.onload(),window.onpageshow&&window.onpageshow({persisted:this.persisted})}I(){const t=new Map;document.write=document.writeln=function(e){const i=document.currentScript;i||console.error("WPRocket unable to document.write this: "+e);const o=document.createRange(),s=i.parentElement;let n=t.get(i);void 0===n&&(n=i.nextSibling,t.set(i,n));const c=document.createDocumentFragment();o.setStart(c,0),c.appendChild(o.createContextualFragment(e)),s.insertBefore(c,n)}}async G(){Date.now()-this.lastBreath>45&&(await this.K(),this.lastBreath=Date.now())}async K(){return document.hidden?new Promise((t=>setTimeout(t))):new Promise((t=>requestAnimationFrame(t)))}N(){this.trash.forEach((t=>t.remove()))}static run(){const t=new RocketLazyLoadScripts;t.p(t)}}RocketLazyLoadScripts.run()})();
+  </script>
+  <title>
+   Level 1 - English news and easy articles for students of English
+  </title>
+  <link as="font" crossorigin="" href="https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.woff2?v=4.6.1" rel="preload"/>
+  <link as="font" crossorigin="" href="https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4gaVI.woff2" rel="preload"/>
+  <style id="wpr-usedcss">
+   img.emoji{display:inline!important;border:none!important;box-shadow:none!important;height:1em!important;width:1em!important;margin:0 .07em!important;vertical-align:-.1em!important;background:0 0!important;padding:0!important}:where(.wp-block-button__link){border-radius:9999px;box-shadow:none;padding:calc(.667em + 2px) calc(1.333em + 2px);text-decoration:none}:where(.wp-block-calendar table:not(.has-background) th){background:#ddd}:where(.wp-block-columns){margin-bottom:1.75em}:where(.wp-block-columns.has-background){padding:1.25em 2.375em}.wp-block-column{flex-grow:1;min-width:0;overflow-wrap:break-word;word-break:break-word}:where(.wp-block-post-comments input[type=submit]){border:none}:where(.wp-block-cover-image:not(.has-text-color)),:where(.wp-block-cover:not(.has-text-color)){color:#fff}:where(.wp-block-cover-image.is-light:not(.has-text-color)),:where(.wp-block-cover.is-light:not(.has-text-color)){color:#000}:where(.wp-block-file){margin-bottom:1.5em}:where(.wp-block-file__button){border-radius:2em;display:inline-block;padding:.5em 1em}:where(.wp-block-file__button):is(a):active,:where(.wp-block-file__button):is(a):focus,:where(.wp-block-file__button):is(a):hover,:where(.wp-block-file__button):is(a):visited{box-shadow:none;color:#fff;opacity:.85;text-decoration:none}.wp-block-group{box-sizing:border-box}:where(.wp-block-latest-comments:not([style*=line-height] .wp-block-latest-comments__comment)){line-height:1.1}:where(.wp-block-latest-comments:not([style*=line-height] .wp-block-latest-comments__comment-excerpt p)){line-height:1.8}ol,ul{box-sizing:border-box}:where(.wp-block-navigation.has-background .wp-block-navigation-item a:not(.wp-element-button)),:where(.wp-block-navigation.has-background .wp-block-navigation-submenu a:not(.wp-element-button)){padding:.5em 1em}:where(.wp-block-navigation .wp-block-navigation__submenu-container .wp-block-navigation-item a:not(.wp-element-button)),:where(.wp-block-navigation .wp-block-navigation__submenu-container .wp-block-navigation-submenu a:not(.wp-element-button)),:where(.wp-block-navigation .wp-block-navigation__submenu-container .wp-block-navigation-submenu button.wp-block-navigation-item__content),:where(.wp-block-navigation .wp-block-navigation__submenu-container .wp-block-pages-list__item button.wp-block-navigation-item__content){padding:.5em 1em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}:where(.wp-block-post-excerpt){margin-bottom:var(--wp--style--block-gap);margin-top:var(--wp--style--block-gap)}:where(.wp-block-preformatted.has-background){padding:1.25em 2.375em}:where(.wp-block-pullquote){margin:0 0 1em}:where(.wp-block-search__button){border:1px solid #ccc;padding:6px 10px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper){border:1px solid #949494;box-sizing:border-box;padding:4px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input{border:none;border-radius:0;padding:0 4px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input:focus{outline:0}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) :where(.wp-block-search__button){padding:4px 8px}:where(.wp-block-term-description){margin-bottom:var(--wp--style--block-gap);margin-top:var(--wp--style--block-gap)}:where(pre.wp-block-verse){font-family:inherit}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.aligncenter{clear:both}.screen-reader-text{border:0;clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-wrap:normal!important}.screen-reader-text:focus{background-color:#ddd;clip:auto!important;-webkit-clip-path:none;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}body{--wp--preset--color--black:#000000;--wp--preset--color--cyan-bluish-gray:#abb8c3;--wp--preset--color--white:#ffffff;--wp--preset--color--pale-pink:#f78da7;--wp--preset--color--vivid-red:#cf2e2e;--wp--preset--color--luminous-vivid-orange:#ff6900;--wp--preset--color--luminous-vivid-amber:#fcb900;--wp--preset--color--light-green-cyan:#7bdcb5;--wp--preset--color--vivid-green-cyan:#00d084;--wp--preset--color--pale-cyan-blue:#8ed1fc;--wp--preset--color--vivid-cyan-blue:#0693e3;--wp--preset--color--vivid-purple:#9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple:linear-gradient(135deg,rgba(6, 147, 227, 1) 0%,rgb(155, 81, 224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan:linear-gradient(135deg,rgb(122, 220, 180) 0%,rgb(0, 208, 130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange:linear-gradient(135deg,rgba(252, 185, 0, 1) 0%,rgba(255, 105, 0, 1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red:linear-gradient(135deg,rgba(255, 105, 0, 1) 0%,rgb(207, 46, 46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray:linear-gradient(135deg,rgb(238, 238, 238) 0%,rgb(169, 184, 195) 100%);--wp--preset--gradient--cool-to-warm-spectrum:linear-gradient(135deg,rgb(74, 234, 220) 0%,rgb(151, 120, 209) 20%,rgb(207, 42, 186) 40%,rgb(238, 44, 130) 60%,rgb(251, 105, 98) 80%,rgb(254, 248, 76) 100%);--wp--preset--gradient--blush-light-purple:linear-gradient(135deg,rgb(255, 206, 236) 0%,rgb(152, 150, 240) 100%);--wp--preset--gradient--blush-bordeaux:linear-gradient(135deg,rgb(254, 205, 165) 0%,rgb(254, 45, 45) 50%,rgb(107, 0, 62) 100%);--wp--preset--gradient--luminous-dusk:linear-gradient(135deg,rgb(255, 203, 112) 0%,rgb(199, 81, 192) 50%,rgb(65, 88, 208) 100%);--wp--preset--gradient--pale-ocean:linear-gradient(135deg,rgb(255, 245, 203) 0%,rgb(182, 227, 212) 50%,rgb(51, 167, 181) 100%);--wp--preset--gradient--electric-grass:linear-gradient(135deg,rgb(202, 248, 128) 0%,rgb(113, 206, 126) 100%);--wp--preset--gradient--midnight:linear-gradient(135deg,rgb(2, 3, 129) 0%,rgb(40, 116, 252) 100%);--wp--preset--font-size--small:13px;--wp--preset--font-size--medium:20px;--wp--preset--font-size--large:36px;--wp--preset--font-size--x-large:42px;--wp--preset--spacing--20:0.44rem;--wp--preset--spacing--30:0.67rem;--wp--preset--spacing--40:1rem;--wp--preset--spacing--50:1.5rem;--wp--preset--spacing--60:2.25rem;--wp--preset--spacing--70:3.38rem;--wp--preset--spacing--80:5.06rem;--wp--preset--shadow--natural:6px 6px 9px rgba(0, 0, 0, .2);--wp--preset--shadow--deep:12px 12px 50px rgba(0, 0, 0, .4);--wp--preset--shadow--sharp:6px 6px 0px rgba(0, 0, 0, .2);--wp--preset--shadow--outlined:6px 6px 0px -3px rgba(255, 255, 255, 1),6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp:6px 6px 0px rgba(0, 0, 0, 1)}:where(.is-layout-flex){gap:.5em}:where(.is-layout-grid){gap:.5em}:where(.wp-block-post-template.is-layout-flex){gap:1.25em}:where(.wp-block-post-template.is-layout-grid){gap:1.25em}:where(.wp-block-columns.is-layout-flex){gap:2em}:where(.wp-block-columns.is-layout-grid){gap:2em}.wpp-list li{overflow:hidden;float:none;clear:both;margin-bottom:1rem}.wpp-list li:last-of-type{margin-bottom:0}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}body{margin:0}aside,footer,header,main,nav,section{display:block}canvas,progress,video{display:inline-block;vertical-align:baseline}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}strong{font-weight:700}h1{margin:.67em 0;font-size:2em}img{border:0}svg:not(:root){overflow:hidden}code{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{margin:0;font:inherit;color:inherit}button{overflow:visible}button,select{text-transform:none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0}input{line-height:normal}input[type=checkbox],input[type=radio]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height:auto}input[type=search]{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;-webkit-appearance:textfield}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}fieldset{padding:.35em .625em .75em;margin:0 2px;border:1px solid silver}legend{padding:0;border:0}textarea{overflow:auto}optgroup{font-weight:700}table{border-spacing:0;border-collapse:collapse}td{padding:0}@media print{*,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:" (" attr(href) ")"}a[href^="#"]:after,a[href^="javascript:"]:after{content:""}img,tr{page-break-inside:avoid}img{max-width:100%!important}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}.navbar{display:none}.label{border:1px solid #000}.table{border-collapse:collapse!important}.table td{background-color:#fff!important}}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}html{font-size:10px;-webkit-tap-highlight-color:transparent}body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;background-color:#fff}button,input,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit}a{color:#337ab7;text-decoration:none}a:focus,a:hover{color:#23527c;text-decoration:underline}a:focus{outline:dotted thin;outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px}img{vertical-align:middle}[role=button]{cursor:pointer}h1,h2,h3,h4{font-family:inherit;font-weight:500;line-height:1.1;color:inherit}h1,h2,h3{margin-top:20px;margin-bottom:10px}h4{margin-top:10px;margin-bottom:10px}h1{font-size:36px}h2{font-size:30px}h3{font-size:24px}h4{font-size:18px}p{margin:0 0 10px}ol,ul{margin-top:0;margin-bottom:10px}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dl{margin-top:0;margin-bottom:20px}dt{line-height:1.42857143}dt{font-weight:700}address{margin-bottom:20px;font-style:normal;line-height:1.42857143}code{font-family:Menlo,Monaco,Consolas,"Courier New",monospace}code{padding:2px 4px;font-size:90%;color:#c7254e;background-color:#f9f2f4;border-radius:4px}.container{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width:768px){.container{width:750px}}@media (min-width:992px){.container{width:970px}}@media (min-width:1200px){.container{width:1170px}}.container-fluid{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}.row{margin-right:-15px;margin-left:-15px}.col-md-4,.col-md-8,.col-sm-2,.col-sm-4,.col-sm-6{position:relative;min-height:1px;padding-right:15px;padding-left:15px}@media (min-width:768px){.col-sm-2,.col-sm-4,.col-sm-6{float:left}.col-sm-6{width:50%}.col-sm-4{width:33.33333333%}.col-sm-2{width:16.66666667%}}@media (min-width:992px){.col-md-4,.col-md-8{float:left}.col-md-8{width:66.66666667%}.col-md-4{width:33.33333333%}}table{background-color:transparent}caption{padding-top:8px;padding-bottom:8px;color:#777;text-align:left}.table{width:100%;max-width:100%;margin-bottom:20px}.table>tbody>tr>td{padding:8px;line-height:1.42857143;vertical-align:top;border-top:1px solid #ddd}.table>tbody+tbody{border-top:2px solid #ddd}.table .table{background-color:#fff}table td[class*=col-]{position:static;display:table-cell;float:none}.table>tbody>tr.active>td,.table>tbody>tr>td.active{background-color:#f5f5f5}.table>tbody>tr.success>td,.table>tbody>tr>td.success{background-color:#dff0d8}.table>tbody>tr.info>td,.table>tbody>tr>td.info{background-color:#d9edf7}.table>tbody>tr.warning>td,.table>tbody>tr>td.warning{background-color:#fcf8e3}fieldset{min-width:0;padding:0;margin:0;border:0}legend{display:block;width:100%;padding:0;margin-bottom:20px;font-size:21px;line-height:inherit;color:#333;border:0;border-bottom:1px solid #e5e5e5}label{display:inline-block;max-width:100%;margin-bottom:5px;font-weight:700}input[type=search]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}input[type=checkbox],input[type=radio]{margin:4px 0 0;line-height:normal}select[multiple],select[size]{height:auto}input[type=checkbox]:focus,input[type=radio]:focus{outline:dotted thin;outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px}output{display:block;padding-top:7px;font-size:14px;line-height:1.42857143;color:#555}input[type=search]{-webkit-appearance:none}.checkbox,.radio{position:relative;display:block;margin-top:10px;margin-bottom:10px}.checkbox label,.radio label{min-height:20px;padding-left:20px;margin-bottom:0;font-weight:400;cursor:pointer}.checkbox input[type=checkbox],.radio input[type=radio]{position:absolute;margin-left:-20px}.checkbox+.checkbox,.radio+.radio{margin-top:-5px}fieldset[disabled] input[type=checkbox],fieldset[disabled] input[type=radio],input[type=checkbox].disabled,input[type=checkbox][disabled],input[type=radio].disabled,input[type=radio][disabled]{cursor:not-allowed}.checkbox.disabled label,.radio.disabled label,fieldset[disabled] .checkbox label,fieldset[disabled] .radio label{cursor:not-allowed}.btn{display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.42857143;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:4px}.btn.active.focus,.btn.active:focus,.btn.focus,.btn:active.focus,.btn:active:focus,.btn:focus{outline:dotted thin;outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px}.btn.focus,.btn:focus,.btn:hover{color:#333;text-decoration:none}.btn.active,.btn:active{background-image:none;outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}.btn.disabled,.btn[disabled],fieldset[disabled] .btn{cursor:not-allowed;-webkit-box-shadow:none;box-shadow:none;opacity:.65}a.btn.disabled,fieldset[disabled] a.btn{pointer-events:none}.fade{opacity:0;-webkit-transition:opacity .15s linear;-o-transition:opacity .15s linear;transition:opacity .15s linear}.fade.in{opacity:1}.collapse{display:none}.collapse.in{display:block}tr.collapse.in{display:table-row}tbody.collapse.in{display:table-row-group}.collapsing{position:relative;height:0;overflow:hidden;-webkit-transition-timing-function:ease;-o-transition-timing-function:ease;transition-timing-function:ease;-webkit-transition-duration:.35s;-o-transition-duration:.35s;transition-duration:.35s;-webkit-transition-property:height,visibility;-o-transition-property:height,visibility;transition-property:height,visibility}.dropdown{position:relative}.dropdown-menu{position:absolute;top:100%;left:0;z-index:1000;display:none;float:left;min-width:160px;padding:5px 0;margin:2px 0 0;font-size:14px;text-align:left;list-style:none;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,.15);border-radius:4px;-webkit-box-shadow:0 6px 12px rgba(0,0,0,.175);box-shadow:0 6px 12px rgba(0,0,0,.175)}.dropdown-menu .divider{height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}.dropdown-menu>li>a{display:block;padding:3px 20px;clear:both;font-weight:400;line-height:1.42857143;color:#333;white-space:nowrap}.dropdown-menu>li>a:focus,.dropdown-menu>li>a:hover{color:#262626;text-decoration:none;background-color:#f5f5f5}.dropdown-menu>.active>a,.dropdown-menu>.active>a:focus,.dropdown-menu>.active>a:hover{color:#fff;text-decoration:none;background-color:#337ab7;outline:0}.dropdown-menu>.disabled>a,.dropdown-menu>.disabled>a:focus,.dropdown-menu>.disabled>a:hover{color:#777}.dropdown-menu>.disabled>a:focus,.dropdown-menu>.disabled>a:hover{text-decoration:none;cursor:not-allowed;background-color:transparent;background-image:none}.open>.dropdown-menu{display:block}.open>a{outline:0}.dropdown-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:990}[data-toggle=buttons]>.btn input[type=checkbox],[data-toggle=buttons]>.btn input[type=radio]{position:absolute;clip:rect(0,0,0,0);pointer-events:none}.nav{padding-left:0;margin-bottom:0;list-style:none}.nav>li{position:relative;display:block}.nav>li>a{position:relative;display:block;padding:10px 15px}.nav>li>a:focus,.nav>li>a:hover{text-decoration:none;background-color:#eee}.nav>li.disabled>a{color:#777}.nav>li.disabled>a:focus,.nav>li.disabled>a:hover{color:#777;text-decoration:none;cursor:not-allowed;background-color:transparent}.nav .open>a,.nav .open>a:focus,.nav .open>a:hover{background-color:#eee;border-color:#337ab7}.nav>li>a>img{max-width:none}.navbar{position:relative;min-height:50px;margin-bottom:20px;border:1px solid transparent}.navbar-collapse{padding-right:15px;padding-left:15px;overflow-x:visible;-webkit-overflow-scrolling:touch;border-top:1px solid transparent;-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}.navbar-collapse.in{overflow-y:auto}.container-fluid>.navbar-collapse,.container-fluid>.navbar-header,.container>.navbar-collapse,.container>.navbar-header{margin-right:-15px;margin-left:-15px}@media (min-width:768px){.navbar{border-radius:4px}.navbar-header{float:left}.navbar-collapse{width:auto;border-top:0;-webkit-box-shadow:none;box-shadow:none}.navbar-collapse.collapse{display:block!important;height:auto!important;padding-bottom:0;overflow:visible!important}.navbar-collapse.in{overflow-y:visible}.container-fluid>.navbar-collapse,.container-fluid>.navbar-header,.container>.navbar-collapse,.container>.navbar-header{margin-right:0;margin-left:0}.navbar-toggle{display:none}}.navbar-toggle{position:relative;float:right;padding:9px 10px;margin-top:8px;margin-right:15px;margin-bottom:8px;background-color:transparent;background-image:none;border:1px solid transparent;border-radius:4px}.navbar-toggle:focus{outline:0}.navbar-toggle .icon-bar{display:block;width:22px;height:2px;border-radius:1px}.navbar-toggle .icon-bar+.icon-bar{margin-top:4px}.navbar-nav{margin:7.5px -15px}.navbar-nav>li>a{padding-top:10px;padding-bottom:10px;line-height:20px}@media (max-width:767px){.navbar-nav .open .dropdown-menu{position:static;float:none;width:auto;margin-top:0;background-color:transparent;border:0;-webkit-box-shadow:none;box-shadow:none}.navbar-nav .open .dropdown-menu>li>a{padding:5px 15px 5px 25px}.navbar-nav .open .dropdown-menu>li>a{line-height:20px}.navbar-nav .open .dropdown-menu>li>a:focus,.navbar-nav .open .dropdown-menu>li>a:hover{background-image:none}.navbar-default .navbar-nav .open .dropdown-menu>li>a{color:#777}.navbar-default .navbar-nav .open .dropdown-menu>li>a:focus,.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover{color:#333;background-color:transparent}.navbar-default .navbar-nav .open .dropdown-menu>.active>a,.navbar-default .navbar-nav .open .dropdown-menu>.active>a:focus,.navbar-default .navbar-nav .open .dropdown-menu>.active>a:hover{color:#555;background-color:#e7e7e7}.navbar-default .navbar-nav .open .dropdown-menu>.disabled>a,.navbar-default .navbar-nav .open .dropdown-menu>.disabled>a:focus,.navbar-default .navbar-nav .open .dropdown-menu>.disabled>a:hover{color:#ccc;background-color:transparent}}@media (min-width:768px){.navbar-nav{float:left;margin:0}.navbar-nav>li{float:left}.navbar-nav>li>a{padding-top:15px;padding-bottom:15px}}.navbar-nav>li>.dropdown-menu{margin-top:0;border-top-left-radius:0;border-top-right-radius:0}.navbar-default{background-color:#f8f8f8;border-color:#e7e7e7}.navbar-default .navbar-nav>li>a{color:#777}.navbar-default .navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:hover{color:#333;background-color:transparent}.navbar-default .navbar-nav>.active>a,.navbar-default .navbar-nav>.active>a:focus,.navbar-default .navbar-nav>.active>a:hover{color:#555;background-color:#e7e7e7}.navbar-default .navbar-nav>.disabled>a,.navbar-default .navbar-nav>.disabled>a:focus,.navbar-default .navbar-nav>.disabled>a:hover{color:#ccc;background-color:transparent}.navbar-default .navbar-toggle{border-color:#ddd}.navbar-default .navbar-toggle:focus,.navbar-default .navbar-toggle:hover{background-color:#ddd}.navbar-default .navbar-toggle .icon-bar{background-color:#888}.navbar-default .navbar-collapse{border-color:#e7e7e7}.navbar-default .navbar-nav>.open>a,.navbar-default .navbar-nav>.open>a:focus,.navbar-default .navbar-nav>.open>a:hover{color:#555;background-color:#e7e7e7}.breadcrumb{padding:8px 15px;margin-bottom:20px;list-style:none;background-color:#f5f5f5;border-radius:4px}.breadcrumb>li{display:inline-block}.breadcrumb>li+li:before{padding:0 5px;color:#ccc;content:"/\00a0"}.breadcrumb>.active{color:#777}.pagination{display:inline-block;padding-left:0;margin:20px 0;border-radius:4px}.pagination>li{display:inline}.pagination>li>a,.pagination>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#337ab7;text-decoration:none;background-color:#fff;border:1px solid #ddd}.pagination>li:first-child>a,.pagination>li:first-child>span{margin-left:0;border-top-left-radius:4px;border-bottom-left-radius:4px}.pagination>li:last-child>a,.pagination>li:last-child>span{border-top-right-radius:4px;border-bottom-right-radius:4px}.pagination>li>a:focus,.pagination>li>a:hover,.pagination>li>span:focus,.pagination>li>span:hover{z-index:2;color:#23527c;background-color:#eee;border-color:#ddd}.pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover{z-index:3;color:#fff;cursor:default;background-color:#337ab7;border-color:#337ab7}.pagination>.disabled>a,.pagination>.disabled>a:focus,.pagination>.disabled>a:hover,.pagination>.disabled>span,.pagination>.disabled>span:focus,.pagination>.disabled>span:hover{color:#777;cursor:not-allowed;background-color:#fff;border-color:#ddd}.label{display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em}a.label:focus,a.label:hover{color:#fff;text-decoration:none;cursor:pointer}.label:empty{display:none}.btn .label{position:relative;top:-1px}.alert{padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:4px}.alert h4{margin-top:0;color:inherit}.alert>p,.alert>ul{margin-bottom:0}.alert>p+p{margin-top:5px}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1)}.panel{margin-bottom:20px;background-color:#fff;border:1px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}.panel>.table{margin-bottom:0}.panel>.table caption{padding-right:15px;padding-left:15px}.panel>.table:first-child{border-top-left-radius:3px;border-top-right-radius:3px}.panel>.table:first-child>tbody:first-child>tr:first-child{border-top-left-radius:3px;border-top-right-radius:3px}.panel>.table:first-child>tbody:first-child>tr:first-child td:first-child{border-top-left-radius:3px}.panel>.table:first-child>tbody:first-child>tr:first-child td:last-child{border-top-right-radius:3px}.panel>.table:last-child{border-bottom-right-radius:3px;border-bottom-left-radius:3px}.panel>.table:last-child>tbody:last-child>tr:last-child{border-bottom-right-radius:3px;border-bottom-left-radius:3px}.panel>.table:last-child>tbody:last-child>tr:last-child td:first-child{border-bottom-left-radius:3px}.panel>.table:last-child>tbody:last-child>tr:last-child td:last-child{border-bottom-right-radius:3px}.panel>.table>tbody:first-child>tr:first-child td{border-top:0}.close{float:right;font-size:21px;font-weight:700;line-height:1;color:#000;text-shadow:0 1px 0 #fff;opacity:.2}.close:focus,.close:hover{color:#000;text-decoration:none;cursor:pointer;opacity:.5}button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:0 0;border:0}.modal-open{overflow:hidden}.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;display:none;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0}.modal.fade .modal-dialog{-webkit-transition:-webkit-transform .3s ease-out;-o-transition:-o-transform .3s ease-out;transition:transform .3s ease-out;-webkit-transform:translate(0,-25%);-ms-transform:translate(0,-25%);-o-transform:translate(0,-25%);transform:translate(0,-25%)}.modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0)}.modal-open .modal{overflow-x:hidden;overflow-y:auto}.modal-dialog{position:relative;width:auto;margin:10px}.modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5)}.modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}.modal-backdrop.fade{opacity:0}.modal-backdrop.in{opacity:.5}.modal-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}@media (min-width:768px){.modal-dialog{width:600px;margin:30px auto}.modal-content{-webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);box-shadow:0 5px 15px rgba(0,0,0,.5)}}.tooltip{position:absolute;z-index:1070;display:block;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;font-style:normal;font-weight:400;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;letter-spacing:normal;word-break:normal;word-spacing:normal;word-wrap:normal;white-space:normal;opacity:0;line-break:auto}.tooltip.in{opacity:.9}.tooltip.top{padding:5px 0;margin-top:-3px}.tooltip.right{padding:0 5px;margin-left:3px}.tooltip.bottom{padding:5px 0;margin-top:3px}.tooltip.left{padding:0 5px;margin-left:-3px}.tooltip-inner{max-width:200px;padding:3px 8px;color:#fff;text-align:center;background-color:#000;border-radius:4px}.tooltip-arrow{position:absolute;width:0;height:0;border-color:transparent;border-style:solid}.tooltip.top .tooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-width:5px 5px 0;border-top-color:#000}.tooltip.right .tooltip-arrow{top:50%;left:0;margin-top:-5px;border-width:5px 5px 5px 0;border-right-color:#000}.tooltip.left .tooltip-arrow{top:50%;right:0;margin-top:-5px;border-width:5px 0 5px 5px;border-left-color:#000}.tooltip.bottom .tooltip-arrow{top:0;left:50%;margin-left:-5px;border-width:0 5px 5px;border-bottom-color:#000}.popover{position:absolute;top:0;left:0;z-index:1060;display:none;max-width:276px;padding:1px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;font-style:normal;font-weight:400;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;letter-spacing:normal;word-break:normal;word-spacing:normal;word-wrap:normal;white-space:normal;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,.2);box-shadow:0 5px 10px rgba(0,0,0,.2);line-break:auto}.popover.top{margin-top:-10px}.popover.right{margin-left:10px}.popover.bottom{margin-top:10px}.popover.left{margin-left:-10px}.popover-title{padding:8px 14px;margin:0;font-size:14px;background-color:#f7f7f7;border-bottom:1px solid #ebebeb;border-radius:5px 5px 0 0}.popover-content{padding:9px 14px}.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid}.popover>.arrow{border-width:11px}.popover>.arrow:after{content:"";border-width:10px}.popover.top>.arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,.25);border-bottom-width:0}.popover.top>.arrow:after{bottom:1px;margin-left:-10px;content:" ";border-top-color:#fff;border-bottom-width:0}.popover.right>.arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,.25);border-left-width:0}.popover.right>.arrow:after{bottom:-10px;left:1px;content:" ";border-right-color:#fff;border-left-width:0}.popover.bottom>.arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,.25)}.popover.bottom>.arrow:after{top:1px;margin-left:-10px;content:" ";border-top-width:0;border-bottom-color:#fff}.popover.left>.arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,.25)}.popover.left>.arrow:after{right:1px;bottom:-10px;content:" ";border-right-width:0;border-left-color:#fff}.carousel{position:relative}.carousel-indicators{position:absolute;bottom:10px;left:50%;z-index:15;width:60%;padding-left:0;margin-left:-30%;text-align:center;list-style:none}.carousel-indicators li{display:inline-block;width:10px;height:10px;margin:1px;text-indent:-999px;cursor:pointer;background-color:rgba(0,0,0,0);border:1px solid #fff;border-radius:10px}.carousel-indicators .active{width:12px;height:12px;margin:0;background-color:#fff}@media screen and (min-width:768px){.carousel-indicators{bottom:20px}}.clearfix:after,.clearfix:before,.container-fluid:after,.container-fluid:before,.container:after,.container:before,.nav:after,.nav:before,.navbar-collapse:after,.navbar-collapse:before,.navbar-header:after,.navbar-header:before,.navbar:after,.navbar:before,.row:after,.row:before{display:table;content:" "}.clearfix:after,.container-fluid:after,.container:after,.nav:after,.navbar-collapse:after,.navbar-header:after,.navbar:after,.row:after{clear:both}.hide{display:none!important}.show{display:block!important}.hidden{display:none!important}.affix{position:fixed}@-ms-viewport{width:device-width}@font-face{font-display:swap;font-family:FontAwesome;src:url('https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.eot?v=4.6.1');src:url('https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.eot?#iefix&v=4.6.1') format('embedded-opentype'),url('https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.woff2?v=4.6.1') format('woff2'),url('https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.woff?v=4.6.1') format('woff'),url('https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.ttf?v=4.6.1') format('truetype'),url('https://www.newsinlevels.com/wp-content/themes/newsin/fonts/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular') format('svg');font-weight:400;font-style:normal}.fa{display:inline-block;font:14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.fa-facebook:before{content:"\f09a"}.fa-rss:before{content:"\f09e"}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}@font-face{font-display:swap;font-family:'Open Sans';font-style:normal;font-weight:300;font-stretch:100%;src:url(https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4gaVI.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}body{margin:0;padding:0;font-size:14px;font-family:Arial,Helvetica,sans-serif;color:#1b1b1b;background-color:#292626}img{max-width:100%;height:auto}a{color:#0294d9;-webkit-transition:.2s linear;-moz-transition:.2s linear;-o-transition:.2s linear;-ms-transition:.2s linear;transition:.2s all linear}a:active,a:focus,a:hover{text-decoration:none;outline:0;color:#0f658d}ol,ul{margin:0;padding:0;list-style:none}input[type=email],input[type=number],input[type=password],input[type=text],input[type=time],input[type=url]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0}input:focus,select:focus,textarea:focus{outline:0}button:focus{outline:0}.top-header{padding:12px 0 24px 11px;background-image:url(https://www.newsinlevels.com/wp-content/themes/newsin/img/head.png);background-repeat:repeat-x}.header-logo{float:left;margin-top:12px}.header-motto-block{float:left;margin:27px 0 0 40px}.header-motto-block h1{margin:0;font-size:20px;color:#fff;font-family:'Open Sans',sans-serif}.main-navbar{background:#042837}.navbar-default .navbar-collapse{background:0 0}.navbar-default .navbar-nav>li>a{padding:15px 10px;color:#fff;text-transform:uppercase;font-size:13px}.navbar-default .navbar-nav>li.taxonomy>a{transition:none;border-radius:3px;background:#125c7e}.navbar-default .navbar-nav>li>a{padding:7px 13px;margin:10px 0;margin-right:7px;display:inline-block;vertical-align:bottom;line-height:17px}.navbar-default .navbar-nav>li>a:hover{border-radius:3px}.navbar-default .navbar-nav>li>a.mainhome:hover{border-radius:3px;background:linear-gradient(#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%)}.navbar-default .navbar-nav>li:hover>a,.navbar-default .navbar-nav>li>a:active,.navbar-default .navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:hover{color:#fff;background:#1e5799;background:-moz-linear-gradient(top,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);background:-webkit-linear-gradient(top,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);background:linear-gradient(to bottom,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%)}.navbar-default.navbar-default .container-fluid{padding-left:0;padding-right:0}.navbar-default.navbar-default{background-color:transparent;border:none;border-radius:0;min-height:0;margin-bottom:0}.navbar-default .navbar-nav>.active>a,.navbar-default .navbar-nav>.active>a:focus,.navbar-default .navbar-nav>.active>a:hover{background:#1e5799;background:-moz-linear-gradient(top,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);background:-webkit-linear-gradient(top,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);background:linear-gradient(to bottom,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);color:#fff}.navbar-default .navbar-nav>.open>a:focus,.navbar-default .navbar-nav>.open>a:hover,.navbar-default .navbar-nav>li.open>a,.navbar-default .navbar-nav>li.open>a:active,.navbar-default .navbar-nav>li.open>a:focus,.navbar-default .navbar-nav>li.open>a:hover{background:#1e5799;background:-moz-linear-gradient(top,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);background:-webkit-linear-gradient(top,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);background:linear-gradient(to bottom,#1e5799 0,#2989d8 0,#125e81 0,#0e4c69 100%);color:#fff}.dropdown-menu{background:#0c5171;padding:0 8px;min-width:200px}.dropdown-menu>li{margin:1px 0;border-bottom:1px solid #013046}.dropdown-menu>li:last-child{border-bottom:none}.dropdown-menu>li>a{padding:8px;color:#fff}.dropdown-menu>li>a:focus,.dropdown-menu>li>a:hover{color:#fff;background:#10648c}.main-footer{background:#292626;padding:14px 0}.main-footer p{color:#fff;margin:0}.social-links{text-align:center}.social-links ul li{display:inline-block;margin-right:3px}.social-links ul li a{display:inline-block;width:22px;height:22px;background:#666;text-align:center;line-height:22px;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;color:#fff}.social-links ul li.facebook a:hover{background:#3b5998}.social-links ul li.youtube a:hover{background:#b00}.social-links ul li.rss a:hover{background:#f60}.footer-legal{text-align:right}.footer-legal ul li{display:inline-block;margin-left:10px}.footer-legal ul li:first-child{margin-left:0}.footer-legal ul li a{color:#fff}.footer-legal ul li a:hover{color:#ccc}.home-in{background:#151a1f;padding:20px 0}.news-block{padding:15px 20px;background:#fff;margin-bottom:10px}.news-block:after,.news-block:before{content:'';display:table}.news-block:after{clear:both}.news-block .img-wrap{max-width:200px;width:100%;float:left}.news-block-right{padding-left:220px}.news-block h3,.news-block p{margin:0}.news-block h3{font-size:19px}.news-block h3 a{color:#0294d9}.news-block h3 a:active,.news-block h3 a:focus,.news-block h3 a:hover{color:#0f658d}.news-block .news-excerpt,.news-block .title{margin-bottom:5px}.fancy-buttons ul li{display:inline-block;margin-right:17px}.fancy-buttons ul li:last-child{margin-right:0}.fancy-buttons ul li a{display:inline-block;color:#fff;font-size:14px;padding:3px 14px;background:#0b92bc;border-radius:5px}.fancy-buttons ul li a:active,.fancy-buttons ul li a:focus,.fancy-buttons ul li a:hover,.fancy-buttons ul li.active a{background:#1a4475}.pagination{margin:10px 0;float:right}.pagination>li>a:focus,.pagination>li>a:hover,.pagination>li>span:focus,.pagination>li>span:hover{background-color:#0b92bc;border-color:#0b7ea2;color:#fff}.pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover{background-color:#0b92bc;border-color:#0b7ea2}.sponsored-block{margin:10px 0 20px}.learn-with-us{padding:15px 20px;background:#fff;margin:20px 0}.learn-with-us h3{margin:5px 0 20px;color:#0294d9}.learn-with-us p{line-height:1.5}.how-improve-english{background:#fff;padding:25px 20px}.how-improve-english h3{margin:0 0 20px;font-size:24px;color:#0294d9;font-weight:700}.method-to-improve{margin-bottom:20px}.method-to-improve .img-wrap{float:left;max-width:32px}.method-to-improve .method-content{padding-left:50px;color:#505050}.method-content h4{color:#390;font-size:20px;font-weight:700;text-transform:capitalize;margin-top:0}.method-content ol{counter-reset:my-badass-counter;padding-left:20px}.method-content ol li{position:relative;margin-bottom:5px}.method-content ol li:before{position:absolute;content:counter(my-badass-counter) ".";counter-increment:my-badass-counter;left:-20px;top:0;font-size:14px}aside.sidebar{padding-left:0}.sidebar .widget{margin:25px 0}.sidebar .widget:first-child{margin-top:0}.widget iframe{max-width:100%!important}.breadcrumb>li+li:before{content:'\f105';font-family:FontAwesome;color:grey}.main-content{min-height:400px}.news-excerpt strong{font-weight:400}.sidebar .widget{padding:0;width:300px}.sidebar #text-8.widget,.sidebar .widget_search{background:#f5f5f5}@media (min-width:768px){.navbar-nav{float:left;margin:0 0 0 -24px}}form#searchform label.screen-reader-text{display:none}form#searchform input[type=text]{padding:5px}form#searchform input#searchsubmit{background:#125c7e;border:none;padding:6px 20px;color:#fff}form#searchform{width:95%;padding:10px;margin:0 auto}input#s{width:68%}input#searchsubmit{width:30%}.sponsored-block h3{color:#0f658d}.grow{transition:all .2s ease-in-out}.grow:hover{transform:scale(1.1)}.sidebar .widget{padding:0;width:300px;background:0 0}ol{margin:15px;padding:0 30px}@media screen and (min-width:1200px){.container{width:1030px}}@media (min-width:767px){ul.nav li.dropdown:hover>ul.dropdown-menu{display:block}}@media screen and (max-width:1200px){.header-logo{margin-top:8px}.header-motto-block{margin:22px 0 0 40px}.fancy-buttons ul li{margin-right:3px}}@media screen and (max-width:991px){.navbar-header{float:none}.navbar-toggle{display:block}.navbar-collapse.collapse{display:none!important}.navbar-nav{float:none!important;margin:15px -15px 0}.navbar-collapse.collapse.in{display:block!important}.container-fluid>.navbar-collapse{margin-left:-15px;margin-right:-15px}.navbar-collapse{border-top:none;-webkit-box-shadow:none;box-shadow:none;background:rgba(47,47,47,.92)}.navbar .navbar-toggle{border:none;padding:0;box-shadow:none;margin-top:12px}.navbar .navbar-toggle{margin-top:10px;transition:all .2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;-webkit-transition:.2s}.navbar-toggle .icon-bar{width:35px;height:4px;transition:all .2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;-webkit-transition:.2s;background:#fff}.navbar-toggle.collapsed .icon-bar:nth-child(2){transform:rotate(0);-moz-ransform:rotate(0);-ms-transform:rotate(0);-o-transform:rotate(0);-webkit-transform:rotate(0)}.navbar-toggle.collapsed .icon-bar:nth-child(3){opacity:1}.navbar-toggle.collapsed .icon-bar:nth-child(4){transform:rotate(0);-moz-ransform:rotate(0);-ms-transform:rotate(0);-o-transform:rotate(0);-webkit-transform:rotate(0)}.navbar-toggle .icon-bar:nth-child(2){transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform-origin:10% 90%;-moz-transform-origin:10% 90%;-ms-transform-origin:10% 90%;-o-transform-origin:10% 90%;-webkit-transform-origin:10% 90%}.navbar-toggle .icon-bar:nth-child(3){opacity:0}.navbar-toggle .icon-bar:nth-child(4){transform:rotate(-45deg);-moz-transform:rotate(-45deg);-ms-transform:rotate(-45deg);-o-transform:rotate(-45deg);-webkit-transform:rotate(-45deg);transform-origin:25% 90%;-moz-transform-origin:25% 90%;-ms-transform-origin:25% 90%;-o-transform-origin:25% 90%;-webkit-transform-origin:25% 90%}.navbar-default .navbar-toggle .icon-bar{background-color:#fff}.navbar-default .navbar-toggle:focus,.navbar-default .navbar-toggle:hover{background:0 0}.navbar-nav>li{float:none}.header-motto-block{margin:15px 0 0 15px}.header-motto-block h1{font-size:16px}.header-logo{max-width:230px;margin-top:0}.navbar-nav>li>.dropdown-menu{width:100%}.sponsored-block{text-align:center}aside.sidebar{margin-top:20px}.sidebar .widget{text-align:center}.main-footer{font-size:13px}.footer-legal ul li{margin-left:1px}aside.sidebar{padding-left:0}}@media screen and (max-width:767px){.header-motto-block{display:none}.navbar-default .navbar-nav .open .dropdown-menu>li>a{color:#fff}.navbar-default .navbar-nav .open .dropdown-menu>li>a:focus,.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover{color:#fff;background:#10648c}.navbar-nav{margin:15px 0 0}.navbar-nav .open .dropdown-menu>li>a{padding:8px 5px}.news-block h3{font-size:17px}.learn-with-us h3{font-size:16px;margin:5px 0 10px}.how-improve-english h3{font-size:18px;margin:0 0 15px}.method-content h4{font-size:16px}.footer-legal,.main-footer p{text-align:center}.social-links{margin:10px 0}.navbar-default .navbar-nav>li.taxonomy>a{width:100%;margin:1px 0}.navbar-default .navbar-nav>li.taxonomy:last-child{margin-bottom:1px}}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}body{font-size:13px}.header-logo{max-width:200px;margin-top:4px}.news-block .img-wrap{max-width:100%;margin-bottom:10px;text-align:center;float:none}.news-block-right{padding-left:0}.navbar-default .navbar-nav>li>a{padding:10px}.news-block h3{font-size:16px}.pagination{float:none}.learn-with-us h3{font-size:15px}.how-improve-english h3{font-size:16px}.method-content h4{font-size:15px}.method-to-improve{margin-bottom:10px;overflow:hidden}.home-in{padding:20px 0 0}.pagination-wrap{text-align:center}.how-improve-english h3,.how-improve-english>p,.learn-with-us{text-align:center}}@media screen and (max-width:400px){.fancy-buttons ul li{margin:2px}}html.fancybox-active:not(.fancybox-allowscroll),html.fancybox-active:not(.fancybox-allowscroll) body{touch-action:none;overscroll-behavior:none;-webkit-overflow-scrolling:auto;overflow:hidden}html.fancybox-active:not(.fancybox-allowscroll) body{margin-right:var(--vertical-scrollbar);margin-bottom:var(--horizontal-scrollbar)}html.fancybox-active:not(.fancybox-allowscroll) body.rtl{margin-right:0;margin-left:var(--vertical-scrollbar)}#fancybox-loading,#fancybox-loading div,#fancybox-overlay,#fancybox-wrap *,#fancybox-wrap ::after,#fancybox-wrap ::before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}#fancybox-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.7);z-index:111100;display:none}#fancybox-tmp{padding:0;margin:0;border:0;overflow:auto;display:none}#fancybox-wrap{position:absolute;top:0;left:0;z-index:111101;display:none;outline:0!important}#fancybox-outer{position:relative;width:100%;height:100%;box-shadow:0 0 20px #111;-moz-box-shadow:0 0 20px #111;-webkit-box-shadow:0 0 20px #111;background:#fff}#fancybox-content{position:relative;width:100%;height:100%;overflow:hidden;z-index:111102;border:0 solid #fff;background:#fff;background-clip:padding-box}#fancybox-content>*{max-width:100%;max-height:100%;-webkit-overflow-scrolling:touch}#fancybox-error{color:#444;padding:14px;margin:0}#fancybox-img{width:100%;height:100%;border:none}#fancybox-img{padding:0;margin:0;line-height:0;vertical-align:top;max-width:none!important;max-height:none!important}.fancy-ico{position:absolute;width:48px;height:48px;border-radius:50%}.fancy-ico span{display:block;position:relative;left:12px;top:12px;width:24px;height:24px;border-radius:50%;background:#000;border:2px solid #fff;box-shadow:0 0 4px #000;transition:transform .25s ease-in-out}#fancybox-close:hover span,#fancybox-next:hover span,body.rtl #fancybox-prev:hover span{transform:rotate(360deg)}#fancybox-prev:hover span,body.rtl #fancybox-next:hover span{transform:rotate(-360deg)}#fancybox-close{top:-24px;right:-24px;cursor:pointer;z-index:111105;display:none}#fancybox-close span::after,#fancybox-close span::before{content:'';position:absolute;top:9px;left:4px;width:12px;height:2px;background-color:#fff}#fancybox-close span::before{transform:rotate(45deg)}#fancybox-close span::after{transform:rotate(-45deg)}#fancybox-next,#fancybox-prev{top:50%;margin-top:-24px;cursor:pointer;z-index:111102;display:none}#fancybox-next,body.rtl #fancybox-prev{left:auto;right:-24px}#fancybox-prev,body.rtl #fancybox-next{left:-24px;right:auto}#fancybox-next span::after,#fancybox-prev span::after{content:'';position:absolute;top:6px;width:8px;height:8px;border-top:2px solid #fff;border-right:2px solid #fff}#fancybox-prev span::after,body.rtl #fancybox-next span::after{transform:rotate(-135deg);left:7px}#fancybox-next span::after,body.rtl #fancybox-prev span::after{transform:rotate(45deg);left:initial;right:7px}#fancybox-title-wrap{z-index:111104}.fancybox-title-inside{padding-bottom:10px;text-align:center;color:#333;background-color:#fff;position:relative}.fancybox-title-outside{padding-top:10px;color:#fff;font-weight:600}.fancybox-title-over{position:absolute;width:100%;bottom:0;left:0;color:#fff;text-align:left}body.rtl .fancybox-title-over{text-align:right}.fancybox-title-over #fancybox-title{padding:10px;background:rgba(0,0,0,.6);display:block}.fancybox-title-float{text-align:center}.fancybox-title-float #fancybox-title{display:table;margin:-12px auto;height:24px;padding:0 15px;line-height:20px;font-size:14px;color:#fff;background:#000;border:2px solid #fff;border-radius:12px;box-shadow:0 0 4px #000;position:relative;z-index:111104}#fancybox-loading{position:fixed;top:50%;left:50%;width:40px;height:40px;margin-top:-20px;margin-left:-20px;background-color:rgba(0,0,0,.9);border-radius:5px;cursor:pointer;overflow:hidden;z-index:111104;display:none}#fancybox-loading div{transform-origin:20px 20px;animation:1.2s linear infinite fancybox-loading}#fancybox-loading div::after{content:'';display:block;position:absolute;top:7px;left:19px;width:2px;height:7px;border-radius:20%;background:#fff}#fancybox-loading div:first-child{transform:rotate(0);animation-delay:-1.1s}#fancybox-loading div:nth-child(2){transform:rotate(30deg);animation-delay:-1s}#fancybox-loading div:nth-child(3){transform:rotate(60deg);animation-delay:-.9s}#fancybox-loading div:nth-child(4){transform:rotate(90deg);animation-delay:-.8s}#fancybox-loading div:nth-child(5){transform:rotate(120deg);animation-delay:-.7s}#fancybox-loading div:nth-child(6){transform:rotate(150deg);animation-delay:-.6s}#fancybox-loading div:nth-child(7){transform:rotate(180deg);animation-delay:-.5s}#fancybox-loading div:nth-child(8){transform:rotate(210deg);animation-delay:-.4s}#fancybox-loading div:nth-child(9){transform:rotate(240deg);animation-delay:-.3s}#fancybox-loading div:nth-child(10){transform:rotate(270deg);animation-delay:-.2s}#fancybox-loading div:nth-child(11){transform:rotate(300deg);animation-delay:-.1s}#fancybox-loading div:nth-child(12){transform:rotate(330deg);animation-delay:0s}@keyframes fancybox-loading{0%{opacity:1}100%{opacity:0}}.fancybox-hidden{display:none}#fancybox-content .fancybox-hidden,#fancybox-tmp .fancybox-hidden{display:revert}@-webkit-keyframes bgslide{from{background-position-x:0}to{background-position-x:-200%}}@keyframes bgslide{from{background-position-x:0}to{background-position-x:-200%}}.wpp-shortcode-placeholder{margin:0 auto;width:60px;height:3px;background:#dd3737;background:linear-gradient(90deg,#dd3737 0,#571313 10%,#dd3737 100%);background-size:200% auto;border-radius:3px;-webkit-animation:1s linear infinite bgslide;animation:1s linear infinite bgslide}@keyframes rotate-forever{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes spinner-loader{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.pum-container,.pum-content,.pum-content+.pum-close,.pum-content+.pum-close:active,.pum-content+.pum-close:focus,.pum-content+.pum-close:hover,.pum-overlay,.pum-title{background:0 0;border:none;bottom:auto;clear:none;cursor:default;float:none;font-family:inherit;font-size:medium;font-style:normal;font-weight:400;height:auto;left:auto;letter-spacing:normal;line-height:normal;max-height:none;max-width:none;min-height:0;min-width:0;overflow:visible;position:static;right:auto;text-align:left;text-decoration:none;text-indent:0;text-transform:none;top:auto;visibility:visible;white-space:normal;width:auto;z-index:auto}.pum-container .pum-content+.pum-close>span,.pum-content,.pum-title{position:relative;z-index:1}.pum-overlay,html.pum-open.pum-open-overlay-disabled.pum-open-fixed .pum-container,html.pum-open.pum-open-overlay.pum-open-fixed .pum-container{position:fixed}.pum-overlay{height:100%;width:100%;top:0;left:0;right:0;bottom:0;z-index:1999999999;overflow:initial;display:none;transition:.15s ease-in-out}.pum-overlay.pum-form-submission-detected,.pum-overlay.pum-preview{display:block}.pum-overlay,.pum-overlay *,.pum-overlay :after,.pum-overlay :before,.pum-overlay:after,.pum-overlay:before{box-sizing:border-box}.pum-container{top:100px;position:absolute;margin-bottom:3em;z-index:1999999999}.pum-container.pum-responsive{left:50%;margin-left:-47.5%;width:95%;height:auto;overflow:visible}.pum-container.pum-responsive img{max-width:100%;height:auto}@media only screen and (min-width:1024px){.pum-container.pum-responsive.pum-responsive-nano{margin-left:-5%;width:10%}.pum-container.pum-responsive.pum-responsive-micro{margin-left:-10%;width:20%}.pum-container.pum-responsive.pum-responsive-tiny{margin-left:-15%;width:30%}.pum-container.pum-responsive.pum-responsive-small{margin-left:-20%;width:40%}.pum-container.pum-responsive.pum-responsive-medium{margin-left:-30%;width:60%}.pum-container.pum-responsive.pum-responsive-normal{margin-left:-30%;width:70%}.pum-container.pum-responsive.pum-responsive-large{margin-left:-35%;width:80%}.pum-container.pum-responsive.pum-responsive-xlarge{margin-left:-47.5%;width:95%}.pum-container.pum-responsive.pum-position-fixed{position:fixed}}@media only screen and (max-width:1024px){.pum-container.pum-responsive.pum-position-fixed{position:absolute}}.pum-container.custom-position{left:auto;top:auto;margin-left:inherit}.pum-container .pum-title{margin-bottom:.5em}.pum-container .pum-content>:last-child,.pum-form__message:last-child{margin-bottom:0}.pum-container .pum-content:focus{outline:0}.pum-container .pum-content>:first-child{margin-top:0}.pum-container .pum-content+.pum-close{text-decoration:none;text-align:center;line-height:1;position:absolute;cursor:pointer;min-width:1em;z-index:2;background-color:transparent}.pum-container.pum-scrollable .pum-content{overflow:auto;overflow-y:scroll;max-height:95%}.pum-overlay.pum-overlay-disabled{visibility:hidden}.pum-overlay.pum-overlay-disabled::-webkit-scrollbar{display:block}.pum-overlay.pum-overlay-disabled .pum-container{visibility:visible}.popmake-close,.pum-overlay.pum-click-to-close{cursor:pointer}html.pum-open.pum-open-overlay,html.pum-open.pum-open-overlay.pum-open-fixed .pum-overlay{overflow:hidden}html.pum-open.pum-open-overlay.pum-open-scrollable body>:not([aria-modal=true]){padding-right:15px}html.pum-open.pum-open-overlay.pum-open-scrollable .pum-overlay.pum-active{overflow-y:scroll;-webkit-overflow-scrolling:touch}html.pum-open.pum-open-overlay-disabled.pum-open-scrollable .pum-overlay.pum-active{position:static;height:auto;width:auto}.pum-form{margin:0 auto 16px}.pum-form__field{margin-bottom:1em}.pum-form__field label{font-weight:700}.pum-form__field input[type=date],.pum-form__field select{margin:0 auto;font-size:18px;line-height:26px;text-align:center;padding:3px;vertical-align:middle}.pum-form__field select{padding:5px 3px}.pum-form__loader{font-size:2em;animation-duration:.75s;animation-iteration-count:infinite;animation-name:rotate-forever;animation-timing-function:linear;height:.75em;width:.75em;border:.25em solid rgba(0,0,0,.5);border-right-color:transparent;border-radius:50%;display:inline-block}.pum-form__submit{position:relative}.pum-form__submit .pum-form__loader{margin-left:.5em;border:.25em solid rgba(255,255,255,.5);border-right-color:transparent}.pum-form__messages{display:none;border:1px solid rgba(0,0,0,.25);margin-bottom:.5em;padding:1em;position:relative}.pum-form__message{margin-bottom:.5em}.pum-form__message--error{color:red!important;border-color:red}.pum-form__message--success{color:green!important;border-color:green}.pum-form--loading,.pum-sub-form .pum-sub-form-loading{opacity:.5}.pum-alignment-left,.pum-form--alignment-left{text-align:left}.pum-alignment-center{text-align:center}.pum-alignment-right{text-align:right}.pum-form--alignment-center{text-align:center}.pum-form--alignment-right{text-align:right}.pum-form--layout-standard .pum-form__field>label{margin-bottom:.25em;display:block}.pum-form--layout-inline .pum-form__field{display:inline-block}.pum-form--layout-block .pum-form__field,.pum-form--layout-block button,.pum-form--layout-block div,.pum-form--layout-block input{display:block;width:100%}.pum-form--style-default label{font-size:14px;font-weight:700}.pum-form--style-default input[type=email],.pum-form--style-default input[type=text]{background-color:#f8f7f7;margin-bottom:5px;font-size:14px;padding:10px 8px}.pum-form--style-default button{font-size:18px;margin:10px 0 0;padding:10px 5px;cursor:pointer}.pum-sub-form p.pum-newsletter-error-msg{margin:0}.pum-sub-form .spinner-loader{right:50%;position:absolute;bottom:40%}.pum-sub-form .spinner-loader:not(:required){animation:1.5s linear infinite spinner-loader;border-radius:.5em;box-shadow:rgba(0,0,51,.3) 1.5em 0 0 0,rgba(0,0,51,.3) 1.1em 1.1em 0 0,rgba(0,0,51,.3) 0 1.5em 0 0,rgba(0,0,51,.3) -1.1em 1.1em 0 0,rgba(0,0,51,.3) -1.5em 0 0 0,rgba(0,0,51,.3) -1.1em -1.1em 0 0,rgba(0,0,51,.3) 0 -1.5em 0 0,rgba(0,0,51,.3) 1.1em -1.1em 0 0;display:inline-block;font-size:10px;width:1em;height:1em;margin:1.5em;overflow:hidden;text-indent:100%}.pum-form__field--consent{text-align:left}.pum-form__field--consent.pum-form__field--checkbox label,.pum-form__field--consent.pum-form__field--radio .pum-form__consent-radios.pum-form__consent-radios--inline label{display:inline-block;vertical-align:middle}.pum-form__field--consent.pum-form__field--checkbox label input{display:inline-block;width:inherit;margin:0;vertical-align:middle}.pum-form__field--consent.pum-form__field--radio .pum-form__consent-radios.pum-form__consent-radios--inline label input{display:inline-block;width:inherit;margin:0;vertical-align:middle}.pum-form__field--consent.pum-form__field--radio .pum-form__consent-radios.pum-form__consent-radios--inline label+label{margin-left:1em}.pum-form__field--consent.pum-form__field--radio .pum-form__consent-radios.pum-form__consent-radios--stacked label{display:block;vertical-align:middle}.pum-form__field--consent.pum-form__field--radio .pum-form__consent-radios.pum-form__consent-radios--stacked label input{display:inline-block;width:inherit;margin:0;vertical-align:middle}.pum-container iframe.formidable{width:100%;overflow:visible}.pika-single,body div#ui-datepicker-div[style]{z-index:9999999999!important}.pum-theme-20322,.pum-theme-content-only{background-color:rgba(0,0,0,.7)}.pum-theme-20322 .pum-container,.pum-theme-content-only .pum-container{padding:0;border-radius:0;border:1px #000;box-shadow:0 0 0 0 rgba(2,2,2,0)}.pum-theme-20322 .pum-title,.pum-theme-content-only .pum-title{color:#000;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-weight:400;font-size:32px;line-height:36px}.pum-theme-20322 .pum-content,.pum-theme-content-only .pum-content{color:#8c8c8c;font-family:inherit;font-weight:400}.pum-theme-20322 .pum-content+.pum-close,.pum-theme-content-only .pum-content+.pum-close{position:absolute;height:18px;width:18px;left:auto;right:7px;bottom:auto;top:7px;padding:0;color:#000;font-family:inherit;font-weight:700;font-size:20px;line-height:20px;border:1px #fff;border-radius:15px;box-shadow:0 0 0 0 rgba(2,2,2,0);text-shadow:0 0 0 transparent;background-color:rgba(255,255,255,0)}.pum-theme-20323,.pum-theme-content-only-2{background-color:rgba(0,0,0,.7)}.pum-theme-20323 .pum-container,.pum-theme-content-only-2 .pum-container{padding:0;border-radius:0;border:1px #000;box-shadow:0 0 0 0 rgba(2,2,2,0)}.pum-theme-20323 .pum-title,.pum-theme-content-only-2 .pum-title{color:#000;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-weight:400;font-size:32px;line-height:36px}.pum-theme-20323 .pum-content,.pum-theme-content-only-2 .pum-content{color:#8c8c8c;font-family:inherit;font-weight:400}.pum-theme-20323 .pum-content+.pum-close,.pum-theme-content-only-2 .pum-content+.pum-close{position:absolute;height:18px;width:18px;left:auto;right:7px;bottom:auto;top:7px;padding:0;color:#000;font-family:inherit;font-weight:700;font-size:20px;line-height:20px;border:1px #fff;border-radius:15px;box-shadow:0 0 0 0 rgba(2,2,2,0);text-shadow:0 0 0 transparent;background-color:rgba(255,255,255,0)}.pum-theme-20324,.pum-theme-content-only-2{background-color:rgba(0,0,0,.7)}.pum-theme-20324 .pum-container,.pum-theme-content-only-2 .pum-container{padding:0;border-radius:0;border:1px #000;box-shadow:0 0 0 0 rgba(2,2,2,0)}.pum-theme-20324 .pum-title,.pum-theme-content-only-2 .pum-title{color:#000;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-weight:400;font-size:32px;line-height:36px}.pum-theme-20324 .pum-content,.pum-theme-content-only-2 .pum-content{color:#8c8c8c;font-family:inherit;font-weight:400}.pum-theme-20324 .pum-content+.pum-close,.pum-theme-content-only-2 .pum-content+.pum-close{position:absolute;height:18px;width:18px;left:auto;right:7px;bottom:auto;top:7px;padding:0;color:#000;font-family:inherit;font-weight:700;font-size:20px;line-height:20px;border:1px #fff;border-radius:15px;box-shadow:0 0 0 0 rgba(2,2,2,0);text-shadow:0 0 0 transparent;background-color:rgba(255,255,255,0)}.pum-theme-15473,.pum-theme-cutting-edge{background-color:rgba(0,0,0,.5)}.pum-theme-15473 .pum-container,.pum-theme-cutting-edge .pum-container{padding:18px;border-radius:0;border:1px #000;box-shadow:0 10px 25px 0 rgba(2,2,2,.5);background-color:#01ffe9}.pum-theme-15473 .pum-title,.pum-theme-cutting-edge .pum-title{color:#fff;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:Sans-Serif;font-weight:100;font-size:26px;line-height:28px}.pum-theme-15473 .pum-content,.pum-theme-cutting-edge .pum-content{color:#fff;font-family:inherit;font-weight:100}.pum-theme-15473 .pum-content+.pum-close,.pum-theme-cutting-edge .pum-content+.pum-close{position:absolute;height:24px;width:24px;left:auto;right:0;bottom:auto;top:0;padding:0;color:#d33;font-family:inherit;font-weight:100;font-size:32px;line-height:24px;border:1px #fff;border-radius:0;box-shadow:-1px 1px 1px 0 rgba(2,2,2,.1);text-shadow:-1px 1px 1px rgba(0,0,0,.1);background-color:#000}.pum-theme-19614,.pum-theme-floating-bar{background-color:rgba(255,255,255,0)}.pum-theme-19614 .pum-container,.pum-theme-floating-bar .pum-container{padding:8px;border-radius:0;border:1px #000;box-shadow:1px 1px 3px 0 rgba(2,2,2,.23);background-color:#eef6fc}.pum-theme-19614 .pum-title,.pum-theme-floating-bar .pum-title{color:#505050;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-weight:400;font-size:32px;line-height:36px}.pum-theme-19614 .pum-content,.pum-theme-floating-bar .pum-content{color:#505050;font-family:inherit;font-weight:400}.pum-theme-19614 .pum-content+.pum-close,.pum-theme-floating-bar .pum-content+.pum-close{position:absolute;height:18px;width:18px;left:auto;right:5px;bottom:auto;top:50%;padding:0;color:#505050;font-family:Sans-Serif;font-weight:700;font-size:15px;line-height:18px;border:1px solid #505050;border-radius:15px;box-shadow:0 0 0 0 rgba(2,2,2,0);text-shadow:0 0 0 transparent;background-color:rgba(255,255,255,0);transform:translate(0,-50%)}.pum-theme-15469,.pum-theme-default-theme{background-color:#fff}.pum-theme-15469 .pum-container,.pum-theme-default-theme .pum-container{padding:18px;border-radius:0;border:1px #000;box-shadow:1px 1px 3px 0 rgba(2,2,2,.23);background-color:#f9f9f9}.pum-theme-15469 .pum-title,.pum-theme-default-theme .pum-title{color:#000;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-weight:inherit;font-size:32px;font-style:normal;line-height:36px}.pum-theme-15469 .pum-content,.pum-theme-default-theme .pum-content{color:#8c8c8c;font-family:inherit;font-weight:inherit;font-style:normal}.pum-theme-15469 .pum-content+.pum-close,.pum-theme-default-theme .pum-content+.pum-close{position:absolute;height:auto;width:auto;left:auto;right:0;bottom:auto;top:0;padding:8px;color:#fff;font-family:inherit;font-weight:inherit;font-size:12px;font-style:normal;line-height:14px;border:1px #fff;border-radius:0;box-shadow:0 0 0 0 rgba(2,2,2,.23);text-shadow:0 0 0 rgba(0,0,0,.23);background-color:#00b7cd}.pum-theme-15470,.pum-theme-lightbox{background-color:rgba(0,0,0,.6)}.pum-theme-15470 .pum-container,.pum-theme-lightbox .pum-container{padding:18px;border-radius:3px;border:8px solid #000;box-shadow:0 0 30px 0 #020202;background-color:#fff}.pum-theme-15470 .pum-title,.pum-theme-lightbox .pum-title{color:#000;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-size:32px;line-height:36px}.pum-theme-15470 .pum-content,.pum-theme-lightbox .pum-content{color:#000;font-family:inherit}.pum-theme-15470 .pum-content+.pum-close,.pum-theme-lightbox .pum-content+.pum-close{position:absolute;height:30px;width:30px;left:auto;right:-24px;bottom:auto;top:-24px;padding:0;color:#fff;font-family:inherit;font-size:24px;line-height:26px;border:2px solid #fff;border-radius:30px;box-shadow:0 0 15px 1px rgba(2,2,2,.75);text-shadow:0 0 0 rgba(0,0,0,.23);background-color:#000}.pum-theme-15471,.pum-theme-enterprise-blue{background-color:rgba(0,0,0,.7)}.pum-theme-15471 .pum-container,.pum-theme-enterprise-blue .pum-container{padding:28px;border-radius:5px;border:1px #000;box-shadow:0 10px 25px 4px rgba(2,2,2,.5);background-color:#fff}.pum-theme-15471 .pum-title,.pum-theme-enterprise-blue .pum-title{color:#315b7c;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-size:34px;line-height:36px}.pum-theme-15471 .pum-content,.pum-theme-enterprise-blue .pum-content{color:#2d2d2d;font-family:inherit}.pum-theme-15471 .pum-content+.pum-close,.pum-theme-enterprise-blue .pum-content+.pum-close{position:absolute;height:28px;width:28px;left:auto;right:8px;bottom:auto;top:8px;padding:4px;color:#fff;font-family:inherit;font-size:20px;line-height:20px;border:1px #fff;border-radius:42px;box-shadow:0 0 0 0 rgba(2,2,2,.23);text-shadow:0 0 0 rgba(0,0,0,.23);background-color:#315b7c}.pum-theme-15472,.pum-theme-hello-box{background-color:rgba(0,0,0,.75)}.pum-theme-15472 .pum-container,.pum-theme-hello-box .pum-container{padding:30px;border-radius:80px;border:14px solid #81d742;box-shadow:0 0 0 0 rgba(2,2,2,0);background-color:#fff}.pum-theme-15472 .pum-title,.pum-theme-hello-box .pum-title{color:#2d2d2d;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:Montserrat;font-size:32px;line-height:36px}.pum-theme-15472 .pum-content,.pum-theme-hello-box .pum-content{color:#2d2d2d;font-family:inherit}.pum-theme-15472 .pum-content+.pum-close,.pum-theme-hello-box .pum-content+.pum-close{position:absolute;height:auto;width:auto;left:auto;right:-30px;bottom:auto;top:-30px;padding:0;color:#2d2d2d;font-family:inherit;font-size:32px;line-height:28px;border:1px #fff;border-radius:28px;box-shadow:0 0 0 0 rgba(2,2,2,.23);text-shadow:0 0 0 rgba(0,0,0,.23);background-color:#fff}.pum-theme-15474,.pum-theme-framed-border{background-color:rgba(255,255,255,.5)}.pum-theme-15474 .pum-container,.pum-theme-framed-border .pum-container{padding:18px;border-radius:0;border:20px outset #d33;box-shadow:1px 1px 3px 0 rgba(2,2,2,.97) inset;background-color:#fffbef}.pum-theme-15474 .pum-title,.pum-theme-framed-border .pum-title{color:#000;text-align:left;text-shadow:0 0 0 rgba(2,2,2,.23);font-family:inherit;font-size:32px;line-height:36px}.pum-theme-15474 .pum-content,.pum-theme-framed-border .pum-content{color:#2d2d2d;font-family:inherit}.pum-theme-15474 .pum-content+.pum-close,.pum-theme-framed-border .pum-content+.pum-close{position:absolute;height:20px;width:20px;left:auto;right:-20px;bottom:auto;top:-20px;padding:0;color:#fff;font-family:Acme;font-size:20px;line-height:20px;border:1px #fff;border-radius:0;box-shadow:0 0 0 0 rgba(2,2,2,.23);text-shadow:0 0 0 rgba(0,0,0,.23);background-color:rgba(0,0,0,.55)}#pum-16600{z-index:1999999999}
+  </style>
+  <link as="image" fetchpriority="high" href="https://www.newsinlevels.com/wp-content/themes/newsin/img/head.png" rel="preload"/>
+  <meta content="1174758735977599" property="fb:app_id"/>
+  <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
+  <!-- This site is optimized with the Yoast SEO plugin v22.7 - https://yoast.com/wordpress/plugins/seo/ -->
+  <meta content="Level 1 news is written in very basic English of 1000 to 1500 words. It is for beginners and elementary students." name="description"/>
+  <link href="https://www.newsinlevels.com/level/level-1/" rel="canonical">
+   <link href="https://www.newsinlevels.com/level/level-1/page/2/" rel="next">
+    <meta content="en_US" property="og:locale"/>
+    <meta content="article" property="og:type"/>
+    <meta content="Level 1 - English news and easy articles for students of English" property="og:title"/>
+    <meta content="Level 1 news is written in very basic English of 1000 to 1500 words. It is for beginners and elementary students." property="og:description"/>
+    <meta content="https://www.newsinlevels.com/level/level-1/" property="og:url"/>
+    <meta content="English news and easy articles for students of English" property="og:site_name"/>
+    <meta content="https://www.newsinlevels.com/wp-content/uploads/images/NiL_FB.jpg" property="og:image"/>
+    <meta content="1200" property="og:image:width"/>
+    <meta content="628" property="og:image:height"/>
+    <meta content="image/jpeg" property="og:image:type"/>
+    <meta content="summary_large_image" name="twitter:card"/>
+    <script class="yoast-schema-graph" type="application/ld+json">
+     {"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":"https://www.newsinlevels.com/level/level-1/","url":"https://www.newsinlevels.com/level/level-1/","name":"Level 1 - English news and easy articles for students of English","isPartOf":{"@id":"https://www.newsinlevels.com/#website"},"primaryImageOfPage":{"@id":"https://www.newsinlevels.com/level/level-1/#primaryimage"},"image":{"@id":"https://www.newsinlevels.com/level/level-1/#primaryimage"},"thumbnailUrl":"https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L.jpg","description":"Level 1 news is written in very basic English of 1000 to 1500 words. It is for beginners and elementary students.","breadcrumb":{"@id":"https://www.newsinlevels.com/level/level-1/#breadcrumb"},"inLanguage":"en-US"},{"@type":"ImageObject","inLanguage":"en-US","@id":"https://www.newsinlevels.com/level/level-1/#primaryimage","url":"https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L.jpg","contentUrl":"https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L.jpg","width":600,"height":300,"caption":"EU economy is growing"},{"@type":"BreadcrumbList","@id":"https://www.newsinlevels.com/level/level-1/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.newsinlevels.com/"},{"@type":"ListItem","position":2,"name":"Level 1"}]},{"@type":"WebSite","@id":"https://www.newsinlevels.com/#website","url":"https://www.newsinlevels.com/","name":"English news and easy articles for students of English","description":"We write news in three different levels of English. We want to help you understand English more. Now all students can enjoy reading and listening.","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.newsinlevels.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"}]}
+    </script>
+    <!-- / Yoast SEO plugin. -->
+    <script data-api-url="https://www.newsinlevels.com/wp-json/wordpress-popular-posts" data-debug="0" data-lang="0" data-post-id="0" data-sampling="0" data-sampling-rate="100" data-token="5b5f626b98" id="wpp-js" src="https://www.newsinlevels.com/wp-content/plugins/wordpress-popular-posts/assets/js/wpp.min.js?ver=7.3.0" type="text/javascript">
+    </script>
+    <link href="https://www.newsinlevels.com/level/level-1/feed/" rel="alternate" title="English news and easy articles for students of English » Level 1 Level Feed" type="application/rss+xml">
+     <!-- newsinlevels.com is managing ads with Advanced Ads 1.54.1 -->
+     <!--noptimize-->
+     <script id="newsi-ready">
+      window.advanced_ads_ready=function(e,a){a=a||"complete";var d=function(e){return"interactive"===a?"loading"!==e:"complete"===e};d(document.readyState)?e():document.addEventListener("readystatechange",(function(a){d(a.target.readyState)&&e()}),{once:"interactive"===a})},window.advanced_ads_ready_queue=window.advanced_ads_ready_queue||[];
+     </script>
+     <!--/noptimize-->
+     <style id="wp-emoji-styles-inline-css" type="text/css">
+     </style>
+     <style id="classic-theme-styles-inline-css" type="text/css">
+     </style>
+     <style id="global-styles-inline-css" type="text/css">
+     </style>
+     <script type="rocketlazyloadscript">
+      !(function(r,_name){r[_name]=r[_name]||function t(){(t.q=t.q||[]).push(arguments)},r[_name].v=r[_name].v||2,r[_name].s="4";!(function(r,t,H,z){function x(H,z){try{x=r.localStorage,(H=JSON.parse(x[decodeURI(decodeURI('%2567%256%35%25%374%25%349%74e%256d'))]("_aQS01QzBBM0VGMDk0MjBDMDUyODYwN0NFNTMtOQ")).lgk||[])&&(z=r[t].pubads())&&H.forEach((function(r){r&&r[0]&&z.setTargeting(r[0],r[1]||"")}))}catch(Q){}var x}try{(z=r[t]=r[t]||{}).cmd=z.cmd||[],typeof z.pubads===H?x():typeof z.cmd.unshift===H?z.cmd.unshift(x):z.cmd.push(x)}catch(Q){}})(window,'%25%36%37%256f%6f%67%6c%2565%2574%61%256%37',"function");;})(window,decodeURI(decodeURI('a%64%256%64%2569%25%372%61%256%63')));!(function(r,t,H,z){H=r.createElement(t),r=r.getElementsByTagName(t)[0],H.async=1,H.src="https://realizerecess.com/scripts/l8mi0jb98sz_8-prod.js",(z=0)&&z(H),r.parentNode.insertBefore(H,r)})(document,"script");
+     </script>
+     <script data-rocket-src="https://www.newsinlevels.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" data-rocket-type="text/javascript" defer="" id="jquery-core-js" type="rocketlazyloadscript">
+     </script>
+     <script data-rocket-src="https://www.newsinlevels.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" data-rocket-type="text/javascript" defer="" id="jquery-migrate-js" type="rocketlazyloadscript">
+     </script>
+     <script id="advanced-ads-advanced-js-js-extra" type="text/javascript">
+      /* <![CDATA[ */
+var advads_options = {"blog_id":"1","privacy":{"enabled":false,"state":"not_needed"}};
+/* ]]> */
+     </script>
+     <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/advanced-ads/public/assets/js/advanced.min.js?ver=1.54.1" data-rocket-type="text/javascript" defer="" id="advanced-ads-advanced-js-js" type="rocketlazyloadscript">
+     </script>
+     <link href="https://www.newsinlevels.com/wp-json/" rel="https://api.w.org/"/>
+     <link href="https://www.newsinlevels.com/wp-json/wp/v2/level/355" rel="alternate" type="application/json"/>
+     <link href="https://www.newsinlevels.com/xmlrpc.php?rsd" rel="EditURI" title="RSD" type="application/rsd+xml"/>
+     <meta content="WordPress 6.5.2" name="generator"/>
+     <!-- start Simple Custom CSS and JS -->
+     <script charset="UTF-8" data-cfasync="false" data-rocket-src="https://html-load.com/loader.min.js" data-sdk="l/1.1.7" type="rocketlazyloadscript">
+     </script>
+     <script type="rocketlazyloadscript">
+      (function(){function t(){const n=["data","check","createElement","84FyynNO","as_index","charCodeAt","error","now","title","_fa_","write",'script[src="https://',"4491025mmwFdx","12122030vXyLak","20797JrNpQZ","connection","currentScript","remove","Failed to load script: ","split","name","Cannot find currentScript","querySelector","8487176UNdynN","host","language",'/loader.min.js"]',"close-error-report","value","hostname","type","getComputedStyle","1110IZzysm","link,style","href","&error=","2lHmJOB","&domain=","location","as_modal_loaded","895514CkDaRi","as_","length","getBoundingClientRect","last_bfa_at","map","searchParams","setItem","Script not found","text","&url=","reload","attributes","7J6Y66q765CcIOyVoOuTnOu4lOuhnSDtlYTthLDroZwg7Ju57Y6Y7J207KeAIOuhnOuUqeyXkCDsi6TtjKjtlZjsmIDsirXri4jri6QuIOyVoOuTnOu4lOuhneydhCDruYTtmZzshLHtmZTtlZwg7ZuEIOybueyCrOydtO2KuOulvCDsnbTsmqntlbTso7zshLjsmpQuICjsnpDshLjtlZwg64K07Jqp7J2AICftmZXsnbgnIOuyhO2KvOydhCDriIzrn6wg7ZmV7J247ZW07KO87IS47JqUKQ","script","appendChild","height","width: 100vw; height: 100vh; z-index: 2147483647; position: fixed; left: 0; top: 0;","message","textContent","POST","toString","none","setAttribute","rtt","width","recovery","btoa","addEventListener","Fallback Failed","outerHTML","append","toLowerCase","128CEgiRG","startsWith","4587363JyEdXh","display","iframe","contains","loader_light","src","87168zZDylW","url","https://report.error-report.com/modal?eventId=","loader-check","onLine","https://report.error-report.com/modal?eventId=&error=","querySelectorAll","removeEventListener","localStorage","https://error-report.com/report","https://report.error-report.com/modal?eventId=&error=Vml0YWwgQVBJIGJsb2NrZWQ%3D&domain=","documentElement","/loader.min.js","style","from","forEach","VGhpcyBwYWdlIGNvdWxkIG5vdCBiZSBsb2FkZWQgcHJvcGVybHkgZHVlIHRvIGluY29ycmVjdCAvIGJhZCBmaWx0ZXJpbmcgcnVsZShzKSBvZiBhZGJsb2NrZXJzIGluIHVzZS4gUGxlYXNlIGRpc2FibGUgYWxsIGFkYmxvY2tlcnMgdG8gY29udGludWUgdXNpbmcgdGhlIHdlYnNpdGUuIChjbGljayBPSyBpZiB5b3UnZCBsaWtlIHRvIGxlYXJuIG1vcmUp","9bhuchS","concat","https://"];return(t=function(){return n})()}function n(o,e){const r=t();return(n=function(t,n){return r[t-=182]})(o,e)}(function(){const o=n,e=t();for(;;)try{if(830605===parseInt(o(229))/1*(parseInt(o(233))/2)+-parseInt(o(274))/3*(-parseInt(o(266))/4)+-parseInt(o(205))/5+parseInt(o(225))/6*(parseInt(o(207))/7)+parseInt(o(216))/8+parseInt(o(190))/9*(parseInt(o(206))/10)+-parseInt(o(268))/11*(parseInt(o(196))/12))break;e.push(e.shift())}catch(t){e.push(e.shift())}})(),(()=>{"use strict";const t=n,o=t=>{const o=n;let e=0;for(let n=0,r=t[o(235)];n<r;n++)e=(e<<5)-e+t[o(198)](n),e|=0;return e},e=class{static[t(194)](){const n=t;var e,r;let c=arguments[n(235)]>0&&void 0!==arguments[0]?arguments[0]:n(259),a=!(arguments[n(235)]>1&&void 0!==arguments[1])||arguments[1];const i=Date[n(200)](),s=i-i%864e5,l=s-864e5,u=s+864e5,d=n(234)+o(c+"_"+s),h=n(234)+o(c+"_"+l),m=n(234)+o(c+"_"+u);return d!==h&&d!==m&&h!==m&&!(null!==(e=null!==(r=window[d])&&void 0!==r?r:window[h])&&void 0!==e?e:window[m])&&(a&&(window[d]=!0,window[h]=!0,window[m]=!0),!0)}};function r(o,e){const r=t;try{window[r(282)][r(240)](window[r(231)][r(217)]+r(202)+btoa(r(237)),Date[r(200)]()[r(254)]())}catch(t){}try{!async function(t,o){const e=r;try{if(await async function(){const t=n;try{if(await async function(){const t=n;if(!navigator[t(278)])return!0;try{await fetch(location[t(227)])}catch(t){return!0}return!1}())return!0;try{if(navigator[t(208)][t(257)]>1e3)return!0}catch(t){}return!1}catch(t){return!1}}())return;const r=await async function(t){const o=n;try{const n=new URL(o(182));n[o(239)][o(264)](o(223),o(272)),n[o(239)][o(264)](o(201),""),n[o(239)][o(264)](o(251),t),n[o(239)][o(264)](o(275),location[o(227)]);const e=await fetch(n[o(227)],{method:o(253)});return await e[o(242)]()}catch(t){return o(199)}}(t);document[e(280)](e(226))[e(188)]((t=>{const n=e;t[n(210)](),t[n(252)]=""}));let a=!1;window[e(261)](e(251),(t=>{const n=e;n(232)===t[n(193)]&&(a=!0)}));const i=document[e(195)](e(270));i[e(273)]=e(276)[e(191)](r,e(228))[e(191)](btoa(t),e(230))[e(191)](o,e(243))[e(191)](btoa(location[e(227)])),i[e(256)](e(186),e(250)),document[e(184)][e(248)](i);const s=t=>{const n=e;n(220)===t[n(193)]&&(i[n(210)](),window[n(281)](n(251),s))};window[e(261)](e(251),s);const l=()=>{const t=e,n=i[t(236)]();return t(255)!==window[t(224)](i)[t(269)]&&0!==n[t(258)]&&0!==n[t(249)]};let u=!1;const d=setInterval((()=>{if(!document[e(271)](i))return clearInterval(d);l()||u||(clearInterval(d),u=!0,c(t,o))}),1e3);setTimeout((()=>{a||u||(u=!0,c(t,o))}),3e3)}catch(n){c(t,o)}}(o,e)}catch(t){c(o,e)}}function c(n,o){const e=t;try{const t=navigator[e(218)][e(265)]()[e(267)]("ko")?decodeURIComponent(escape(atob(e(246)))):atob(e(189));confirm(t)?location[e(227)]=e(279)[e(191)](btoa(n),e(230))[e(191)](o,e(243))[e(191)](btoa(location[e(227)])):location[e(244)]()}catch(t){location[e(227)]=e(183)[e(191)](o)}}(()=>{const n=t,o=t=>n(211)[n(191)](t);let c="";try{var a,i;null===(a=document[n(209)])||void 0===a||a[n(210)]();const t=null!==(i=function(){const t=n,o=t(197)+window[t(260)](window[t(231)][t(222)]);return window[o]}())&&void 0!==i?i:0;if(!e[n(194)](n(277),!1))return;const s="html-load.com,fb.html-load.com,content-loader.com,fb.content-loader.com"[n(212)](",");c=s[0];const l=document[n(215)](n(204)[n(191)](s[t],n(219)));if(!l)throw new Error(n(241));const u=Array[n(187)](l[n(245)])[n(238)]((t=>({name:t[n(213)],value:t[n(221)]})));if(t+1<s[n(235)])return function(t,o){const e=n,r=e(197)+window[e(260)](window[e(231)][e(222)]);window[r]=o}(0,t+1),void function(t,o){const e=n;var r;const c=document[e(195)](e(247));o[e(188)]((t=>{const n=e;let{name:o,value:r}=t;return c[n(256)](o,r)})),c[e(256)](e(273),e(192)[e(191)](t,e(185))),document[e(203)](c[e(263)]);const a=null===(r=document[e(209)])||void 0===r?void 0:r[e(263)];if(!a)throw new Error(e(214));document[e(203)](a)}(s[t+1],u);r(o(n(262)),c)}catch(t){try{t=t[n(254)]()}catch(t){}r(o(t),c)}})()})();})();
+     </script>
+     <!-- end Simple Custom CSS and JS -->
+     <!-- start Simple Custom CSS and JS -->
+     <script async="" data-rocket-src="https://powerad.ai/239790613192525/script.js" type="rocketlazyloadscript">
+     </script>
+     <!-- end Simple Custom CSS and JS -->
+     <!-- start Simple Custom CSS and JS -->
+     <script data-rocket-src="https://ads.pro-market.net/ads/scripts/site-160365.js" data-rocket-type="text/javascript" defer="" id="" type="rocketlazyloadscript">
+     </script>
+     <!-- end Simple Custom CSS and JS -->
+     <style id="wpp-loading-animation-styles">
+     </style>
+     <script data-rocket-type="text/javascript" type="rocketlazyloadscript">
+      var advadsCfpQueue = [];
+		var advadsCfpAd = function( adID ){
+			if ( 'undefined' == typeof advadsProCfp ) { advadsCfpQueue.push( adID ) } else { advadsProCfp.addElement( adID ) }
+		};
+     </script>
+     <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name="viewport"/>
+     <!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+     <style type="text/css">
+     </style>
+     <style type="text/css">
+     </style>
+     <script async="" crossorigin="anonymous" data-rocket-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2908595857799595" type="rocketlazyloadscript">
+     </script>
+     <link href="https://www.newsinlevels.com/wp-content/uploads/images/faviconNiL.png" rel="icon" sizes="32x32"/>
+     <link href="https://www.newsinlevels.com/wp-content/uploads/images/faviconNiL.png" rel="icon" sizes="192x192"/>
+     <link href="https://www.newsinlevels.com/wp-content/uploads/images/faviconNiL.png" rel="apple-touch-icon"/>
+     <meta content="https://www.newsinlevels.com/wp-content/uploads/images/faviconNiL.png" name="msapplication-TileImage"/>
+     <style id="wp-custom-css" type="text/css">
+     </style>
+     <meta content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" name="viewport"/>
+    </link>
+   </link>
+  </link>
+ </head>
+ <body class="archive tax-level term-level-1 term-355 aa-prefix-newsi-">
+  <div id="fb-root">
+  </div>
+  <script type="rocketlazyloadscript">
+   (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <header class="main-header">
+   <section class="top-header">
+    <div class="container">
+     <div class="header-logo">
+      <a href="https://www.newsinlevels.com">
+       <picture>
+        <source srcset="https://www.newsinlevels.com/wp-content/themes/newsin/img/logo-news-in-levels.png.webp" type="image/webp"/>
+        <img alt="" src="https://www.newsinlevels.com/wp-content/themes/newsin/img/logo-news-in-levels.png"/>
+       </picture>
+      </a>
+     </div>
+     <div class="header-motto-block">
+      <h1>
+       World News for Students of English
+      </h1>
+     </div>
+    </div>
+   </section>
+   <section class="main-navbar">
+    <div class="container">
+     <nav class="navbar navbar-default">
+      <div class="container-fluid">
+       <!-- Brand and toggle get grouped for better mobile display -->
+       <div class="navbar-header">
+        <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
+         <span class="sr-only">
+          Toggle navigation
+         </span>
+         <span class="icon-bar">
+         </span>
+         <span class="icon-bar">
+         </span>
+         <span class="icon-bar">
+         </span>
+        </button>
+       </div>
+       <!-- Collect the nav links, forms, and other content for toggling -->
+       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+         <li>
+          <a class="mainhome" href="https://www.newsinlevels.com">
+           Home
+          </a>
+         </li>
+         <li class="taxonomy dropdown">
+          <a href="https://www.newsinlevels.com/level/level-1/">
+           Level 1
+          </a>
+          <ul class="dropdown-menu">
+           <li>
+            <a href="https://www.newsinlevels.com/category/exercises/?level=level-1">
+             Exercises
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/funny/?level=level-1">
+             Funny
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/history/?level=level-1">
+             History
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/information/?level=level-1">
+             Information
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/interesting/?level=level-1">
+             Interesting
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/nature/?level=level-1">
+             Nature
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/news/?level=level-1">
+             News
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/sport/?level=level-1">
+             Sport
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="taxonomy dropdown">
+          <a href="https://www.newsinlevels.com/level/level-2/">
+           Level 2
+          </a>
+          <ul class="dropdown-menu">
+           <li>
+            <a href="https://www.newsinlevels.com/category/exercises/?level=level-2">
+             Exercises
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/funny/?level=level-2">
+             Funny
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/history/?level=level-2">
+             History
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/information/?level=level-2">
+             Information
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/interesting/?level=level-2">
+             Interesting
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/nature/?level=level-2">
+             Nature
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/news/?level=level-2">
+             News
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/sport/?level=level-2">
+             Sport
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="taxonomy dropdown">
+          <a href="https://www.newsinlevels.com/level/level-3/">
+           Level 3
+          </a>
+          <ul class="dropdown-menu">
+           <li>
+            <a href="https://www.newsinlevels.com/category/exercises/?level=level-3">
+             Exercises
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/funny/?level=level-3">
+             Funny
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/history/?level=level-3">
+             History
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/information/?level=level-3">
+             Information
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/interesting/?level=level-3">
+             Interesting
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/nature/?level=level-3">
+             Nature
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/news/?level=level-3">
+             News
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/category/sport/?level=level-3">
+             Sport
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1432" id="menu-item-1432">
+          <a href="https://www.daysinlevels.com/?utm_source=NiLMenu" target="_blank">
+           DAYS
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16076" id="menu-item-16076">
+          <a href="https://www.robinsoncrusoeinlevels.com/?utm_source=NiLMenu" target="_blank">
+           BOOK 1
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1425" id="menu-item-1425">
+          <a href="https://www.grammarinlevels.com/?utm_source=NiLMenu" target="_blank">
+           GRAMMAR
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1427" id="menu-item-1427">
+          <a href="https://www.thelittleprinceinlevels.com/?utm_source=NiLMenu" target="_blank">
+           BOOK 2
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15393" id="menu-item-15393">
+          <a href="https://www.howtolearnenglishinlevels.com/?utm_source=NiLMenu" target="_blank">
+           LEARN
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1428" id="menu-item-1428">
+          <a href="https://www.videosinlevels.com./?utm_source=NiLMenu" target="_blank">
+           VIDEO
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1430" id="menu-item-1430">
+          <a href="https://www.speakinlevels.com/?utm_source=NiLMenu" target="_blank">
+           SKYPE
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14284" id="menu-item-14284">
+          <a href="https://www.testlanguages.com/?utm_source=NiLMenu" target="_blank">
+           TEST
+          </a>
+         </li>
+        </ul>
+        <!--
+                <form class="navbar-form navbar-right" role="search" method="get" action="">
+                  <div class="form-group">
+                    <input type="search" class="form-control" placeholder="Search" value="" name="s">
+                  </div>
+                  <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </form>
+-->
+       </div>
+       <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container-fluid -->
+     </nav>
+    </div>
+   </section>
+  </header>
+  <main class="home-page">
+   <div class="home-in">
+    <div class="container">
+     <div class="row">
+      <div class="col-md-8">
+       <div class="main-content">
+        <div class="recent-news">
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/eu-economy-is-growing-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="EU economy is growing" decoding="async" height="100" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_719970148_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/eu-economy-is-growing-level-1/">
+              EU economy is growing – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             05-05-2025 07:00
+            </p>
+            The eurozone is a group of countries...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/eu-economy-is-growing-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/eu-economy-is-growing-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/eu-economy-is-growing-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="newsi-google-in-feed" id="newsi-21429236">
+          <script async="" crossorigin="anonymous" data-rocket-src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2908595857799595" type="rocketlazyloadscript">
+          </script>
+          <ins class="adsbygoogle" data-ad-client="ca-pub-2908595857799595" data-ad-format="fluid" data-ad-layout-key="-fy-47+e3-3n-oq" data-ad-slot="7048184229" style="display:block;">
+          </ins>
+          <script type="rocketlazyloadscript">
+           (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/amazon-and-us-tariffs-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="Amazon and US tariffs" decoding="async" height="100" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_98255928_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/amazon-and-us-tariffs-level-1/">
+              Amazon and US tariffs – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             02-05-2025 15:00
+            </p>
+            Amazon says that it will not show...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/amazon-and-us-tariffs-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/amazon-and-us-tariffs-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/amazon-and-us-tariffs-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/spain-and-portugal-blackouts-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="Spain and Portugal blackouts" decoding="async" height="100" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_460251234_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/spain-and-portugal-blackouts-level-1/">
+              Spain and Portugal blackouts – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             02-05-2025 07:00
+            </p>
+            There is no power in Spain and...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/spain-and-portugal-blackouts-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/spain-and-portugal-blackouts-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/spain-and-portugal-blackouts-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/northern-lights-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7.jpg.avif 600w" type="image/avif"/>
+             <img alt="Northern Lights" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2024/05/Novy-projekt-7.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/northern-lights-level-1/">
+              Northern Lights – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             01-05-2025 15:00
+            </p>
+            Our world is having a powerful magnetic...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/northern-lights-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/northern-lights-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/northern-lights-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/humans-come-from-stars-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="Humans come from stars" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/05/Depositphotos_5393566_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/humans-come-from-stars-level-1/">
+              Humans come from stars – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             01-05-2025 07:00
+            </p>
+            Stars come from big, cold clouds of...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/humans-come-from-stars-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/humans-come-from-stars-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/humans-come-from-stars-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/ai-and-politics-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="AI and politics" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2024/03/Depositphotos_58631325_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/ai-and-politics-level-1/">
+              AI and politics – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             30-04-2025 15:00
+            </p>
+            Politicians like Joe Biden and Sadiq Khan...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/ai-and-politics-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/ai-and-politics-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/ai-and-politics-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/why-women-have-menopause-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="Why women have menopause" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_587957664_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/why-women-have-menopause-level-1/">
+              Why women have menopause – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             30-04-2025 07:00
+            </p>
+            Menopause is when women stop having babies....
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/why-women-have-menopause-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/why-women-have-menopause-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/why-women-have-menopause-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/man-fights-to-meet-his-true-parents-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="Man fights to meet his true parents" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_245267112_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/man-fights-to-meet-his-true-parents-level-1/">
+              Man fights to meet his true parents – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             29-04-2025 15:00
+            </p>
+            It is the year 1958. A baby...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/man-fights-to-meet-his-true-parents-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/man-fights-to-meet-his-true-parents-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/man-fights-to-meet-his-true-parents-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/zelensky-and-trump-meet-at-pope-francis-funeral-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="Zelensky and Trump meet at Pope Francis funeral" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_794893200_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/zelensky-and-trump-meet-at-pope-francis-funeral-level-1/">
+              Zelensky and Trump meet at Pope Francis’ funeral – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             29-04-2025 07:00
+            </p>
+            Presidents Zelensky and Trump meet for 15...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/zelensky-and-trump-meet-at-pope-francis-funeral-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/zelensky-and-trump-meet-at-pope-francis-funeral-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/zelensky-and-trump-meet-at-pope-francis-funeral-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="news-block">
+          <div class="img-wrap">
+           <a href="https://www.newsinlevels.com/products/south-koreas-ex-president-is-in-trouble-level-1/">
+            <picture class="attachment-size-200x100 size-size-200x100 wp-post-image" decoding="async" loading="lazy">
+             <source sizes="(max-width: 200px) 100vw, 200px" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L-200x100.jpg.avif 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L-300x150.jpg.avif 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L.jpg.avif 600w" type="image/avif"/>
+             <img alt="South Korea s ex-president is in trouble" decoding="async" height="100" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" src="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L-200x100.jpg" srcset="https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L-200x100.jpg 200w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L-300x150.jpg 300w, https://www.newsinlevels.com/wp-content/uploads/2025/04/Depositphotos_693689678_L.jpg 600w" width="200"/>
+            </picture>
+           </a>
+          </div>
+          <div class="news-block-right">
+           <div class="title">
+            <h3>
+             <a href="https://www.newsinlevels.com/products/south-koreas-ex-president-is-in-trouble-level-1/">
+              South Korea’s ex-president is in trouble – level 1
+             </a>
+            </h3>
+           </div>
+           <div class="news-excerpt">
+            <p>
+             28-04-2025 15:00
+            </p>
+            Moon Jae-in is a past president of...
+           </div>
+           <div class="fancy-buttons">
+            <ul>
+             <li>
+              <a href="https://www.newsinlevels.com/products/south-koreas-ex-president-is-in-trouble-level-1">
+               Level 1
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/south-koreas-ex-president-is-in-trouble-level-2">
+               Level 2
+              </a>
+             </li>
+             <li>
+              <a href="https://www.newsinlevels.com/products/south-koreas-ex-president-is-in-trouble-level-3">
+               Level 3
+              </a>
+             </li>
+            </ul>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="pagination-wrap clearfix">
+         <nav aria-label="Page navigation">
+          <ul class="pagination">
+           <li class="active">
+            <span class="current">
+             1
+            </span>
+           </li>
+           <li>
+            <a class="inactive" href="https://www.newsinlevels.com/level/level-1/page/2/">
+             2
+            </a>
+           </li>
+           <li>
+            <a class="inactive" href="https://www.newsinlevels.com/level/level-1/page/3/">
+             3
+            </a>
+           </li>
+           <li>
+            <a class="inactive" href="https://www.newsinlevels.com/level/level-1/page/4/">
+             4
+            </a>
+           </li>
+           <li>
+            <a class="inactive" href="https://www.newsinlevels.com/level/level-1/page/5/">
+             5
+            </a>
+           </li>
+           <li>
+            <a class="inactive" href="https://www.newsinlevels.com/level/level-1/page/6/">
+             6
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/level/level-1/page/2/">
+             ›
+            </a>
+           </li>
+           <li>
+            <a href="https://www.newsinlevels.com/level/level-1/page/454/">
+             »
+            </a>
+           </li>
+          </ul>
+         </nav>
+        </div>
+        <div class="learn-with-us">
+         <h3>
+          What is Level 1
+         </h3>
+         <p>
+          Easy English news in Level 1 are for beginners. In this level, we use only 1000 most important words in
+          <strong>
+           English
+          </strong>
+          . In every news article we mark words which are from a higher level. When you understand all words in Level 1, you know 1000 words in easy English and it is time to go to
+          <a href="http://www.newsinlevels.com/level/level-2/">
+           <strong>
+            Level 2
+           </strong>
+          </a>
+          . When you read and listen to Level 1 short
+          <strong>
+           news
+          </strong>
+          every day, very soon you can know and understand 1000 most important words in English.
+         </p>
+        </div>
+        <div class="sponsored-block">
+         <script async="" crossorigin="anonymous" data-rocket-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2908595857799595" type="rocketlazyloadscript">
+         </script>
+         <ins class="adsbygoogle" data-ad-client="ca-pub-2908595857799595" data-ad-format="autorelaxed" data-ad-slot="2594327761" style="display:block">
+         </ins>
+         <script type="rocketlazyloadscript">
+          (adsbygoogle = window.adsbygoogle || []).push({});
+         </script>
+        </div>
+        <div class="how-improve-english">
+         <h3>
+          How to improve your English with News in Levels:
+         </h3>
+         <div class="method-to-improve clearfix">
+          <div class="img-wrap">
+           <picture>
+            <source srcset="https://www.newsinlevels.com/wp-content/uploads/images/Test.jpg.avif" type="image/avif"/>
+            <source srcset="https://www.newsinlevels.com/wp-content/uploads/images/Test.jpg.webp" type="image/webp"/>
+            <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Test.jpg"/>
+           </picture>
+          </div>
+          <div class="method-content">
+           <h4>
+            Test
+           </h4>
+           <ol>
+            <li>
+             Do the test at
+             <a href="https://testlanguages.com/?utm_source=manual" rel="noopener" target="_blank">
+              Test Languages
+             </a>
+             .
+            </li>
+            <li>
+             Go to your level. Go to Level 1 if you know 1-1000 words. Go to Level 2 if you know 1000-2000 words. Go to Level 3 if you know 2000-3000 words.
+            </li>
+           </ol>
+          </div>
+         </div>
+         <div class="method-to-improve clearfix">
+          <div class="img-wrap">
+           <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Reading.png"/>
+          </div>
+          <div class="method-content">
+           <h4>
+            Reading
+           </h4>
+           <ol>
+            <li>
+             Read two news articles every day.
+            </li>
+            <li>
+             Read the news articles from the day before and check if you remember all new words.
+            </li>
+           </ol>
+          </div>
+         </div>
+         <div class="method-to-improve clearfix">
+          <div class="img-wrap">
+           <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Listening.png"/>
+          </div>
+          <div class="method-content">
+           <h4>
+            Listening
+           </h4>
+           <ol>
+            <li>
+             Listen to the news from today and read the text at the same time.
+            </li>
+            <li>
+             Listen to the news from today without reading the text.
+            </li>
+           </ol>
+          </div>
+         </div>
+         <div class="method-to-improve clearfix">
+          <div class="img-wrap">
+           <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Writing.png"/>
+          </div>
+          <div class="method-content">
+           <h4>
+            Writing
+           </h4>
+           <ol>
+            <li>
+             Answer the question under today’s news and write the answer in the comments.
+            </li>
+           </ol>
+          </div>
+         </div>
+         <div class="method-to-improve clearfix">
+          <div class="img-wrap">
+           <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Speaking.png"/>
+          </div>
+          <div class="method-content">
+           <h4>
+            Speaking
+           </h4>
+           <ol>
+            <li>
+             Choose one person from the
+             <a href="https://www.speakinlevels.com" rel="nofollow noopener" target="_blank">
+              Skype section
+             </a>
+             .
+            </li>
+            <li>
+             Talk with this person. You can answer questions from
+             <a href="https://www.speakinlevels.com/what-to-talk-about/" rel="noopener" target="_blank">
+              Speak in Levels
+             </a>
+             .
+            </li>
+           </ol>
+           <p>
+           </p>
+           <p>
+            Stock images by
+            <a data-saferedirecturl="https://www.google.com/url?q=https://depositphotos.com/bgremover.html&amp;source=gmail&amp;ust=1676056363493000&amp;usg=AOvVaw1Mxim8DL4iN2YUi0fDe-us" href="https://depositphotos.com/" rel="nofollow noopener" target="_blank">
+             Depositphotos
+            </a>
+           </p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="col-md-4">
+       <aside class="sidebar">
+        <div class="widget_text widget widget_custom_html" id="custom_html-16">
+         <div class="textwidget custom-html-widget">
+          <div id="c5c427ac57bcc745b4ee137b052cf6bc7">
+           <div class="newsi-9afa0a95c4e2166133441008da79967e newsi-news-in-levels-1" id="newsi-9afa0a95c4e2166133441008da79967e">
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="widget widget_search" id="search-4">
+         <form action="https://www.newsinlevels.com/" class="searchform" id="searchform" method="get" role="search">
+          <div>
+           <label class="screen-reader-text" for="s">
+            Search for:
+           </label>
+           <input id="s" name="s" type="text" value=""/>
+           <input id="searchsubmit" type="submit" value="Search"/>
+          </div>
+         </form>
+        </div>
+        <div class="widget widget_text" id="text-8">
+         <div class="textwidget">
+          <div style="padding:10px">
+           <p style="text-align: center;">
+            <strong>
+             <span style="color:#006699;">
+              <span style="font-size: 18px;">
+               <span style="line-height: 21px;">
+                Get the App
+               </span>
+              </span>
+             </span>
+            </strong>
+           </p>
+           <p style="text-align: center">
+            <a href="https://apps.apple.com/us/app/english-news-in-levels/id1044945336" rel="noopener" target="_blank">
+             <picture class="grow">
+              <source srcset="https://www.newsinlevels.com/wp-content/uploads/images/Apps_App_Store.png.avif" type="image/avif"/>
+              <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Apps_App_Store.png">
+              </img>
+             </picture>
+            </a>
+           </p>
+           <p>
+           </p>
+           <p style="text-align: center">
+            <a href="https://play.google.com/store/apps/details?id=com.newsinlevels" rel="noopener" target="_blank">
+             <picture class="grow">
+              <source srcset="https://www.newsinlevels.com/wp-content/uploads/images/Apps_Google_play.png.avif" type="image/avif"/>
+              <img alt="" src="https://www.newsinlevels.com/wp-content/uploads/images/Apps_Google_play.png">
+              </img>
+             </picture>
+            </a>
+           </p>
+          </div>
+         </div>
+        </div>
+       </aside>
+      </div>
+     </div>
+    </div>
+   </div>
+  </main>
+  <footer class="main-footer">
+   <div class="container">
+    <div class="row">
+     <div class="col-sm-4">
+      <div class="footer-copyright">
+       <p style="text-align: center;">
+        © 2025, All rights reserved.
+       </p>
+      </div>
+     </div>
+     <div class="col-sm-2">
+      <div class="social-links">
+       <ul>
+        <li class="facebook">
+         <a href="https://www.facebook.com/newsinlevels/" target="_blank">
+          <i aria-hidden="true" class="fa fa-facebook">
+          </i>
+         </a>
+        </li>
+        <li class="rss">
+         <a href="https://www.newsinlevels.com/feed" target="_blank">
+          <i aria-hidden="true" class="fa fa-rss">
+          </i>
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="col-sm-6">
+      <div class="footer-legal">
+       <ul>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14158" id="menu-item-14158">
+         <a href="https://www.videosinlevels.com/wp-content/uploads/2018/06/EiLGDPR.pdf">
+          Privacy Policy
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9900" id="menu-item-9900">
+         <a href="https://www.newsinlevels.com/about-us/">
+          About Us
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9905" id="menu-item-9905">
+         <a href="https://www.newsinlevels.com/contact/">
+          Contact
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9899" id="menu-item-9899">
+         <a href="https://www.newsinlevels.com/conditions-of-use/">
+          Conditions of Use
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <script type="rocketlazyloadscript">
+   window.advanced_ads_check_adblocker=function(t){var n=[],e=null;function i(t){var n=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||function(t){return setTimeout(t,16)};n.call(window,t)}return i((function(){var t=document.createElement("div");t.innerHTML="&nbsp;",t.setAttribute("class","ad_unit ad-unit text-ad text_ad pub_300x250"),t.setAttribute("style","width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;"),document.body.appendChild(t),i((function(){var i,o,a=null===(i=(o=window).getComputedStyle)||void 0===i?void 0:i.call(o,t),d=null==a?void 0:a.getPropertyValue("-moz-binding");e=a&&"none"===a.getPropertyValue("display")||"string"==typeof d&&-1!==d.indexOf("about:");for(var r=0,u=n.length;r<u;r++)n[r](e);n=[]}))})),function(t){"undefined"==typeof advanced_ads_adblocker_test&&(e=!0),null!==e?t(e):n.push(t)}}();
+  </script>
+  <div aria-modal="false" class="pum pum-overlay pum-theme-15469 pum-theme-default-theme popmake-overlay click_open" data-popmake='{"id":16600,"slug":"test-your-english-level","theme_id":15469,"cookies":[],"triggers":[{"type":"click_open","settings":{"extra_selectors":"","cookie_name":null}}],"mobile_disabled":null,"tablet_disabled":null,"meta":{"display":{"stackable":false,"overlay_disabled":false,"scrollable_content":false,"disable_reposition":false,"size":false,"responsive_min_width":false,"responsive_min_width_unit":false,"responsive_max_width":false,"responsive_max_width_unit":false,"custom_width":false,"custom_width_unit":false,"custom_height":false,"custom_height_unit":false,"custom_height_auto":false,"location":false,"position_from_trigger":false,"position_top":false,"position_left":false,"position_bottom":false,"position_right":false,"position_fixed":false,"animation_type":false,"animation_speed":false,"animation_origin":false,"overlay_zindex":false,"zindex":false},"close":{"text":false,"button_delay":false,"overlay_click":false,"esc_press":false,"f4_press":false},"click_open":[]}}' id="pum-16600" role="dialog">
+   <div class="pum-container popmake theme-15469 pum-responsive pum-responsive-medium responsive size-medium" id="popmake-16600">
+    <div class="pum-content popmake-content" tabindex="0">
+     <h2 style="text-align: center;">
+      Test your English Level.
+     </h2>
+     <h2 style="text-align: center;">
+      It is only
+      <a href="https://www.testlanguages.com/?utm_source=PopupNiL" rel="noopener noreferrer" target="_blank">
+       <span style="color: #ff0000;">
+        <u>
+         3 minutes
+        </u>
+       </span>
+      </a>
+      .
+     </h2>
+     <div style="text-align: center;">
+     </div>
+     <div>
+      <a href="https://www.testlanguages.com/?utm_source=PopupNiL" rel="noopener noreferrer" target="_blank">
+       <picture class="aligncenter" decoding="async">
+        <source srcset="https://www.newsinlevels.com/wp-content/uploads/images/Test-popup.jpg.avif" type="image/avif"/>
+        <source srcset="https://www.newsinlevels.com/wp-content/uploads/images/Test-popup.jpg.webp" type="image/webp"/>
+        <img alt="" decoding="async" src="https://www.newsinlevels.com/wp-content/uploads/images/Test-popup.jpg">
+        </img>
+       </picture>
+      </a>
+     </div>
+    </div>
+    <button aria-label="Close" class="pum-close popmake-close" type="button">
+     ×
+    </button>
+   </div>
+  </div>
+  <script id="advanced-ads-sticky-footer-js-js-extra" type="text/javascript">
+   /* <![CDATA[ */
+var advanced_ads_sticky_settings = {"check_position_fixed":"","sticky_class":"newsi-sticky","placements":["left-sidebar","right-sidebar"]};
+/* ]]> */
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/advanced-ads-sticky-ads/public/assets/js/sticky.js?ver=1.8.5" data-rocket-type="text/javascript" defer="" id="advanced-ads-sticky-footer-js-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-type="text/javascript" id="rocket-browser-checker-js-after" type="rocketlazyloadscript">
+   /* <![CDATA[ */
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+/* ]]> */
+  </script>
+  <script id="rocket-preload-links-js-extra" type="text/javascript">
+   /* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(?:.+\/)?feed(?:\/(?:.+\/?)?)?$|\/(?:.+\/)?embed\/|\/(index.php\/)?(.*)wp-json(\/.*|$)|\/refer\/|\/go\/|\/recommend\/|\/recommends\/","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm","siteUrl":"https:\/\/www.newsinlevels.com","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+  </script>
+  <script data-rocket-type="text/javascript" id="rocket-preload-links-js-after" type="rocketlazyloadscript">
+   /* <![CDATA[ */
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+/* ]]> */
+  </script>
+  <script id="advanced-ads-pro/front-js-extra" type="text/javascript">
+   /* <![CDATA[ */
+var advanced_ads_cookies = {"cookie_path":"\/","cookie_domain":""};
+var advadsCfpInfo = {"cfpExpHours":"3","cfpClickLimit":"3","cfpBan":"7","cfpPath":"","cfpDomain":"www.newsinlevels.com"};
+/* ]]> */
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/advanced-ads-pro/assets/js/advanced-ads-pro.min.js?ver=2.27.0" data-rocket-type="text/javascript" defer="" id="advanced-ads-pro/front-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/themes/newsin/js/jquery-1.12.3.min.js" data-rocket-type="text/javascript" defer="" id="jquery-flexslider-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/themes/newsin/js/bootstrap.min.js" data-rocket-type="text/javascript" defer="" id="bootstrap-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/themes/newsin/js/script.js" data-rocket-type="text/javascript" defer="" id="master-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/easy-fancybox/vendor/purify.min.js?ver=6.5.2" data-rocket-type="text/javascript" defer="" id="fancybox-purify-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/easy-fancybox/fancybox/1.5.4/jquery.fancybox.min.js?ver=6.5.2" data-rocket-type="text/javascript" defer="" id="jquery-fancybox-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-type="text/javascript" id="jquery-fancybox-js-after" type="rocketlazyloadscript">
+   window.addEventListener('DOMContentLoaded', function() {
+/* <![CDATA[ */
+var fb_timeout, fb_opts={'autoScale':true,'showCloseButton':true,'margin':20,'pixelRatio':'false','centerOnScroll':true,'enableEscapeButton':true,'overlayShow':true,'hideOnOverlayClick':true,'minViewportWidth':320,'minVpHeight':320,'disableCoreLightbox':'true','enableBlockControls':'true','fancybox_openBlockControls':'true' };
+if(typeof easy_fancybox_handler==='undefined'){
+var easy_fancybox_handler=function(){
+jQuery([".nolightbox","a.wp-block-file__button","a.pin-it-button","a[href*='pinterest.com\/pin\/create']","a[href*='facebook.com\/share']","a[href*='twitter.com\/share']"].join(',')).addClass('nofancybox');
+jQuery('a.fancybox-close').on('click',function(e){e.preventDefault();jQuery.fancybox.close()});
+/* IMG */
+						var unlinkedImageBlocks=jQuery(".wp-block-image > img:not(.nofancybox,figure.nofancybox>img)");
+						unlinkedImageBlocks.wrap(function() {
+							var href = jQuery( this ).attr( "src" );
+							return "<a href='" + href + "'></a>";
+						});
+var fb_IMG_select=jQuery('a[href*=".jpg" i]:not(.nofancybox,li.nofancybox>a,figure.nofancybox>a),area[href*=".jpg" i]:not(.nofancybox),a[href*=".jpeg" i]:not(.nofancybox,li.nofancybox>a,figure.nofancybox>a),area[href*=".jpeg" i]:not(.nofancybox),a[href*=".png" i]:not(.nofancybox,li.nofancybox>a,figure.nofancybox>a),area[href*=".png" i]:not(.nofancybox)');
+fb_IMG_select.addClass('fancybox image');
+var fb_IMG_sections=jQuery('.gallery,.wp-block-gallery,.tiled-gallery,.wp-block-jetpack-tiled-gallery,.ngg-galleryoverview,.ngg-imagebrowser,.nextgen_pro_blog_gallery,.nextgen_pro_film,.nextgen_pro_horizontal_filmstrip,.ngg-pro-masonry-wrapper,.ngg-pro-mosaic-container,.nextgen_pro_sidescroll,.nextgen_pro_slideshow,.nextgen_pro_thumbnail_grid,.tiled-gallery');
+fb_IMG_sections.each(function(){jQuery(this).find(fb_IMG_select).attr('rel','gallery-'+fb_IMG_sections.index(this));});
+jQuery('a.fancybox,area.fancybox,.fancybox>a').each(function(){jQuery(this).fancybox(jQuery.extend(true,{},fb_opts,{'transition':'elastic','transitionIn':'elastic','easingIn':'easeOutBack','transitionOut':'elastic','easingOut':'easeInBack','opacity':false,'hideOnContentClick':false,'titleShow':true,'titlePosition':'over','titleFromAlt':true,'showNavArrows':true,'enableKeyboardNav':true,'cyclic':false,'mouseWheel':'true'}))});
+};};
+var easy_fancybox_auto=function(){setTimeout(function(){jQuery('a#fancybox-auto,#fancybox-auto>a').first().trigger('click')},1000);};
+jQuery(easy_fancybox_handler);jQuery(document).on('post-load',easy_fancybox_handler);
+jQuery(easy_fancybox_auto);
+/* ]]> */
+});
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/easy-fancybox/vendor/jquery.easing.min.js?ver=1.4.1" data-rocket-type="text/javascript" defer="" id="jquery-easing-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/easy-fancybox/vendor/jquery.mousewheel.min.js?ver=3.1.13" data-rocket-type="text/javascript" defer="" id="jquery-mousewheel-js" type="rocketlazyloadscript">
+  </script>
+  <script id="q2w3_fixed_widget-js-extra" type="text/javascript">
+   /* <![CDATA[ */
+var q2w3_sidebar_options = [{"sidebar":"home-widg","use_sticky_position":false,"margin_top":0,"margin_bottom":0,"stop_elements_selectors":"","screen_max_width":0,"screen_max_height":0,"widgets":["#text-8"]}];
+/* ]]> */
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/q2w3-fixed-widget/js/frontend.min.js?ver=6.2.3" data-rocket-type="text/javascript" defer="" id="q2w3_fixed_widget-js" type="rocketlazyloadscript">
+  </script>
+  <script id="advanced-ads-pro/cache_busting-js-extra" type="text/javascript">
+   /* <![CDATA[ */
+var advanced_ads_pro_ajax_object = {"ajax_url":"https:\/\/www.newsinlevels.com\/wp-admin\/admin-ajax.php","lazy_load_module_enabled":"","lazy_load":{"default_offset":0,"offsets":[]},"moveintohidden":"","wp_timezone_offset":"3600","the_id":"31611","is_singular":""};
+var advanced_ads_responsive = {"reload_on_resize":"0"};
+/* ]]> */
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-content/plugins/advanced-ads-pro/assets/js/base.min.js?ver=2.27.0" data-rocket-type="text/javascript" defer="" id="advanced-ads-pro/cache_busting-js" type="rocketlazyloadscript">
+  </script>
+  <script data-rocket-src="https://www.newsinlevels.com/wp-includes/js/jquery/ui/core.min.js?ver=1.13.2" data-rocket-type="text/javascript" defer="" id="jquery-ui-core-js" type="rocketlazyloadscript">
+  </script>
+  <script id="popup-maker-site-js-extra" type="text/javascript">
+   /* <![CDATA[ */
+var pum_vars = {"version":"1.20.3","pm_dir_url":"https:\/\/www.newsinlevels.com\/wp-content\/plugins\/popup-maker\/","ajaxurl":"https:\/\/www.newsinlevels.com\/wp-admin\/admin-ajax.php","restapi":"https:\/\/www.newsinlevels.com\/wp-json\/pum\/v1","rest_nonce":null,"default_theme":"15469","debug_mode":"","disable_tracking":"","home_url":"\/","message_position":"top","core_sub_forms_enabled":"1","popups":[],"cookie_domain":"","analytics_route":"analytics","analytics_api":"https:\/\/www.newsinlevels.com\/wp-json\/pum\/v1"};
+var pum_sub_vars = {"ajaxurl":"https:\/\/www.newsinlevels.com\/wp-admin\/admin-ajax.php","message_position":"top"};
+var pum_popups = {"pum-16600":{"triggers":[],"cookies":[],"disable_on_mobile":false,"disable_on_tablet":false,"atc_promotion":null,"explain":null,"type_section":null,"theme_id":15469,"size":"medium","responsive_min_width":"0%","responsive_max_width":"100%","custom_width":"640px","custom_height_auto":false,"custom_height":"380px","scrollable_content":false,"animation_type":"fade","animation_speed":350,"animation_origin":"center top","open_sound":"none","custom_sound":"","location":"center top","position_top":100,"position_bottom":0,"position_left":0,"position_right":0,"position_from_trigger":false,"position_fixed":false,"overlay_disabled":false,"stackable":false,"disable_reposition":false,"zindex":1999999999,"close_button_delay":0,"fi_promotion":null,"close_on_form_submission":false,"close_on_form_submission_delay":0,"close_on_overlay_click":false,"close_on_esc_press":false,"close_on_f4_press":false,"disable_form_reopen":false,"disable_accessibility":false,"theme_slug":"default-theme","id":16600,"slug":"test-your-english-level"}};
+/* ]]> */
+  </script>
+  <script data-minify="1" data-rocket-src="https://www.newsinlevels.com/wp-content/cache/min/1/wp-content/uploads/pum/pum-site-scripts.js?ver=1745583063" data-rocket-type="text/javascript" defer="" id="popup-maker-site-js" type="rocketlazyloadscript">
+  </script>
+  <!--noptimize-->
+  <script type="rocketlazyloadscript">
+   window.advads_admin_bar_items = [{"title":"Google in-feed","type":"placement"},{"title":"Google in-feed","type":"ad"}];
+  </script>
+  <!--/noptimize-->
+  <!--noptimize-->
+  <script type="rocketlazyloadscript">
+   window.addEventListener('DOMContentLoaded', function() {window.advads_passive_placements = {"news-in-levels-1_1":{"elementid":["newsi-9afa0a95c4e2166133441008da79967e"],"ads":{"29488":{"id":29488,"title":"News in Levels 1","expiry_date":0,"visitors":[{"type":"mobile","value":["mobile","tablet"]},{"type":"mobile","value":["mobile","tablet"],"connector":"and"}],"content":"<div class=\"newsi-news-in-levels-1\" id=\"newsi-1235260002\"><script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js?client=ca-pub-2908595857799595\" crossorigin=\"anonymous\"><\/script><ins class=\"adsbygoogle\" style=\"display:inline-block;width:300px;height:250px;\" \ndata-ad-client=\"ca-pub-2908595857799595\" \ndata-ad-slot=\"3056271852\"><\/ins> \n<script> \n(adsbygoogle = window.adsbygoogle || []).push({}); \n<\/script>\n<\/div>","once_per_page":0,"debugmode":false,"blog_id":1,"type":"adsense","position":"none","privacy":{"ignore":false,"needs_consent":false}}},"type":"ad","id":29488,"placement_info":{"type":"custom_position","name":"News in Levels 1","item":"ad_29488","options":{"placement_position":"","pro_custom_element":"","inject_by":"container_id","container_id":"#c5c427ac57bcc745b4ee137b052cf6bc7"},"id":"news-in-levels-1"},"test_id":null,"inject_before":[""]}};
+window.advads_has_ads = [["23665","ad","Google in-feed","off"]];
+( window.advanced_ads_ready || jQuery( document ).ready ).call( null, function() {if ( !window.advanced_ads_pro ) {console.log("Advanced Ads Pro: cache-busting can not be initialized");} });});
+  </script>
+  <!--/noptimize-->
+  <!-- start Simple Custom CSS and JS -->
+  <!-- Google tag (gtag.js) -->
+  <script async="" data-rocket-src="https://www.googletagmanager.com/gtag/js?id=G-ST4FSFRJT5" type="rocketlazyloadscript">
+  </script>
+  <script type="rocketlazyloadscript">
+   window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ST4FSFRJT5');
+  </script>
+  <!-- end Simple Custom CSS and JS -->
+  <!--noptimize-->
+  <script type="rocketlazyloadscript">
+   !function(){window.advanced_ads_ready_queue=window.advanced_ads_ready_queue||[],advanced_ads_ready_queue.push=window.advanced_ads_ready;for(var d=0,a=advanced_ads_ready_queue.length;d<a;d++)advanced_ads_ready(advanced_ads_ready_queue[d])}();
+  </script>
+  <!--/noptimize-->
+  <script data-rocket-type="text/javascript" type="rocketlazyloadscript">
+   window._taboola = window._taboola || [];
+  _taboola.push({flush: true});
+  </script>
+ </body>
+</html>
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1746424853 -->
