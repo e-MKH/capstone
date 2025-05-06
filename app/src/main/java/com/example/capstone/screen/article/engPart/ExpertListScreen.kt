@@ -29,27 +29,44 @@ fun ExpertListScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // ✅ 상단 난이도 선택 버튼
-            Row(
+            val levels = listOf("입문", "초급~고급", "전문가")
+            var selectedLevel by remember { mutableStateOf("전문가") }
+            var expanded by remember { mutableStateOf(false) }
+
+            // ✅ 난이도 드롭다운
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded },
                 modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(12.dp)
+                    .fillMaxWidth(0.5f)
             ) {
-                Button(onClick = {
-                    navController.navigate("easy_list")
-                }) {
-                    Text("입문자용")
-                }
-
-                Button(onClick = {
-                    navController.navigate("eng") // 초~고급 뉴스
-                }) {
-                    Text("초급~고급")
-                }
-
-                Button(onClick = { /* 현재 위치 */ }) {
-                    Text("전문가용")
+                TextField(
+                    value = selectedLevel,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("난이도 선택") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                    modifier = Modifier.menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    levels.forEach { level ->
+                        DropdownMenuItem(
+                            text = { Text(level) },
+                            onClick = {
+                                selectedLevel = level
+                                expanded = false
+                                when (level) {
+                                    "입문" -> navController.navigate("easy")
+                                    "초급~고급" -> navController.navigate("news")
+                                    "전문가" -> {} // 현재 화면
+                                }
+                            }
+                        )
+                    }
                 }
             }
 
@@ -60,7 +77,10 @@ fun ExpertListScreen(
                     .padding(top = 24.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
-                Text(text = "전문가용 뉴스 화면 (준비 중)", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = "전문가용 뉴스 화면 (준비 중)",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }

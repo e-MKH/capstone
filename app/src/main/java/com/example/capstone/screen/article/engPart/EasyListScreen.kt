@@ -37,7 +37,8 @@ fun EasyListScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val listState = rememberLazyListState()
 
-    var selectedLevel by remember { mutableStateOf("입문") }
+    val levels = listOf("입문", "초급~고급", "전문가")
+    var selectedLevel by remember { mutableStateOf(levels[0]) }
     var expanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -65,15 +66,16 @@ fun EasyListScreen(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                listOf("전체", "입문", "초급", "중급", "고급", "전문가").forEach { level ->
+                levels.forEach { level ->
                     DropdownMenuItem(
                         text = { Text(level) },
                         onClick = {
+                            selectedLevel = level
                             expanded = false
-                            if (level == "전문가") {
-                                navController.navigate("expert")
-                            } else {
-                                selectedLevel = level
+                            when (level) {
+                                "초급~고급" -> navController.navigate("news")
+                                "전문가" -> navController.navigate("expert")
+                                // "입문"은 현재 화면이므로 그대로 유지
                             }
                         }
                     )
