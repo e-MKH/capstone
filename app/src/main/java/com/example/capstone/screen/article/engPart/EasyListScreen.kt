@@ -106,7 +106,10 @@ fun EasyListScreen(
                                         val response = RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
                                         if (response.isSuccessful) {
                                             val body = response.body()
-                                            sharedTextViewModel.setText(body?.text ?: "")
+                                            sharedTextViewModel.setText(
+                                                newText = body?.text ?: "",
+                                                sourceUrl = article.url
+                                            )
                                             sharedTextViewModel.setTitle(article.title)
                                             navController.navigate("detail")
                                         } else {

@@ -184,7 +184,7 @@ fun NewsListScreen(
                                                 val response = RetrofitClient.extractService.extractArticle(mapOf("url" to url))
                                                 if (response.isSuccessful) {
                                                     val body = response.body()
-                                                    sharedTextViewModel.setText(body?.text ?: "")
+                                                    sharedTextViewModel.setText(body?.text ?: "", sourceUrl = url)
                                                     sharedTextViewModel.setTitle(article.title)
                                                     navController.navigate("detail")
                                                 } else {
