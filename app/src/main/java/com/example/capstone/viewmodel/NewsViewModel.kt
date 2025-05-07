@@ -46,11 +46,10 @@ class NewsViewModel : ViewModel() {
                 )
 
                 if (response.articles.isNotEmpty()) {
-                    val originalArticles = response.articles.take(7) // 최대 7개만 표시
+                    val originalArticles = response.articles.take(7)
 
-                    _articles.value = originalArticles // 우선 기본 정보로 표시
+                    _articles.value = originalArticles
 
-                    // NLP 분석은 백그라운드에서 순차적으로 수행
                     originalArticles.forEach { article ->
                         launch { analyzeDifficulty(article) }
                     }
@@ -72,36 +71,38 @@ class NewsViewModel : ViewModel() {
      * @return 난이도 분석 결과가 반영된 GNewsArticle
      */
     suspend fun analyzeDifficulty(article: GNewsArticle): GNewsArticle {
-        // 이미 분석된 결과가 있다면 캐시에서 꺼내서 적용
+        // 이미 분석된 결과가 있다면 캐시에서 꺼냄
         difficultyCache[article.url]?.let {
             updateArticleDifficulty(article.url, it)
             return article.copy(difficulty = it)
         }
 
         return try {
-            // Flask 서버로 기사 본문 추출 요청
+            // 1. 기사 본문 추출
             val extractResponse: Response<ExtractResponse> =
                 RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
 
-            // 추출 실패 또는 본문 없음
-            if (!extractResponse.isSuccessful || extractResponse.body()?.text.isNullOrBlank()) {
+            val extractedText = extractResponse.body()?.text
+
+            if (!extractResponse.isSuccessful || extractedText.isNullOrBlank()) {
                 updateArticleDifficulty(article.url, "분석불가")
                 return article.copy(difficulty = "분석불가")
             }
 
-            // NLP 분석 요청
-            val articleText = extractResponse.body()!!.text
-            val nlpResponse: Response<NlpResponse> =
-                RetrofitClient.nlpService.analyzeText(NlpRequest(articleText))
+            Log.d("ARTICLE_BODY", "본문 길이: ${extractedText.length}")
+            Log.d("ARTICLE_BODY", "본문 앞부분: ${extractedText.take(300)}")
 
-            // 결과 파싱
+            // 2. NLP 분석 요청 (URL이 아닌 본문을 보냄)
+            val nlpResponse: Response<NlpResponse> =
+                RetrofitClient.nlpService.analyzeText(NlpRequest(extractedText))
+
             val difficulty = if (nlpResponse.isSuccessful) {
                 nlpResponse.body()?.difficulty ?: "분석불가"
             } else {
                 "분석불가"
             }
 
-            // ✅ 캐시 저장 + 상태 업데이트
+            // 3. 캐시 저장 및 UI 반영
             difficultyCache[article.url] = difficulty
             updateArticleDifficulty(article.url, difficulty)
 
@@ -116,9 +117,6 @@ class NewsViewModel : ViewModel() {
 
     /**
      * 특정 URL에 해당하는 뉴스 카드의 난이도 필드를 갱신
-     *
-     * @param url 뉴스 기사 URL
-     * @param difficulty 분석 결과 난이도 문자열
      */
     private fun updateArticleDifficulty(url: String, difficulty: String) {
         val current = _articles.value.toMutableList()
@@ -130,3 +128,4 @@ class NewsViewModel : ViewModel() {
         }
     }
 }
+

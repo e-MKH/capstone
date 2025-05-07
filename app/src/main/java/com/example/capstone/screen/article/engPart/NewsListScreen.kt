@@ -1,6 +1,7 @@
 package com.example.capstone.screen.article.engPart
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -184,10 +185,16 @@ fun NewsListScreen(
                                                 val response = RetrofitClient.extractService.extractArticle(mapOf("url" to url))
                                                 if (response.isSuccessful) {
                                                     val body = response.body()
-                                                    sharedTextViewModel.setText(body?.text ?: "")
+                                                    val text = body?.text ?: ""
+
+                                                    Log.d("ARTICLE_BODY", "본문 길이: ${text.length}")
+                                                    Log.d("ARTICLE_BODY", "본문 앞부분: ${text.take(300)}")
+
+                                                    sharedTextViewModel.setText(text)
                                                     sharedTextViewModel.setTitle(article.title)
                                                     navController.navigate("detail")
-                                                } else {
+                                                }
+                                                else {
                                                     Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
                                                 }
                                             } catch (e: Exception) {
