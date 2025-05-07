@@ -35,24 +35,7 @@ def extract_article():
             print("⚠️ 본문이 너무 짧음", flush=True)
             return jsonify({"error": "본문이 너무 짧습니다."}), 400
 
-        # ✅ 4. 본문 앞부분 정제: 제목/날짜/수상한 줄 제거
-        lines = text.strip().splitlines()
-        filtered_lines = []
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
-            if any(keyword in line.lower() for keyword in ["level", "published", "news in levels"]):
-                continue
-            if line[:10].count(":") >= 1 or line[:10].count("-") >= 2:  # 시간, 날짜 제거
-                continue
-            filtered_lines.append(line)
-            if len(filtered_lines) >= 1:  # 첫 유효 문장까지만 정리
-                break
-        # 앞부분 정리된 텍스트로 교체
-        text = "\n".join(filtered_lines + lines[len(filtered_lines):])
-
-        # ✅ 5. 학습용 꼬리말 제거
+        # 4. 학습용 꼬리말 제거
         cut_keywords = [
             "3000 WORDS WITH NEWS IN LEVEL",
             "words:",
@@ -81,4 +64,3 @@ def extract_article():
 # 서버 실행
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
-
