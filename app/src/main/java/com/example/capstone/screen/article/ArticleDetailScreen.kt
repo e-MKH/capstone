@@ -144,27 +144,27 @@ fun ArticleDetailScreen(
                             text = "$word ",
                             modifier = Modifier
                                 .padding(end = 4.dp, bottom = 4.dp)
-                               /** .clickable {
-                                    val cleanWord = word.trim().replace("[^A-Za-z0-9]".toRegex(), "")
-                                    if (cleanWord.isNotBlank()) {
-                                        coroutineScope.launch {
-                                            try {
-                                                // 단어 단위 번역 요청
-                                                val response = RetrofitTranslateClient.translateService
-                                                    .translateText(TranslateRequest(cleanWord))
-                                                if (response.isSuccessful) {
-                                                    val translatedWord = response.body()?.translated_text ?: "번역 실패"
-                                                    // wordViewModel.saveWord(cleanWord, translatedWord)
-                                                    // Toast.makeText(context, "'$cleanWord' 저장됨", Toast.LENGTH_SHORT).show()
-                                                } else {
-                                                    Toast.makeText(context, "번역 실패", Toast.LENGTH_SHORT).show()
-                                                }
-                                            } catch (e: Exception) {
-                                                Toast.makeText(context, "에러: ${e.message}", Toast.LENGTH_SHORT).show()
-                                            }
-                                        }
-                                    }
-                                }*/ ,
+                            /** .clickable {
+                            val cleanWord = word.trim().replace("[^A-Za-z0-9]".toRegex(), "")
+                            if (cleanWord.isNotBlank()) {
+                            coroutineScope.launch {
+                            try {
+                            // 단어 단위 번역 요청
+                            val response = RetrofitTranslateClient.translateService
+                            .translateText(TranslateRequest(cleanWord))
+                            if (response.isSuccessful) {
+                            val translatedWord = response.body()?.translated_text ?: "번역 실패"
+                            // wordViewModel.saveWord(cleanWord, translatedWord)
+                            // Toast.makeText(context, "'$cleanWord' 저장됨", Toast.LENGTH_SHORT).show()
+                            } else {
+                            Toast.makeText(context, "번역 실패", Toast.LENGTH_SHORT).show()
+                            }
+                            } catch (e: Exception) {
+                            Toast.makeText(context, "에러: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                            }
+                            }
+                            }*/ ,
                             style = MaterialTheme.typography.bodyMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
