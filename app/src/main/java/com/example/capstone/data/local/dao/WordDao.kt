@@ -1,7 +1,7 @@
 package com.example.capstone.data.local.dao
 
 import androidx.room.*
-import com.example.capstone.data.local.entity.WordEntity
+import com.example.capstone.data.local.entity.Word
 
 /**
  * ✅ [WordDao]
@@ -18,7 +18,7 @@ interface WordDao {
      * onConflict = IGNORE → 이미 존재하는 단어는 무시하고 삽입하지 않음
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertWord(word: WordEntity)
+    suspend fun insertWord(word: Word)
 
     /**
      * ✅ 전체 단어 조회
@@ -26,7 +26,7 @@ interface WordDao {
      * @return 저장된 모든 단어 리스트
      */
     @Query("SELECT * FROM word_table")
-    suspend fun getAllWords(): List<WordEntity>
+    suspend fun getAllWords(): List<Word>
 
     /**
      * ✅ 단어 삭제
@@ -34,6 +34,6 @@ interface WordDao {
      * @param word 삭제할 단어 객체
      */
     @Delete
-    suspend fun deleteWord(word: WordEntity)
+    suspend fun deleteWord(word: Word)
 }
 

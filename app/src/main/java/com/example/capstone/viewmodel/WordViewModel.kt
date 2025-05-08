@@ -3,8 +3,8 @@ package com.example.capstone.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.capstone.data.local.WordDatabase
-import com.example.capstone.data.local.entity.WordEntity
+import com.example.capstone.data.local.AppDatabase
+import com.example.capstone.data.local.entity.Word
 import kotlinx.coroutines.launch
 
 /**
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
     // DAO 객체 생성 (Room DB에 접근)
-    private val wordDao = WordDatabase.getDatabase(application).wordDao()
+    private val wordDao = AppDatabase.getDatabase(application).wordDao()
 
     /**
      * 단어 저장 함수
@@ -25,7 +25,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun saveWord(word: String, meaning: String) {
         viewModelScope.launch {
-            wordDao.insertWord(WordEntity(word = word, meaning = meaning))
+            wordDao.insertWord(Word(word = word, meaning = meaning))
         }
     }
 
@@ -33,7 +33,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
      * 단어 삭제 함수
      * @param word 삭제할 단어 객체 (WordEntity)
      */
-    fun deleteWord(word: WordEntity) {
+    fun deleteWord(word: Word) {
         viewModelScope.launch {
             wordDao.deleteWord(word)
         }
@@ -43,7 +43,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
      * 모든 단어 리스트 조회 함수
      * @return 저장된 모든 단어 리스트
      */
-    suspend fun getAllWords(): List<WordEntity> {
+    suspend fun getAllWords(): List<Word> {
         return wordDao.getAllWords()
     }
 }
