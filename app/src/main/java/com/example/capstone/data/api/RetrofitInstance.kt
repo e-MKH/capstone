@@ -4,6 +4,7 @@ import com.example.capstone.data.api.service.EasyNewsService
 import com.example.capstone.data.api.service.ExtractService
 import com.example.capstone.data.api.service.GNewsService
 import com.example.capstone.data.api.service.NlpService
+import com.example.capstone.data.api.service.NytService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -56,5 +57,13 @@ object RetrofitInstance {
             .build()
             .create(NlpService::class.java)
     }
+    val nytApi: NytService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://api.nytimes.com/svc/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(NytService::class.java)
+    }
+
 }
 

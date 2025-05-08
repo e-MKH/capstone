@@ -1,8 +1,8 @@
 package com.example.capstone.data.model
-
+import com.google.gson.annotations.SerializedName
 /**
  * [ArticleCardItem]
- * GNews 또는 EasyNews 기사 모두를 포함할 수 있는 공통 상위 타입
+ * GNews / EasyNews / NYT 기사 모두를 포함할 수 있는 공통 상위 타입
  */
 interface ArticleCardItem {
     val title: String
@@ -30,9 +30,47 @@ data class GNewsArticle(
  */
 data class EasyNewsArticle(
     override val title: String,
-    override val description: String? = null, // 간략한 요약 없을 수 있음
+    override val description: String? = null,
     override val url: String,
     override val publishedAt: String? = null,
     override val difficulty: String? = "입문"
 ) : ArticleCardItem
 
+/**
+ * [NytArticle] - 뉴욕타임스에서 가져온 전문가용 기사 구조
+ */
+data class NytArticle(
+    @SerializedName("title")
+    override val title: String,
+
+    @SerializedName("item_type")
+    val item_type: String,
+
+    @SerializedName("abstract")
+    val abstract: String,
+
+    @SerializedName("url")
+    override val url: String,
+
+    @SerializedName("byline")
+    val byline: String,
+
+    @SerializedName("published_date")
+    val published_date: String,
+
+    @SerializedName("multimedia")
+    val multimedia: List<NytMedia>?,
+
+    override val difficulty: String = "전문가"
+) : ArticleCardItem {
+    override val description: String? get() = abstract
+    override val publishedAt: String? get() = published_date
+}
+
+data class NytMedia(
+    @SerializedName("url")
+    val url: String,
+
+    @SerializedName("format")
+    val format: String
+)
