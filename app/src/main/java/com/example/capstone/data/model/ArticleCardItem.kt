@@ -25,16 +25,7 @@ data class GNewsArticle(
     val content: String? = null
 ) : ArticleCardItem
 
-/**
- * [EasyNewsArticle] - Flask 서버에서 가져온 쉬운 뉴스 기사 구조
- */
-data class EasyNewsArticle(
-    override val title: String,
-    override val description: String? = null,
-    override val url: String,
-    override val publishedAt: String? = null,
-    override val difficulty: String? = "입문"
-) : ArticleCardItem
+
 
 /**
  * [NytArticle] - 뉴욕타임스에서 가져온 전문가용 기사 구조

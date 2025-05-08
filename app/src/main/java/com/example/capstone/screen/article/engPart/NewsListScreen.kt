@@ -53,6 +53,7 @@ fun NewsListScreen(
     val coroutineScope = rememberCoroutineScope()
     val articles by viewModel.articles.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val selectedCategory by viewModel.selectedCategory.collectAsState()
 
     val wordViewModel: WordViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory(LocalContext.current.applicationContext as Application)
@@ -62,7 +63,7 @@ fun NewsListScreen(
     val refreshState = rememberSwipeRefreshState(isRefreshing)
     val listState = rememberLazyListState()
 
-    val levels = listOf("초급~고급", "입문", "전문가")
+    val levels = listOf("초급~고급", "전문가")
     var selectedLevel by remember { mutableStateOf(levels[0]) }
     var levelExpanded by remember { mutableStateOf(false) }
 
@@ -70,7 +71,7 @@ fun NewsListScreen(
         "정치" to "politics", "경제" to "business", "사회" to "world",
         "기술" to "technology", "과학" to "science"
     )
-    var selectedCategory by remember { mutableStateOf(categories[0]) }
+    val currentCategoryLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var categoryExpanded by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -104,9 +105,8 @@ fun NewsListScreen(
                                 selectedLevel = level
                                 levelExpanded = false
                                 when (level) {
-                                    "입문" -> navController.navigate("easy")
                                     "전문가" -> navController.navigate("expert")
-                                    "초급~고급" -> viewModel.fetchNews(language, selectedCategory.second)
+                                    "초급~고급" -> viewModel.fetchNews(language, selectedCategory)
                                 }
                             }
                         )
@@ -120,7 +120,7 @@ fun NewsListScreen(
                 modifier = Modifier.weight(1f)
             ) {
                 TextField(
-                    value = selectedCategory.first,
+                    value = currentCategoryLabel,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("카테고리 선택") },
@@ -135,8 +135,8 @@ fun NewsListScreen(
                         DropdownMenuItem(
                             text = { Text(label) },
                             onClick = {
-                                selectedCategory = label to query
                                 categoryExpanded = false
+                                viewModel.setCategory(query)
                                 viewModel.fetchNews(language, query)
                                 coroutineScope.launch {
                                     listState.scrollToItem(0)
@@ -152,7 +152,7 @@ fun NewsListScreen(
             state = refreshState,
             onRefresh = {
                 isRefreshing = true
-                viewModel.fetchNews(language, selectedCategory.second)
+                viewModel.fetchNews(language, selectedCategory)
                 isRefreshing = false
             },
             modifier = Modifier.fillMaxSize()
@@ -273,7 +273,6 @@ fun NewsListScreen(
     }
 
     LaunchedEffect(language) {
-        viewModel.fetchNews(language, selectedCategory.second)
+        viewModel.fetchNews(language, selectedCategory)
     }
 }
-

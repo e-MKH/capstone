@@ -77,7 +77,6 @@ fun ExpertListScreen(
                                 selectedLevel = level
                                 expanded = false
                                 when (level) {
-                                    "입문" -> navController.navigate(Screen.EasyNews.route)
                                     "초급~고급" -> navController.navigate(Screen.EnglishNews.route)
                                     "전문가" -> {}
                                 }

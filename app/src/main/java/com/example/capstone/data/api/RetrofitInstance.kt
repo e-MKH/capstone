@@ -1,6 +1,5 @@
 package com.example.capstone.data.api
 
-import com.example.capstone.data.api.service.EasyNewsService
 import com.example.capstone.data.api.service.ExtractService
 import com.example.capstone.data.api.service.GNewsService
 import com.example.capstone.data.api.service.NlpService
@@ -28,15 +27,6 @@ object RetrofitInstance {
             .create(GNewsService::class.java)
     }
 
-    // Flask에서 제공하는 쉬운 뉴스 API용 Retrofit 서비스
-    val easyNewsService: EasyNewsService by lazy {
-        Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5001/")  // 에뮬레이터에서 localhost
-            .client(okHttpClient)              // timeout 적용된 client 사용
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(EasyNewsService::class.java)
-    }
 
     // 기사 본문 추출 API
     val extractService: ExtractService by lazy {

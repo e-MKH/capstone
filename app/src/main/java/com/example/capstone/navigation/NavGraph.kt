@@ -15,7 +15,6 @@ import com.example.capstone.viewmodel.SharedTextViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import android.util.Log
-import com.example.capstone.screen.article.engPart.EasyListScreen
 import com.example.capstone.screen.article.engPart.ExpertListScreen
 
 /**
@@ -82,14 +81,6 @@ fun NavGraph(
             )
         }
 
-        // 입문 뉴스 전용 화면
-        composable(Screen.EasyNews.route) {
-            EasyListScreen(
-                navController = navController,
-                sharedUrlViewModel = sharedUrlViewModel,
-                sharedTextViewModel = sharedTextViewModel
-            )
-        }
 
 // 전문가 뉴스 전용 화면
         composable(Screen.ExpertNews.route) {

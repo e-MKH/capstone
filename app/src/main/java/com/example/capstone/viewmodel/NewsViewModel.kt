@@ -31,12 +31,24 @@ class NewsViewModel : ViewModel() {
     /** NLP 분석 결과를 캐싱 (URL 기반) → 중복 분석 방지 */
     private val difficultyCache = mutableMapOf<String, String>()
 
+    /** 현재 선택된 카테고리 (기본값: "politics") */
+    private val _selectedCategory = MutableStateFlow("politics")
+    val selectedCategory: StateFlow<String> = _selectedCategory
+
+    /** 현재 언어 코드 (화면 구성에 활용 가능) */
+    private val _currentLanguage = MutableStateFlow("en")
+    val currentLanguage: StateFlow<String> = _currentLanguage
+
     /**
      * 뉴스 기사 불러오기 + NLP 분석 시작
      * @param language 언어 코드 (예: "en")
      * @param topic 뉴스 주제 (예: "politics")
      */
-    fun fetchNews(language: String, topic: String = "politics") {
+    fun fetchNews(language: String, topic: String = _selectedCategory.value) {
+        _currentLanguage.value = language
+        _selectedCategory.value = topic
+        isLoading.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = GNewsApiService.api.getTopHeadlines(
@@ -66,19 +78,24 @@ class NewsViewModel : ViewModel() {
     }
 
     /**
+     * 현재 선택된 카테고리를 외부에서 업데이트
+     */
+    fun setCategory(newCategory: String) {
+        _selectedCategory.value = newCategory
+    }
+
+    /**
      * 개별 뉴스 기사에 대해 본문 추출 + NLP 분석 수행
      * @param article 분석할 뉴스 기사
      * @return 난이도 분석 결과가 반영된 GNewsArticle
      */
     suspend fun analyzeDifficulty(article: GNewsArticle): GNewsArticle {
-        // 이미 분석된 결과가 있다면 캐시에서 꺼냄
         difficultyCache[article.url]?.let {
             updateArticleDifficulty(article.url, it)
             return article.copy(difficulty = it)
         }
 
         return try {
-            // 1. 기사 본문 추출
             val extractResponse: Response<ExtractResponse> =
                 RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
 
@@ -92,7 +109,6 @@ class NewsViewModel : ViewModel() {
             Log.d("ARTICLE_BODY", "본문 길이: ${extractedText.length}")
             Log.d("ARTICLE_BODY", "본문 앞부분: ${extractedText.take(300)}")
 
-            // 2. NLP 분석 요청 (URL이 아닌 본문을 보냄)
             val nlpResponse: Response<NlpResponse> =
                 RetrofitClient.nlpService.analyzeText(NlpRequest(extractedText))
 
@@ -102,7 +118,6 @@ class NewsViewModel : ViewModel() {
                 "분석불가"
             }
 
-            // 3. 캐시 저장 및 UI 반영
             difficultyCache[article.url] = difficulty
             updateArticleDifficulty(article.url, difficulty)
 
