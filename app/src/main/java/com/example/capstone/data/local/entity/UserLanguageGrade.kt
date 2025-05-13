@@ -2,6 +2,7 @@ package com.example.capstone.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import java.time.LocalDate
 
 @Entity(
     tableName = "user_language_grade",
@@ -10,5 +11,11 @@ import androidx.room.Entity
 )
 data class UserLanguageGrade(
     @ColumnInfo(name = "id")
-    val id : String
+    val id : String,
+    @ColumnInfo(name = "lang_code")
+    val langCode : String,
+    @ColumnInfo(name = "grade")
+    val grade : String,
+    @ColumnInfo(name = "is_updated")
+    val isUpdated : LocalDate
 )

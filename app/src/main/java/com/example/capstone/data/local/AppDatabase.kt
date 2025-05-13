@@ -6,9 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.capstone.data.local.converter.DateConverter
-import com.example.capstone.data.local.dao.WordDao
 import com.example.capstone.data.local.entity.User
-import com.example.capstone.data.local.entity.Word
 
 @Database(
     entities = [User::class],

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capstone.viewmodel.WordViewModel
-import com.example.capstone.data.local.entity.Word
+import com.example.capstone.data.local.entity.Vocabulary
 
 /**
  * [WordBookScreen]
@@ -29,12 +29,12 @@ fun WordBookScreen(
     wordViewModel: WordViewModel = viewModel()
 ) {
     // 단어장에 저장된 단어 리스트 상태
-    var wordList by remember { mutableStateOf(listOf<Word>()) }
+    var wordList by remember { mutableStateOf(listOf<Vocabulary>()) }
 
     // 화면 진입 시 단어 불러오기 (1회 실행)
-    LaunchedEffect(Unit) {
-        wordList = wordViewModel.getAllWords()
-    }
+//    LaunchedEffect(Unit) {
+//        wordList = wordViewModel.getAllWords()
+//    }
 
     Column(
         modifier = modifier

@@ -7,8 +7,7 @@ import androidx.room.PrimaryKey
     tableName = "languages",
     primaryKeys = [""]
 )
-data class Language(
-    @PrimaryKey
+data class UserLanguageGradeHistory(
     val code : String,  // 국가 코드(kr, jp, en 등)
     val name : String   // 표시명(한국어, 영어, 일본어 등)
 )
