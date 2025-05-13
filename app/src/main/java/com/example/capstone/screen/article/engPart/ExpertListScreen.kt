@@ -21,6 +21,7 @@ import com.example.capstone.data.model.NytArticle
 import com.example.capstone.navigation.Screen
 import com.example.capstone.data.api.RetrofitClient
 import kotlinx.coroutines.launch
+import android.util.Log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +34,7 @@ fun ExpertListScreen(
     val articles by viewModel.articles.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
-    val levels = listOf("입문", "초급~고급", "전문가")
+    val levels = listOf("초급~고급", "전문가")
     var selectedLevel by remember { mutableStateOf("전문가") }
     var expanded by remember { mutableStateOf(false) }
 
@@ -92,6 +93,7 @@ fun ExpertListScreen(
                     .padding(16.dp)
             ) {
                 items(articles) { article ->
+                    Log.d("EXPERT_URL", "NYT 기사 URL: ${article.url}")
                     ExpertNewsCard(
                         article = article,
                         onClick = {
