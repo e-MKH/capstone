@@ -24,7 +24,8 @@ interface GNewsService {
     suspend fun getTopHeadlines(
         @Query("lang") lang: String,
         @Query("topic") topic: String,
-        @Query("token") token: String
+        @Query("token") token: String,
+        @Query("max") max: Int = 10
     ): GNewsResponse
 }
 

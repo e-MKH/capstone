@@ -16,6 +16,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import android.util.Log
 import com.example.capstone.screen.article.engPart.ExpertListScreen
+import com.example.capstone.screen.article.engPart.PrimaryNewsScreen
+import com.example.capstone.screen.article.engPart.SecondaryNewsScreen
 
 /**
  * [NavGraph]
@@ -76,7 +78,6 @@ fun NavGraph(
 
             ArticleDetailScreen(
                 navController = navController,
-                url = url,
                 sharedTextViewModel = sharedTextViewModel
             )
         }
@@ -90,6 +91,24 @@ fun NavGraph(
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+        // 사용자 레벨 맞춤 뉴스 메인 화면
+        composable(Screen.PrimaryNews.route) {
+            PrimaryNewsScreen(
+                navController = navController,
+                sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel
+            )
+        }
+
+// 사용자 레벨 외 기사 목록 화면
+        composable(Screen.SecondaryNews.route) {
+            SecondaryNewsScreen(
+                navController = navController,
+                sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel
+            )
+        }
+
 
     }
 }

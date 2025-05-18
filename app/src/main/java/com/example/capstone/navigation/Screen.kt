@@ -7,6 +7,9 @@ package com.example.capstone.navigation
  * - Jetpack Navigation에서 경로(route)로 사용됨
  */
 sealed class Screen(val route: String) {
+    object PrimaryNews : Screen("primary_news")
+
+    object SecondaryNews : Screen("secondary_news")
 
     /** 언어 선택 메인 화면 (뉴스 언어 선택 버튼) */
     object Article : Screen("article")

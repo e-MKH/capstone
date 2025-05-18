@@ -35,7 +35,7 @@ fun ArticleScreen(
         // 영어 뉴스 버튼
         ArticleButton(
             text = "영어 기사",
-            onClick = { navController.navigate(Screen.EnglishNews.route) },
+            onClick = { navController.navigate(Screen.PrimaryNews.route) },
             shape = cardShape
         )
 
