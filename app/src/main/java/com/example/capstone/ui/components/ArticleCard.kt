@@ -29,7 +29,8 @@ fun ArticleCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = Int.MAX_VALUE
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))

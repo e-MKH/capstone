@@ -56,45 +56,45 @@ fun SecondaryNewsScreen(
         "과학" to "science"
     )
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
-    var expanded by remember { mutableStateOf(false) }
+    var expandedCategory by remember { mutableStateOf(false) }
+    var expandedSort by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // ✅ 카테고리 드롭다운 + 새로고침 버튼
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // 카테고리 드롭다운
             ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+                expanded = expandedCategory,
+                onExpandedChange = { expandedCategory = !expandedCategory },
+                modifier = Modifier.weight(1f)
             ) {
                 TextField(
                     value = currentLabel,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("카테고리 선택") },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                    modifier = Modifier
-                        .weight(1f)
-                        .menuAnchor()
+                    label = { Text("카테고리") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedCategory) },
+                    modifier = Modifier.menuAnchor()
                 )
 
                 DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    expanded = expandedCategory,
+                    onDismissRequest = { expandedCategory = false }
                 ) {
                     categories.forEach { (label, query) ->
                         DropdownMenuItem(
                             text = { Text(label) },
                             onClick = {
-                                expanded = false
+                                expandedCategory = false
                                 viewModel.setCategory(query)
                                 viewModel.isLoading.value = true
                                 viewModel.fetchNews("en", query)
@@ -104,22 +104,46 @@ fun SecondaryNewsScreen(
                 }
             }
 
-            // ✅ 새로고침 버튼
+            // 정렬 드롭다운
+            ExposedDropdownMenuBox(
+                expanded = expandedSort,
+                onExpandedChange = { expandedSort = !expandedSort },
+                modifier = Modifier.weight(1f)
+            ) {
+                TextField(
+                    value = sortOption,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("정렬") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedSort) },
+                    modifier = Modifier.menuAnchor()
+                )
+
+                DropdownMenu(
+                    expanded = expandedSort,
+                    onDismissRequest = { expandedSort = false }
+                ) {
+                    listOf("기본", "오름차순", "내림차순").forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                sortOption = option
+                                expandedSort = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            // 새로고침
             IconButton(
                 onClick = {
                     viewModel.fetchNews("en", selectedCategory, forceRefresh = true)
-                },
-                modifier = Modifier.padding(start = 8.dp)
+                }
             ) {
                 Icon(Icons.Default.Refresh, contentDescription = "새로고침")
             }
         }
-
-        // ✅ 정렬 옵션
-        DropdownMenuWithSortOptions(
-            selected = sortOption,
-            onOptionSelected = { sortOption = it }
-        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -162,7 +186,6 @@ fun SecondaryNewsScreen(
             }
         }
 
-        // ✅ 디버깅용 로그
         LaunchedEffect(articles) {
             println("🔍 SecondaryArticles 수: ${articles.size}")
             articles.forEach {

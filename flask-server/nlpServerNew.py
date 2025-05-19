@@ -89,7 +89,7 @@ def analyze_text():
 
         if score > 70:
             difficulty = "고급"
-        elif score > 60:
+        elif score > 63:
             difficulty = "중급"
         else:
             difficulty = "초급"
