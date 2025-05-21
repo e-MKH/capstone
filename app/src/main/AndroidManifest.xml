@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 인터넷 사용 권한 -->
+    <!-- 외부 서버(GNews API, Flask 서버 등)와 통신하기 위해 반드시 필요한 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,19 +14,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Capstone"
+        android:theme="@style/Theme.Sample"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
+
         tools:targetApi="31">
+
+        <!-- 앱의 시작 지점인 액티비티 등록 -->
+        <!-- MainActivity가 앱의 첫 화면 역할을 수행 -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.capstone.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Capstone">
+            android:theme="@style/Theme.Sample">
+
+            <!-- 앱 아이콘 클릭 시 실행될 액티비티 설정 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>
