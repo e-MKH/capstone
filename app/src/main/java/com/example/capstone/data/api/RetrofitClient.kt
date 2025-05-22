@@ -4,6 +4,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.example.capstone.data.api.JapaneseNlpService
+
+
 
 /**
  * [RetrofitClient]
@@ -18,6 +21,9 @@ object RetrofitClient {
 
     // 본문 추출 서버 주소 (Flask 서버: 포트 5000)
     private const val EXTRACT_BASE_URL = "http://10.0.2.2:5000/"
+
+    // 일본어 난이도 분석 서버 주소 (Flask 서버: 포트 6100)
+    private const val JAPANESE_NLP_BASE_URL = "http://10.0.2.2:6100/"
 
     // 네트워크 타임아웃이 설정된 OkHttpClient
     private val okHttpClient = OkHttpClient.Builder()
@@ -50,6 +56,20 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ExtractService::class.java)
+    }
+
+    /**
+     * 일본어 기사 난이도 분석 요청용 Retrofit 인스턴스
+     * /analyze-japanese-news 엔드포인트와 통신
+     */
+
+    val japaneseNlpService: JapaneseNlpService by lazy {
+        Retrofit.Builder()
+            .baseUrl(JAPANESE_NLP_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(JapaneseNlpService::class.java)
     }
 }
 
