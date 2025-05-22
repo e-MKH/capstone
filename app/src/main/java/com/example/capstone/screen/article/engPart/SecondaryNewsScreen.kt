@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondaryNewsScreen(
+    language: String,
     navController: NavController,
     sharedUrlViewModel: SharedUrlViewModel,
     sharedTextViewModel: SharedTextViewModel,
@@ -35,16 +36,25 @@ fun SecondaryNewsScreen(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    LaunchedEffect(selectedCategory) {
+    // ✅ 카테고리 변경 시 최초 로딩
+    LaunchedEffect(language, selectedCategory) {
         if (articles.isEmpty()) {
-            viewModel.fetchNews("en", selectedCategory)
+            viewModel.fetchNews(language, selectedCategory)
         }
+    }
+
+    // ✅ 정렬 기준 정의
+    fun difficultyOrder(difficulty: String?): Int = when (difficulty) {
+        "초급" -> 1
+        "중급" -> 2
+        "고급" -> 3
+        else -> Int.MAX_VALUE
     }
 
     var sortOption by remember { mutableStateOf("기본") }
     val sortedArticles = when (sortOption) {
-        "난이도 오름차순" -> articles.sortedBy { it.difficulty }
-        "난이도 내림차순" -> articles.sortedByDescending { it.difficulty }
+        "난이도 오름차순" -> articles.sortedBy { difficultyOrder(it.difficulty) }
+        "난이도 내림차순" -> articles.sortedByDescending { difficultyOrder(it.difficulty) }
         else -> articles
     }
 
@@ -53,8 +63,12 @@ fun SecondaryNewsScreen(
         "경제" to "business",
         "사회" to "world",
         "기술" to "technology",
-        "과학" to "science"
+        "과학" to "science",
+        "연예" to "entertainment",
+        "건강" to "health",
+        "스포츠" to "sports"
     )
+
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expandedCategory by remember { mutableStateOf(false) }
     var expandedSort by remember { mutableStateOf(false) }
@@ -71,7 +85,7 @@ fun SecondaryNewsScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // 카테고리 드롭다운
+            // ✅ 카테고리 드롭다운
             ExposedDropdownMenuBox(
                 expanded = expandedCategory,
                 onExpandedChange = { expandedCategory = !expandedCategory },
@@ -85,7 +99,6 @@ fun SecondaryNewsScreen(
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedCategory) },
                     modifier = Modifier.menuAnchor()
                 )
-
                 DropdownMenu(
                     expanded = expandedCategory,
                     onDismissRequest = { expandedCategory = false }
@@ -97,14 +110,14 @@ fun SecondaryNewsScreen(
                                 expandedCategory = false
                                 viewModel.setCategory(query)
                                 viewModel.isLoading.value = true
-                                viewModel.fetchNews("en", query)
+                                viewModel.fetchNews(language, query)
                             }
                         )
                     }
                 }
             }
 
-            // 정렬 드롭다운
+            // ✅ 정렬 드롭다운
             ExposedDropdownMenuBox(
                 expanded = expandedSort,
                 onExpandedChange = { expandedSort = !expandedSort },
@@ -118,12 +131,11 @@ fun SecondaryNewsScreen(
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedSort) },
                     modifier = Modifier.menuAnchor()
                 )
-
                 DropdownMenu(
                     expanded = expandedSort,
                     onDismissRequest = { expandedSort = false }
                 ) {
-                    listOf("기본", "오름차순", "내림차순").forEach { option ->
+                    listOf("기본", "난이도 오름차순", "난이도 내림차순").forEach { option ->
                         DropdownMenuItem(
                             text = { Text(option) },
                             onClick = {
@@ -135,10 +147,10 @@ fun SecondaryNewsScreen(
                 }
             }
 
-            // 새로고침
+            // ✅ 새로고침 버튼
             IconButton(
                 onClick = {
-                    viewModel.fetchNews("en", selectedCategory, forceRefresh = true)
+                    viewModel.fetchNews(language, selectedCategory, forceRefresh = true)
                 }
             ) {
                 Icon(Icons.Default.Refresh, contentDescription = "새로고침")

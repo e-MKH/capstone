@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimaryNewsScreen(
+    language: String,
     navController: NavController,
     sharedUrlViewModel: SharedUrlViewModel,
     sharedTextViewModel: SharedTextViewModel,
@@ -40,16 +41,21 @@ fun PrimaryNewsScreen(
         "경제" to "business",
         "사회" to "world",
         "기술" to "technology",
-        "과학" to "science"
+        "과학" to "science",
+        "연예" to "entertainment",
+        "건강" to "health",
+        "스포츠" to "sports"
     )
+
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expanded by remember { mutableStateOf(false) }
 
-    LaunchedEffect(selectedCategory) {
+    LaunchedEffect(language, selectedCategory) { // ✅ language도 감지
         if (articles.isEmpty()) {
-            viewModel.fetchNews("en", selectedCategory)
+            viewModel.fetchNews(language, selectedCategory) // ✅ 전달된 언어 사용
         }
     }
+
 
     Column(
         modifier = Modifier

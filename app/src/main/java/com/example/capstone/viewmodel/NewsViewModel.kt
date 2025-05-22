@@ -45,7 +45,6 @@ class NewsViewModel : ViewModel() {
         "expert" to "고급"
     )
 
-    private val MIN_ARTICLE_COUNT = 5
     private val CACHE_TTL_MS = 10 * 60 * 1000L // 10분
 
     fun fetchNews(language: String, topic: String = _selectedCategory.value, forceRefresh: Boolean = false) {
@@ -80,6 +79,9 @@ class NewsViewModel : ViewModel() {
                     token = GNewsApiService.apiKey,
                     max = 10
                 )
+                    /** val originalArticles = response.articles.map {
+                        it.copy(language = language) // 
+                    } */
 
                 val analyzedArticles = response.articles.map { article ->
                     async { analyzeDifficulty(article) }
@@ -90,13 +92,6 @@ class NewsViewModel : ViewModel() {
                 cacheTimestamps[cacheKey] = now
 
                 filterArticlesByUserLevel()
-
-                val targetLevel = levelTarget[userLevel] ?: "초급"
-                val validCount = _articles.value.count { it.difficulty == targetLevel }
-
-                if (validCount < MIN_ARTICLE_COUNT) {
-                    Log.w("NewsViewModel", "⚠️ ${targetLevel} 수준 기사 수 부족: ${validCount}개")
-                }
 
 
             } catch (e: Exception) {

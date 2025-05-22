@@ -9,13 +9,11 @@ import com.example.capstone.screen.article.ArticleDetailScreen
 import com.example.capstone.screen.Settings
 import com.example.capstone.screen.Info
 import com.example.capstone.screen.WordBookScreen
-import com.example.capstone.screen.article.engPart.LanguageArticleScreenEng
 import com.example.capstone.viewmodel.SharedUrlViewModel
 import com.example.capstone.viewmodel.SharedTextViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import android.util.Log
-import com.example.capstone.screen.article.engPart.ExpertListScreen
 import com.example.capstone.screen.article.engPart.PrimaryNewsScreen
 import com.example.capstone.screen.article.engPart.SecondaryNewsScreen
 
@@ -62,15 +60,6 @@ fun NavGraph(
             Info()
         }
 
-        // 영어 뉴스 리스트 화면
-        composable(Screen.EnglishNews.route) {
-            LanguageArticleScreenEng(
-                navController = navController,
-                sharedUrlViewModel = sharedUrlViewModel,
-                sharedTextViewModel = sharedTextViewModel
-            )
-        }
-
         // 기사 상세 화면 (URL 기반 WebView)
         composable(Screen.ArticleDetail.route) {
             val url = sharedUrlViewModel.url.collectAsState().value // 공유 ViewModel에서 URL 가져오기
@@ -83,17 +72,10 @@ fun NavGraph(
         }
 
 
-// 전문가 뉴스 전용 화면
-        composable(Screen.ExpertNews.route) {
-            ExpertListScreen(
-                navController = navController,
-                sharedUrlViewModel = sharedUrlViewModel,
-                sharedTextViewModel = sharedTextViewModel
-            )
-        }
         // 사용자 레벨 맞춤 뉴스 메인 화면
         composable(Screen.PrimaryNews.route) {
             PrimaryNewsScreen(
+                language = "en",
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,
                 sharedTextViewModel = sharedTextViewModel
@@ -103,11 +85,48 @@ fun NavGraph(
 // 사용자 레벨 외 기사 목록 화면
         composable(Screen.SecondaryNews.route) {
             SecondaryNewsScreen(
+                language = "en",
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+        composable(Screen.PrimaryNewsJa.route) {
+            PrimaryNewsScreen(
+                language = "ja",
+                navController = navController,
+                sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel
+            )
+        }
+
+        composable(Screen.PrimaryNewsJa.route) {
+            SecondaryNewsScreen(
+                language = "ja",
+                navController = navController,
+                sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel
+            )
+        }
+        composable(Screen.PrimaryNewsEs.route) {
+            PrimaryNewsScreen(
+                language = "es",
+                navController = navController,
+                sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel
+            )
+        }
+        composable(Screen.PrimaryNewsEs.route) {
+            SecondaryNewsScreen(
+                language = "es",
+                navController = navController,
+                sharedUrlViewModel = sharedUrlViewModel,
+                sharedTextViewModel = sharedTextViewModel
+            )
+        }
+
+
+
 
 
     }

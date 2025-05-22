@@ -7,9 +7,18 @@ package com.example.capstone.navigation
  * - Jetpack Navigation에서 경로(route)로 사용됨
  */
 sealed class Screen(val route: String) {
-    object PrimaryNews : Screen("primary_news")
 
+    object PrimaryNews : Screen("primary_news")
     object SecondaryNews : Screen("secondary_news")
+
+    /** 일본어 뉴스 */
+    object PrimaryNewsJa : Screen("primary_ja")
+    object SecondaryNewsJa : Screen("secondary_ja")
+
+    /** 스페인어 뉴스 */
+    object PrimaryNewsEs : Screen("primary_es")
+    object SecondaryNewsEs : Screen("secondary_es")
+
 
     /** 언어 선택 메인 화면 (뉴스 언어 선택 버튼) */
     object Article : Screen("article")
@@ -23,14 +32,10 @@ sealed class Screen(val route: String) {
     /** ℹ앱 정보 화면 */
     object Info : Screen("info")
 
-    /** 영어 뉴스 리스트 화면 */
-    object EnglishNews : Screen("eng")
 
     /** 기사 본문 */
     object ArticleDetail : Screen("detail")
 
 
-    /** 전문가 뉴스 화면 */
-    object ExpertNews : Screen("expert")
 
 }

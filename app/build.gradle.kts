@@ -32,8 +32,6 @@ android {
         val gnewsApiKey = localProperties.getProperty("GNEWS_API_KEY") ?: ""
         buildConfigField("String", "GNEWS_API_KEY", "\"$gnewsApiKey\"")
 
-        val nytApiKey = localProperties.getProperty("NYT_API_KEY") ?: ""
-        buildConfigField("String", "NYT_API_KEY", "\"$nytApiKey\"")
     }
 
     buildTypes {
