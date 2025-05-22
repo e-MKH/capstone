@@ -8,6 +8,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.example.capstone.data.api.JapaneseNlpService
+
+
 
 /**
  * [RetrofitClient]
@@ -22,6 +25,9 @@ object RetrofitClient {
 
     // 본문 추출 서버 주소 (Flask 서버: 포트 5000)
     private const val EXTRACT_BASE_URL = "http://10.0.2.2:5000/"
+
+    // 일본어 난이도 분석 서버 주소 (Flask 서버: 포트 6100)
+    private const val JAPANESE_NLP_BASE_URL = "http://10.0.2.2:6100/"
 
     // 네트워크 타임아웃이 설정된 OkHttpClient
     private val okHttpClient = OkHttpClient.Builder()
@@ -55,21 +61,32 @@ object RetrofitClient {
             .build()
             .create(ExtractService::class.java)
     }
-    val datamuseService: DatamuseService by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://api.datamuse.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(DatamuseService::class.java)
-    }
 
-        val flaskService: FlaskThesaurusService by lazy {
-        Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:7001/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(FlaskThesaurusService::class.java)
-    }
+    val datamuseService: DatamuseService by lazy {
+    Retrofit.Builder()
+        .baseUrl("https://api.datamuse.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(DatamuseService::class.java)
+}
+
+val flaskService: FlaskThesaurusService by lazy {
+    Retrofit.Builder()
+        .baseUrl("http://10.0.2.2:7001/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(FlaskThesaurusService::class.java)
+}
+
+val japaneseNlpService: JapaneseNlpService by lazy {
+    Retrofit.Builder()
+        .baseUrl(JAPANESE_NLP_BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(JapaneseNlpService::class.java)
+}
+
 }
 
 
