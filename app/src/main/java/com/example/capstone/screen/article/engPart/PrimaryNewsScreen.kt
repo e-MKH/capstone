@@ -130,8 +130,11 @@ fun PrimaryNewsScreen(
                                 val response = RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
                                 if (response.isSuccessful) {
                                     val text = response.body()?.text ?: ""
-                                    sharedTextViewModel.setText(text)
-                                    sharedTextViewModel.setTitle(article.title)
+                                    sharedTextViewModel.setText(
+                                        newText = text,
+                                        lang = language, // ✅ 현재 화면에서 받은 언어
+                                        newTitle = article.title
+                                    )
                                     navController.navigate("detail")
                                 } else {
                                     Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()

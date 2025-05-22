@@ -1,13 +1,16 @@
 package com.example.capstone.screen.article
 
+import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.ModalBottomSheet
@@ -17,12 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.capstone.viewmodel.SharedTextViewModel
+import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.data.api.RetrofitTranslateClient
+import com.example.capstone.data.api.service.ThesaurusRequest
 import com.example.capstone.data.api.service.TranslateRequest
+import com.example.capstone.viewmodel.SharedTextViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,7 +37,8 @@ import kotlinx.coroutines.launch
 fun AnimatedClickableWord(
     word: String,
     isHighlighted: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
 ) {
     var isPressed by remember { mutableStateOf(false) }
     var scale by remember { mutableStateOf(1f) }
@@ -57,15 +64,20 @@ fun AnimatedClickableWord(
         }
     }
 
-    Text(
+    BasicText(
         text = "$word ",
         modifier = Modifier
             .graphicsLayer(scaleX = animatedScale, scaleY = animatedScale)
             .background(backgroundColor, shape = RoundedCornerShape(4.dp))
             .padding(horizontal = 4.dp, vertical = 2.dp)
-            .clickable {
-                isPressed = true
-                onClick()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        isPressed = true
+                        onClick()
+                    },
+                    onLongPress = { onLongClick() }
+                )
             },
         style = MaterialTheme.typography.bodyMedium
     )
@@ -82,6 +94,7 @@ fun ArticleDetailScreen(
 
     val textState by sharedTextViewModel.text.collectAsState()
     val titleState by sharedTextViewModel.title.collectAsState()
+    val languageState by sharedTextViewModel.language.collectAsState()
 
     var translatedText by remember { mutableStateOf<String?>(null) }
     var translatedTitle by remember { mutableStateOf<String?>(null) }
@@ -90,13 +103,24 @@ fun ArticleDetailScreen(
 
     val highlightedSentences = remember { mutableStateListOf<Int>() }
     val translatedSentences = remember { mutableStateMapOf<Int, String>() }
-    val showBottomSheet = remember { mutableStateOf(false) }
+
+    val showSynonymSheet = remember { mutableStateOf(false) }
+    val showTranslationSheet = remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
+    val synonymList = remember { mutableStateListOf<String>() }
+    val antonymList = remember { mutableStateListOf<String>() }
+
+    val ttsReady = remember { mutableStateOf(false) }
+    val tts = remember {
+        TextToSpeech(context) { status ->
+            ttsReady.value = (status == TextToSpeech.SUCCESS)
+        }
+    }
 
     val originalText = textState
         .removePrefix(titleState)
         .replace("\n", " ")
-        .replace(Regex("[^\\x00-\\x7F]+"), "") // ASCII 외 문자 제거
+        .replace(Regex("[^\\x00-\\x7F]+"), "")
         .replace(Regex("\\s+"), " ")
         .trim()
 
@@ -156,11 +180,12 @@ fun ArticleDetailScreen(
                                     val response = RetrofitTranslateClient.translateService
                                         .translateText(TranslateRequest(sentenceList[index]))
                                     if (response.isSuccessful) {
-                                        translatedSentences[index] = response.body()?.translated_text ?: "번역 실패"
+                                        translatedSentences[index] =
+                                            response.body()?.translated_text ?: "번역 실패"
                                     }
                                 }
                             }
-                            showBottomSheet.value = true
+                            showTranslationSheet.value = true
                         }
                     },
                     enabled = highlightedSentences.isNotEmpty(),
@@ -199,31 +224,78 @@ fun ArticleDetailScreen(
                             sentence.trim().split(" ").forEach { word ->
                                 AnimatedClickableWord(
                                     word = word,
-                                    isHighlighted = isHighlighted
-                                ) {
-                                    coroutineScope.launch {
-                                        val response = RetrofitTranslateClient.translateService
-                                            .translateText(TranslateRequest(word))
-                                        if (response.isSuccessful) {
-                                            val translated = response.body()?.translated_text
-                                            Toast.makeText(
-                                                context,
-                                                "'$word' → '$translated'",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                    isHighlighted = isHighlighted,
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            val response = RetrofitTranslateClient.translateService
+                                                .translateText(TranslateRequest(word))
+                                            if (response.isSuccessful) {
+                                                val translated = response.body()?.translated_text
+                                                Toast.makeText(
+                                                    context,
+                                                    "'$word' → '$translated'",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                if (ttsReady.value && word.isNotBlank()) {
+                                                    tts.speak(word, TextToSpeech.QUEUE_FLUSH, null, null)
+                                                }
+                                            }
+                                        }
+                                    },
+                                    onLongClick = {
+                                        coroutineScope.launch {
+                                            try {
+                                                if (languageState == "en") {
+                                                    val cleanWord = word
+                                                        .trim()
+                                                        .replace("[^A-Za-z0-9]".toRegex(), "")
+                                                        .lowercase()
+
+                                                    val syns = RetrofitClient.datamuseService.getSynonyms(cleanWord)
+                                                    synonymList.clear()
+                                                    synonymList.addAll(syns.map { it.word })
+                                                } else {
+                                                    val response = RetrofitClient.flaskService.getRelations(
+                                                        ThesaurusRequest(word, languageState)
+                                                    )
+                                                    synonymList.clear()
+                                                    antonymList.clear()
+                                                    synonymList.addAll(response.synonyms)
+                                                    antonymList.addAll(response.antonyms)
+                                                }
+                                                showSynonymSheet.value = true
+                                            } catch (e: Exception) {
+                                                Toast.makeText(context, "❌ 동의어 요청 실패", Toast.LENGTH_SHORT).show()
+                                            }
                                         }
                                     }
-                                }
+                                )
                             }
                         }
-                        Spacer(modifier = Modifier.height(8.dp)) // 문장 간 시각적 간격
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
 
-            if (showBottomSheet.value) {
+            // ✅ 동의어 BottomSheet
+            if (showSynonymSheet.value) {
                 ModalBottomSheet(
-                    onDismissRequest = { showBottomSheet.value = false },
+                    onDismissRequest = { showSynonymSheet.value = false },
+                    sheetState = sheetState
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("🔁 동의어", style = MaterialTheme.typography.titleMedium)
+                        synonymList.takeIf { it.isNotEmpty() }?.forEach {
+                            Text("• $it")
+                        } ?: Text("없음")
+                    }
+                }
+            }
+
+            // ✅ 하이라이트 번역 BottomSheet
+            if (showTranslationSheet.value) {
+                ModalBottomSheet(
+                    onDismissRequest = { showTranslationSheet.value = false },
                     sheetState = sheetState
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {

@@ -1,5 +1,7 @@
 package com.example.capstone.data.api
 
+import com.example.capstone.data.api.service.FlaskThesaurusService
+import com.example.capstone.data.api.service.DatamuseService
 import com.example.capstone.data.api.service.ExtractService
 import com.example.capstone.data.api.service.NlpService
 import okhttp3.OkHttpClient
@@ -52,6 +54,21 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ExtractService::class.java)
+    }
+    val datamuseService: DatamuseService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://api.datamuse.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(DatamuseService::class.java)
+    }
+
+        val flaskService: FlaskThesaurusService by lazy {
+        Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:7001/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(FlaskThesaurusService::class.java)
     }
 }
 

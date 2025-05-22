@@ -12,11 +12,15 @@ class SharedTextViewModel : ViewModel() {
     private val _title = MutableStateFlow("")
     val title: StateFlow<String> = _title
 
-    fun setText(newText: String, sourceUrl: String? = null) {
-        _text.value = newText.trim()
-    }
+    private val _language = MutableStateFlow("en")
+    val language: StateFlow<String> = _language
 
-    fun setTitle(newTitle: String) {
+    /**
+     * ✅ 기사 본문과 언어, 제목을 함께 설정
+     */
+    fun setText(newText: String, lang: String, newTitle: String) {
+        _text.value = newText.trim()
+        _language.value = lang
         _title.value = newTitle
     }
 }
