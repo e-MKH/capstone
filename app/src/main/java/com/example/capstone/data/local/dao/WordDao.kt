@@ -25,7 +25,7 @@ interface WordDao {
      *
      * @return 저장된 모든 단어 리스트
      */
-    @Query("SELECT * FROM word_table")
+    @Query("SELECT * FROM vocabulary")
     suspend fun getAllWords(): List<Vocabulary>
 
     /**

@@ -7,7 +7,9 @@ import androidx.room.Entity
     primaryKeys = [""]
 )
 data class Article(
-    val article : String,
+    val title : String,
+    val description : String,
+    val content : String,
     val langCode : String,
     val translation : String,
     val isFavorite : Boolean = false,
