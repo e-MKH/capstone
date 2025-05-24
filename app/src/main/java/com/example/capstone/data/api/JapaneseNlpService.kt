@@ -5,7 +5,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface JapaneseNlpService {
-    @GET("analyze-japanese-news")
-    fun analyzeJapaneseNews(@Query("q") keyword: String): Call<JapaneseNewsResponse>
+    @GET("japan-news-analyze")
+    fun getAnalyzedJapaneseNews(
+        @Query("category") category: String
+    ): Call<JapaneseNewsResponse>
 }
 
