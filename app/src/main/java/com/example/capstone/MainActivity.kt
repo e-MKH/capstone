@@ -36,11 +36,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
-    val items = listOf(
-        Screen.PrimaryNews,
-        Screen.SecondaryNews
-    )
+fun BottomNavigationBar(
+    navController: NavHostController,
+    language: String
+) {
+    // ✅ 언어별 아이템 분기
+    val items = when (language) {
+        "ja" -> listOf(Screen.PrimaryNewsJa, Screen.SecondaryNewsJa)
+        "es" -> listOf(Screen.PrimaryNewsEs, Screen.SecondaryNewsEs)
+        else -> listOf(Screen.PrimaryNews, Screen.SecondaryNews) // 기본 영어
+    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -60,11 +65,14 @@ fun BottomNavigationBar(navController: NavHostController) {
                         }
                     }
                 },
-                icon = {
-                    Icon(Icons.Default.List, contentDescription = null)
-                },
+                icon = { Icon(Icons.Default.List, contentDescription = null) },
                 label = {
-                    Text(screen.route.replace("_", " ").replaceFirstChar { it.uppercase() })
+                    Text(
+                        when (screen) {
+                            is Screen.PrimaryNews, Screen.PrimaryNewsJa, Screen.PrimaryNewsEs -> "My level"
+                            else -> "Other Level"
+                        }
+                    )
                 }
             )
         }
@@ -84,9 +92,14 @@ fun MyApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    // ✅ 언어 상태 받아오기 (ja, en, es)
+    val language by sharedTextViewModel.language.collectAsState()
+
+    // ✅ 하단바를 표시할 route만 정의
     val showBottomBar = currentRoute in listOf(
-        Screen.PrimaryNews.route,
-        Screen.SecondaryNews.route
+        Screen.PrimaryNews.route, Screen.SecondaryNews.route,
+        Screen.PrimaryNewsJa.route, Screen.SecondaryNewsJa.route,
+        Screen.PrimaryNewsEs.route, Screen.SecondaryNewsEs.route
     )
 
     ModalNavigationDrawer(
@@ -126,7 +139,7 @@ fun MyApp() {
             },
             bottomBar = {
                 if (showBottomBar) {
-                    BottomNavigationBar(navController = navController)
+                    BottomNavigationBar(navController = navController, language = language)
                 }
             }
         ) { innerPadding ->

@@ -1,4 +1,4 @@
-package com.example.capstone.data.api
+package com.example.capstone.data.api.model
 
 data class ArticleAnalysis(
     val score: Double,
@@ -13,6 +13,7 @@ data class ArticleAnalysis(
 
 data class ArticleResult(
     val original: String,
+    val url: String, // ✅ 반드시 포함
     val analysis: ArticleAnalysis
 )
 

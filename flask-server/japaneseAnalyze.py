@@ -5,12 +5,12 @@ import requests
 from dotenv import load_dotenv
 from google.cloud import language_v1
 
-# ✅ 환경 변수 불러오기
-load_dotenv(dotenv_path=".env.japanese")
+# ✅ 환경 변수 불러오기 (.env.nlp 사용)
+load_dotenv(dotenv_path=".env.nlp")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 GNEWS_API_KEY = os.getenv("GNEWS_API_KEY")
 
-# ✅ Flask 앱
+# ✅ Flask 앱 초기화
 app = Flask(__name__)
 client = language_v1.LanguageServiceClient()
 
@@ -23,15 +23,13 @@ def classify_level(score):
     else:
         return "상 (難)"
 
-# ✅ 형태소 분석 + 난이도 계산
+# ✅ 텍스트 분석 함수
 def analyze_text(text):
-    # 문장 나누기
     sentences = re.split(r'(?<=[。！？])', text)
     total_chars = sum(len(s) for s in sentences)
     total_sentences = len(sentences) or 1
     avg_sentence_length = total_chars / total_sentences
 
-    # Google NLP 분석 요청
     document = language_v1.Document(content=text, type_=language_v1.Document.Type.PLAIN_TEXT, language="ja")
     response = client.analyze_syntax(request={"document": document})
 
@@ -48,10 +46,8 @@ def analyze_text(text):
         tag = language_v1.PartOfSpeech.Tag(token.part_of_speech.tag).name
         counts["words"] += 1
 
-        # 한자어 판별
         if re.search(r"[一-龥]", surface):
             counts["kanji_words"] += 1
-        # 와고(일본 고유어: 히라가나만) 판별
         elif re.fullmatch(r"[ぁ-んー]+", surface):
             counts["wago_words"] += 1
 
@@ -60,14 +56,12 @@ def analyze_text(text):
         elif tag == "AUXILIARY":
             counts["aux_verbs"] += 1
 
-    # 비율 계산
     total_words = counts["words"] or 1
     p_kanji = counts["kanji_words"] / total_words
     p_wago = counts["wago_words"] / total_words
     p_verb = counts["verbs"] / total_words
     p_aux = counts["aux_verbs"] / total_words
 
-    # 난이도 점수 계산 (논문 기반)
     score = (
         -0.056 * avg_sentence_length
         -0.126 * p_kanji
@@ -88,7 +82,7 @@ def analyze_text(text):
         "sentences_analyzed": total_sentences
     }
 
-# ✅ 기사 수집
+# ✅ 기사 수집 함수 (url 포함)
 def fetch_japanese_articles(keyword):
     url = "https://gnews.io/api/v4/search"
     params = {
@@ -99,21 +93,28 @@ def fetch_japanese_articles(keyword):
         "max": 3
     }
     res = requests.get(url, params=params)
-    return [a["title"] + " " + a.get("description", "") for a in res.json().get("articles", [])]
+    articles = res.json().get("articles", [])
+    return [{
+        "text": a["title"] + " " + a.get("description", ""),
+        "url": a.get("url", "")
+    } for a in articles]
 
-# ✅ Flask 라우트
+# ✅ 라우트 정의
 @app.route("/analyze-japanese-news", methods=["GET"])
 def analyze_japanese_news():
     keyword = request.args.get("q", "経済")
     try:
         articles = fetch_japanese_articles(keyword)
         results = []
-        for text in articles:
-            analysis = analyze_text(text)
+
+        for article in articles:
+            analysis = analyze_text(article["text"])
             results.append({
-                "original": text[:100] + "...",
+                "original": article["text"][:100] + "...",
+                "url": article["url"],
                 "analysis": analysis
             })
+
         return jsonify({
             "keyword": keyword,
             "results": results

@@ -91,6 +91,7 @@ fun NavGraph(
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+        // ✅ 일본어 primary
         composable(Screen.PrimaryNewsJa.route) {
             PrimaryNewsScreen(
                 language = "ja",
@@ -100,7 +101,8 @@ fun NavGraph(
             )
         }
 
-        composable(Screen.PrimaryNewsJa.route) {
+// ✅ 일본어 secondary
+        composable(Screen.SecondaryNewsJa.route) {
             SecondaryNewsScreen(
                 language = "ja",
                 navController = navController,
@@ -108,6 +110,8 @@ fun NavGraph(
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+
+// ✅ 스페인어 primary
         composable(Screen.PrimaryNewsEs.route) {
             PrimaryNewsScreen(
                 language = "es",
@@ -116,7 +120,9 @@ fun NavGraph(
                 sharedTextViewModel = sharedTextViewModel
             )
         }
-        composable(Screen.PrimaryNewsEs.route) {
+
+// ✅ 스페인어 secondary
+        composable(Screen.SecondaryNewsEs.route) {
             SecondaryNewsScreen(
                 language = "es",
                 navController = navController,

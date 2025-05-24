@@ -17,9 +17,11 @@ import androidx.navigation.NavController
 import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.ui.components.ArticleCard
 import com.example.capstone.viewmodel.NewsViewModel
+import com.example.capstone.viewmodel.JaNewsViewModel
 import com.example.capstone.viewmodel.SharedTextViewModel
 import com.example.capstone.viewmodel.SharedUrlViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,14 +29,31 @@ fun PrimaryNewsScreen(
     language: String,
     navController: NavController,
     sharedUrlViewModel: SharedUrlViewModel,
-    sharedTextViewModel: SharedTextViewModel,
-    viewModel: NewsViewModel = viewModel()
+    sharedTextViewModel: SharedTextViewModel
 ) {
-    val articles by viewModel.primaryArticles.collectAsState()
-    val selectedCategory by viewModel.selectedCategory.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    val jaViewModel: JaNewsViewModel = viewModel()
+    val enViewModel: NewsViewModel = viewModel()
+
+    val isJapanese = language == "ja"
+    val viewModel = if (isJapanese) jaViewModel else enViewModel
+
+    val articles by if (isJapanese)
+        jaViewModel.primaryArticles.collectAsState()
+    else
+        enViewModel.primaryArticles.collectAsState()
+
+    val selectedCategory by if (isJapanese)
+        jaViewModel.selectedCategory.collectAsState()
+    else
+        enViewModel.selectedCategory.collectAsState()
+
+    val isLoading by if (isJapanese)
+        jaViewModel.isLoading.collectAsState()
+    else
+        enViewModel.isLoading.collectAsState()
 
     val categories = listOf(
         "정치" to "politics",
@@ -50,97 +69,105 @@ fun PrimaryNewsScreen(
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expanded by remember { mutableStateOf(false) }
 
-    LaunchedEffect(language, selectedCategory) { // ✅ language도 감지
+    LaunchedEffect(language, selectedCategory) {
         if (articles.isEmpty()) {
-            viewModel.fetchNews(language, selectedCategory) // ✅ 전달된 언어 사용
+            if (isJapanese)
+                jaViewModel.fetchJapaneseNews(selectedCategory)
+            else
+                enViewModel.fetchNews(language, selectedCategory)
         }
     }
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // ✅ 카테고리 선택 + 새로고침 Row
-        Row(
+    Scaffold { paddingValues ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(paddingValues)
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextField(
-                    value = currentLabel,
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text("카테고리 선택") },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                    modifier = Modifier
-                        .weight(1f)
-                        .menuAnchor()
-                )
-
-                DropdownMenu(
+                ExposedDropdownMenuBox(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onExpandedChange = { expanded = !expanded }
                 ) {
-                    categories.forEach { (label, query) ->
-                        DropdownMenuItem(
-                            text = { Text(label) },
-                            onClick = {
-                                expanded = false
-                                viewModel.setCategory(query)
-                                viewModel.isLoading.value = true
-                                viewModel.fetchNews("en", query)
-                            }
-                        )
+                    TextField(
+                        value = currentLabel,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("카테고리 선택") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                        modifier = Modifier.menuAnchor()
+                    )
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        categories.forEach { (label, query) ->
+                            DropdownMenuItem(
+                                text = { Text(label) },
+                                onClick = {
+                                    expanded = false
+                                    if (isJapanese) {
+                                        jaViewModel.setCategory(query)
+                                        jaViewModel.fetchJapaneseNews(query)
+                                    } else {
+                                        enViewModel.setCategory(query)
+                                        enViewModel.fetchNews(language, query, forceRefresh = true)
+                                    }
+                                }
+                            )
+                        }
                     }
+                }
+
+                IconButton(
+                    onClick = {
+                        if (isJapanese)
+                            jaViewModel.fetchJapaneseNews(selectedCategory)
+                        else
+                            enViewModel.fetchNews(language, selectedCategory, forceRefresh = true)
+                    },
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
+                    Icon(Icons.Default.Refresh, contentDescription = "새로고침")
                 }
             }
 
-            // ✅ 수동 새로고침 버튼
-            IconButton(
-                onClick = {
-                    viewModel.fetchNews("en", selectedCategory, forceRefresh = true)
-                },
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Icon(Icons.Default.Refresh, contentDescription = "새로고침")
-            }
-        }
+            Spacer(modifier = Modifier.height(4.dp))
 
-        Spacer(modifier = Modifier.height(4.dp))
-
-        if (isLoading && articles.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(articles) { article ->
-                    ArticleCard(article = article) {
-                        coroutineScope.launch {
-                            try {
-                                sharedUrlViewModel.setUrl(article.url)
-                                val response = RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
-                                if (response.isSuccessful) {
-                                    val text = response.body()?.text ?: ""
-                                    sharedTextViewModel.setText(
-                                        newText = text,
-                                        lang = language, // ✅ 현재 화면에서 받은 언어
-                                        newTitle = article.title
-                                    )
-                                    navController.navigate("detail")
-                                } else {
-                                    Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
+            if (isLoading && articles.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(articles) { article ->
+                        ArticleCard(article = article) {
+                            coroutineScope.launch {
+                                try {
+                                    sharedUrlViewModel.setUrl(article.url)
+                                    val response = RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
+                                    if (response.isSuccessful) {
+                                        val text = response.body()?.text ?: ""
+                                        sharedTextViewModel.setText(
+                                            newText = text,
+                                            lang = language,
+                                            newTitle = article.title
+                                        )
+                                        navController.navigate("detail")
+                                    } else {
+                                        Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
+                                    }
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "에러: ${e.message}", Toast.LENGTH_SHORT).show()
                                 }
-                            } catch (e: Exception) {
-                                Toast.makeText(context, "에러: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

@@ -13,43 +13,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.ui.components.ArticleCard
-import com.example.capstone.viewmodel.NewsViewModel
-import com.example.capstone.viewmodel.SharedTextViewModel
-import com.example.capstone.viewmodel.SharedUrlViewModel
+import com.example.capstone.viewmodel.*
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondaryNewsScreen(
     language: String,
-    navController: NavController,
+    navController: NavHostController,
     sharedUrlViewModel: SharedUrlViewModel,
-    sharedTextViewModel: SharedTextViewModel,
-    viewModel: NewsViewModel = viewModel()
+    sharedTextViewModel: SharedTextViewModel
 ) {
-    val articles by viewModel.secondaryArticles.collectAsState()
-    val selectedCategory by viewModel.selectedCategory.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(language, selectedCategory) {
-        if (articles.isEmpty()) {
-            viewModel.fetchNews(language, selectedCategory)
+    val jaViewModel: JaNewsViewModel = viewModel()
+    val enViewModel: NewsViewModel = viewModel()
+    val isJapanese = language == "ja"
+    val viewModel = if (isJapanese) jaViewModel else enViewModel
+
+    val articles by if (isJapanese)
+        jaViewModel.secondaryArticles.collectAsState()
+    else
+        enViewModel.secondaryArticles.collectAsState()
+
+    val selectedCategory by if (isJapanese)
+        jaViewModel.selectedCategory.collectAsState()
+    else
+        enViewModel.selectedCategory.collectAsState()
+
+    val isLoading by if (isJapanese)
+        jaViewModel.isLoading.collectAsState()
+    else
+        enViewModel.isLoading.collectAsState()
+
+    var sortOption by remember { mutableStateOf("기본") }
+    val difficultyOrder = { difficulty: String? ->
+        when (difficulty) {
+            "초급" -> 1
+            "중급" -> 2
+            "고급" -> 3
+            else -> Int.MAX_VALUE
         }
     }
 
-    fun difficultyOrder(difficulty: String?): Int = when (difficulty) {
-        "초급" -> 1
-        "중급" -> 2
-        "고급" -> 3
-        else -> Int.MAX_VALUE
-    }
-
-    var sortOption by remember { mutableStateOf("기본") }
     val sortedArticles = when (sortOption) {
         "난이도 오름차순" -> articles.sortedBy { difficultyOrder(it.difficulty) }
         "난이도 내림차순" -> articles.sortedByDescending { difficultyOrder(it.difficulty) }
@@ -66,23 +77,27 @@ fun SecondaryNewsScreen(
         "건강" to "health",
         "스포츠" to "sports"
     )
+
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expandedCategory by remember { mutableStateOf(false) }
     var expandedSort by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
+    LaunchedEffect(language, selectedCategory) {
+        if (articles.isEmpty()) {
+            if (isJapanese)
+                jaViewModel.fetchJapaneseNews(selectedCategory)
+            else
+                enViewModel.fetchNews(language, selectedCategory)
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // 카테고리 드롭다운
+            // 카테고리 선택
             ExposedDropdownMenuBox(
                 expanded = expandedCategory,
                 onExpandedChange = { expandedCategory = !expandedCategory },
@@ -106,16 +121,20 @@ fun SecondaryNewsScreen(
                             text = { Text(label) },
                             onClick = {
                                 expandedCategory = false
-                                viewModel.setCategory(query)
-                                viewModel.isLoading.value = true
-                                viewModel.fetchNews(language, query) // ✅ 언어 반영
+                                if (isJapanese) {
+                                    jaViewModel.setCategory(query)
+                                    jaViewModel.fetchJapaneseNews(query)
+                                } else {
+                                    enViewModel.setCategory(query)
+                                    enViewModel.fetchNews(language, query)
+                                }
                             }
                         )
                     }
                 }
             }
 
-            // 정렬 드롭다운
+            // 정렬 선택
             ExposedDropdownMenuBox(
                 expanded = expandedSort,
                 onExpandedChange = { expandedSort = !expandedSort },
@@ -149,7 +168,10 @@ fun SecondaryNewsScreen(
             // 새로고침 버튼
             IconButton(
                 onClick = {
-                    viewModel.fetchNews(language, selectedCategory, forceRefresh = true) // ✅ 언어 반영
+                    if (isJapanese)
+                        jaViewModel.fetchJapaneseNews(selectedCategory)
+                    else
+                        enViewModel.fetchNews(language, selectedCategory, forceRefresh = true)
                 }
             ) {
                 Icon(Icons.Default.Refresh, contentDescription = "새로고침")
@@ -164,13 +186,11 @@ fun SecondaryNewsScreen(
                     CircularProgressIndicator()
                 }
             }
-
             !isLoading && sortedArticles.isEmpty() -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("표시할 중급/고급 기사가 없습니다.", style = MaterialTheme.typography.bodyLarge)
                 }
             }
-
             else -> {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(sortedArticles) { article ->
@@ -183,7 +203,7 @@ fun SecondaryNewsScreen(
                                         val text = response.body()?.text ?: ""
                                         sharedTextViewModel.setText(
                                             newText = text,
-                                            lang = language, // ✅ 언어 함께 저장
+                                            lang = language,
                                             newTitle = article.title
                                         )
                                         navController.navigate("detail")
@@ -197,13 +217,6 @@ fun SecondaryNewsScreen(
                         }
                     }
                 }
-            }
-        }
-
-        LaunchedEffect(articles) {
-            println("🔍 SecondaryArticles 수: ${articles.size}")
-            articles.forEach {
-                println("▶️ ${it.title} - ${it.difficulty}")
             }
         }
     }
