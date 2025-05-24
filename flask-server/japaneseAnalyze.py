@@ -1,37 +1,33 @@
 import os
 import re
 from flask import Flask, request, jsonify
-import requests
 from dotenv import load_dotenv
 from google.cloud import language_v1
 
-# ✅ 환경 변수 불러오기
+# ✅ 환경 변수 로딩
 load_dotenv(dotenv_path=".env.japanese")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-GNEWS_API_KEY = os.getenv("GNEWS_API_KEY")
 
-# ✅ Flask 앱
+# ✅ Flask 앱 생성
 app = Flask(__name__)
 client = language_v1.LanguageServiceClient()
 
-# ✅ 난이도 등급 분류 기준
+# ✅ 난이도 분류 기준
 def classify_level(score):
-    if score >= 10.5:
-        return "하 (易)"
-    elif score >= 9.5:
-        return "중 (中)"
+    if score >= 9.0:
+        return "초급"
+    elif score >= 8.5:
+        return "중급"
     else:
-        return "상 (難)"
+        return "고급"
 
-# ✅ 형태소 분석 + 난이도 계산
+# ✅ 본문 분석 함수
 def analyze_text(text):
-    # 문장 나누기
     sentences = re.split(r'(?<=[。！？])', text)
     total_chars = sum(len(s) for s in sentences)
     total_sentences = len(sentences) or 1
     avg_sentence_length = total_chars / total_sentences
 
-    # Google NLP 분석 요청
     document = language_v1.Document(content=text, type_=language_v1.Document.Type.PLAIN_TEXT, language="ja")
     response = client.analyze_syntax(request={"document": document})
 
@@ -48,10 +44,8 @@ def analyze_text(text):
         tag = language_v1.PartOfSpeech.Tag(token.part_of_speech.tag).name
         counts["words"] += 1
 
-        # 한자어 판별
         if re.search(r"[一-龥]", surface):
             counts["kanji_words"] += 1
-        # 와고(일본 고유어: 히라가나만) 판별
         elif re.fullmatch(r"[ぁ-んー]+", surface):
             counts["wago_words"] += 1
 
@@ -60,14 +54,12 @@ def analyze_text(text):
         elif tag == "AUXILIARY":
             counts["aux_verbs"] += 1
 
-    # 비율 계산
     total_words = counts["words"] or 1
     p_kanji = counts["kanji_words"] / total_words
     p_wago = counts["wago_words"] / total_words
     p_verb = counts["verbs"] / total_words
     p_aux = counts["aux_verbs"] / total_words
 
-    # 난이도 점수 계산 (논문 기반)
     score = (
         -0.056 * avg_sentence_length
         -0.126 * p_kanji
@@ -88,39 +80,22 @@ def analyze_text(text):
         "sentences_analyzed": total_sentences
     }
 
-# ✅ 기사 수집
-def fetch_japanese_articles(keyword):
-    url = "https://gnews.io/api/v4/search"
-    params = {
-        "q": keyword,
-        "lang": "ja",
-        "country": "jp",
-        "token": GNEWS_API_KEY,
-        "max": 3
-    }
-    res = requests.get(url, params=params)
-    return [a["title"] + " " + a.get("description", "") for a in res.json().get("articles", [])]
-
-# ✅ Flask 라우트
-@app.route("/analyze-japanese-news", methods=["GET"])
+# ✅ 새 엔드포인트: POST로 본문 받아서 분석
+@app.route("/analyze-japanese-news", methods=["POST"])
 def analyze_japanese_news():
-    keyword = request.args.get("q", "経済")
     try:
-        articles = fetch_japanese_articles(keyword)
-        results = []
-        for text in articles:
-            analysis = analyze_text(text)
-            results.append({
-                "original": text[:100] + "...",
-                "analysis": analysis
-            })
-        return jsonify({
-            "keyword": keyword,
-            "results": results
-        })
+        data = request.get_json()
+        text = data.get("text", "")
+        if not text.strip():
+            return jsonify({"error": "텍스트가 비어 있습니다."}), 400
+
+        analysis = analyze_text(text)
+        return jsonify(analysis)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 # ✅ 실행
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=6100)
+    app.run(debug=True, port=6100)
+
