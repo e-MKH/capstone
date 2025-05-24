@@ -25,4 +25,8 @@ sealed class Screen(val route: String) {
 
     /** 기사 본문 */
     object ArticleDetail : Screen("detail")
+
+    /** 일본어 뉴스 리스트 화면 */
+    object JapaneseNews : Screen("japanNews")
+
 }

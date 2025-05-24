@@ -15,7 +15,7 @@ import com.example.capstone.viewmodel.SharedTextViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import android.util.Log
-
+import com.example.capstone.ui.screen.LanguageArticleScreenJap
 /**
  * [NavGraph]
  * 앱 전체의 Navigation 구조를 정의
@@ -78,6 +78,10 @@ fun NavGraph(
                 url = url,
                 sharedTextViewModel = sharedTextViewModel
             )
+        }
+        // 일본어 뉴스 리스트 화면
+        composable(Screen.JapaneseNews.route) {  
+            LanguageArticleScreenJap()
         }
     }
 }
