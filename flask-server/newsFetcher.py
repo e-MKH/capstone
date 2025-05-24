@@ -3,7 +3,7 @@ from fetchJapaneseNews import fetch_news
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path=".env.news")
+load_dotenv(dotenv_path=".env.dev")
 
 app = Flask(__name__)
 

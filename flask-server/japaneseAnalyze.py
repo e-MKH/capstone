@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from google.cloud import language_v1
 
 # ✅ 환경 변수 로딩
-load_dotenv(dotenv_path=".env.japanese")
+load_dotenv(dotenv_path=".env.dev")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
 # ✅ Flask 앱 생성
