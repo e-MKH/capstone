@@ -1,3 +1,4 @@
+HEAD:app/src/main/java/com/example/capstone/data/api/model/JapaneseNewsResponse.kt
 package com.example.capstone.data.api.model
 
 data class ArticleAnalysis(
@@ -21,3 +22,4 @@ data class JapaneseNewsResponse(
     val keyword: String,
     val results: List<ArticleResult>
 )
+

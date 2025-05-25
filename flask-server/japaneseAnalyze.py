@@ -1,29 +1,31 @@
 import os
 import re
 from flask import Flask, request, jsonify
-import requests
 from dotenv import load_dotenv
 from google.cloud import language_v1
 
-# ✅ 환경 변수 불러오기 (.env.nlp 사용)
-load_dotenv(dotenv_path=".env.nlp")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-GNEWS_API_KEY = os.getenv("GNEWS_API_KEY")
 
-# ✅ Flask 앱 초기화
+# ✅ 환경 변수 로딩
+load_dotenv(dotenv_path=".env.japanese")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+
+
+# ✅ Flask 앱 생성
+
 app = Flask(__name__)
 client = language_v1.LanguageServiceClient()
 
-# ✅ 난이도 등급 분류 기준
+# ✅ 난이도 분류 기준
 def classify_level(score):
-    if score >= 10.5:
-        return "하 (易)"
-    elif score >= 9.5:
-        return "중 (中)"
+    if score >= 9.0:
+        return "초급"
+    elif score >= 8.5:
+        return "중급"
     else:
-        return "상 (難)"
+        return "고급"
 
-# ✅ 텍스트 분석 함수
+
+# ✅ 본문 분석 함수
 def analyze_text(text):
     sentences = re.split(r'(?<=[。！？])', text)
     total_chars = sum(len(s) for s in sentences)
@@ -82,46 +84,26 @@ def analyze_text(text):
         "sentences_analyzed": total_sentences
     }
 
-# ✅ 기사 수집 함수 (url 포함)
-def fetch_japanese_articles(keyword):
-    url = "https://gnews.io/api/v4/search"
-    params = {
-        "q": keyword,
-        "lang": "ja",
-        "country": "jp",
-        "token": GNEWS_API_KEY,
-        "max": 3
-    }
-    res = requests.get(url, params=params)
-    articles = res.json().get("articles", [])
-    return [{
-        "text": a["title"] + " " + a.get("description", ""),
-        "url": a.get("url", "")
-    } for a in articles]
 
-# ✅ 라우트 정의
-@app.route("/analyze-japanese-news", methods=["GET"])
+# ✅ 새 엔드포인트: POST로 본문 받아서 분석
+@app.route("/analyze-japanese-news", methods=["POST"])
+
 def analyze_japanese_news():
-    keyword = request.args.get("q", "経済")
     try:
-        articles = fetch_japanese_articles(keyword)
-        results = []
+        data = request.get_json()
+        text = data.get("text", "")
+        if not text.strip():
+            return jsonify({"error": "텍스트가 비어 있습니다."}), 400
 
-        for article in articles:
-            analysis = analyze_text(article["text"])
-            results.append({
-                "original": article["text"][:100] + "...",
-                "url": article["url"],
-                "analysis": analysis
-            })
+        analysis = analyze_text(text)
+        return jsonify(analysis)
 
-        return jsonify({
-            "keyword": keyword,
-            "results": results
-        })
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 # ✅ 실행
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=6100)
+    app.run(debug=True, port=6100)
+
+

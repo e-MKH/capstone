@@ -14,8 +14,10 @@ import com.example.capstone.viewmodel.SharedTextViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import android.util.Log
+
 import com.example.capstone.screen.article.engPart.PrimaryNewsScreen
 import com.example.capstone.screen.article.engPart.SecondaryNewsScreen
+
 
 /**
  * [NavGraph]
@@ -70,6 +72,7 @@ fun NavGraph(
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+
 
 
         // 사용자 레벨 맞춤 뉴스 메인 화면
