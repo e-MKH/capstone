@@ -22,10 +22,28 @@ import com.example.capstone.theme.SampleTheme
 import com.example.capstone.viewmodel.SharedTextViewModel
 import com.example.capstone.viewmodel.SharedUrlViewModel
 import kotlinx.coroutines.launch
+import com.example.capstone.data.local.AppDatabase
+import com.example.capstone.data.local.entity.Code
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ✅ 언어 코드 선삽입
+        val db = AppDatabase.getDatabase(applicationContext)
+        val codeDao = db.codeDao()
+        val defaultCodes = listOf(
+            Code(code = "en", info = "영어"),
+            Code(code = "ja", info = "일본어"),
+            Code(code = "es", info = "스페인어")
+        )
+        CoroutineScope(Dispatchers.IO).launch {
+            codeDao.insertAll(defaultCodes)
+        }
+
         enableEdgeToEdge()
         setContent {
             SampleTheme {

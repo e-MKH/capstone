@@ -29,6 +29,7 @@ import com.example.capstone.data.api.RetrofitTranslateClient
 import com.example.capstone.data.api.service.ThesaurusRequest
 import com.example.capstone.data.api.service.TranslateRequest
 import com.example.capstone.viewmodel.SharedTextViewModel
+import com.example.capstone.viewmodel.WordViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -88,6 +89,7 @@ fun AnimatedClickableWord(
 fun ArticleDetailScreen(
     navController: NavHostController,
     sharedTextViewModel: SharedTextViewModel,
+    wordViewModel: WordViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -109,6 +111,9 @@ fun ArticleDetailScreen(
     val sheetState = rememberModalBottomSheetState()
     val synonymList = remember { mutableStateListOf<String>() }
     val antonymList = remember { mutableStateListOf<String>() }
+
+    val selectedWord = remember { mutableStateOf<String?>(null) }
+    val lastTranslated = remember { mutableStateOf<String>("") }
 
     val ttsReady = remember { mutableStateOf(false) }
     val tts = remember {
@@ -231,6 +236,7 @@ fun ArticleDetailScreen(
                                                 .translateText(TranslateRequest(word))
                                             if (response.isSuccessful) {
                                                 val translated = response.body()?.translated_text
+                                                lastTranslated.value = translated ?: ""
                                                 Toast.makeText(
                                                     context,
                                                     "'$word' → '$translated'",
@@ -243,14 +249,17 @@ fun ArticleDetailScreen(
                                         }
                                     },
                                     onLongClick = {
+                                        selectedWord.value = word
                                         coroutineScope.launch {
                                             try {
-                                                if (languageState == "en") {
-                                                    val cleanWord = word
-                                                        .trim()
-                                                        .replace("[^A-Za-z0-9]".toRegex(), "")
-                                                        .lowercase()
+                                                val translateResponse = RetrofitTranslateClient.translateService
+                                                    .translateText(TranslateRequest(word))
+                                                if (translateResponse.isSuccessful) {
+                                                    lastTranslated.value = translateResponse.body()?.translated_text ?: ""
+                                                }
 
+                                                if (languageState == "en") {
+                                                    val cleanWord = word.trim().replace("[^A-Za-z0-9]".toRegex(), "").lowercase()
                                                     val syns = RetrofitClient.datamuseService.getSynonyms(cleanWord)
                                                     synonymList.clear()
                                                     synonymList.addAll(syns.map { it.word })
@@ -277,22 +286,48 @@ fun ArticleDetailScreen(
                 }
             }
 
-            // ✅ 동의어 BottomSheet
             if (showSynonymSheet.value) {
                 ModalBottomSheet(
                     onDismissRequest = { showSynonymSheet.value = false },
                     sheetState = sheetState
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("🔁 동의어", style = MaterialTheme.typography.titleMedium)
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxHeight(0.8f)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        Text("🔁 유의어", style = MaterialTheme.typography.titleMedium)
                         synonymList.takeIf { it.isNotEmpty() }?.forEach {
                             Text("• $it")
                         } ?: Text("없음")
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Button(
+                            onClick = {
+                                selectedWord.value?.let { word ->
+                                    coroutineScope.launch {
+                                        wordViewModel.saveWord(
+                                            word = word,
+                                            langCode = languageState,
+                                            meaning = lastTranslated.value,
+                                            pronunciation = ""
+                                        )
+                                        Toast.makeText(context, "단어 저장됨", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp)
+                        ) {
+                            Text("단어 저장")
+                        }
                     }
                 }
             }
 
-            // ✅ 하이라이트 번역 BottomSheet
             if (showTranslationSheet.value) {
                 ModalBottomSheet(
                     onDismissRequest = { showTranslationSheet.value = false },

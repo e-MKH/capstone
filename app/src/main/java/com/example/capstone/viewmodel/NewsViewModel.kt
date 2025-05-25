@@ -24,7 +24,7 @@ class NewsViewModel : ViewModel() {
     private val _articles = MutableStateFlow<List<GNewsArticle>>(emptyList())
     val articles: StateFlow<List<GNewsArticle>> = _articles
 
-    private val _selectedCategory = MutableStateFlow("politics")
+    private val _selectedCategory = MutableStateFlow("world")
     val selectedCategory: StateFlow<String> = _selectedCategory
 
     private val _currentLanguage = MutableStateFlow("en")
