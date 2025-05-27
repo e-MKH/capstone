@@ -3,17 +3,37 @@ import re
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from google.cloud import language_v1
-
+from fetchJapaneseNews import fetch_news  # ✅ 외부 함수로 뉴스 수집
 
 # ✅ 환경 변수 로딩
 load_dotenv(dotenv_path=".env.japanese")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-
-# ✅ Flask 앱 생성
-
 app = Flask(__name__)
 client = language_v1.LanguageServiceClient()
+
+# ✅ 일본어 및 영어 → GNews 카테고리 키 매핑
+category_mapping = {
+    # 일본어 키
+    "政治": "politics",
+    "経済": "business",
+    "科学": "science",
+    "技術": "technology",
+    "スポーツ": "sports",
+    "健康": "health",
+    "エンタメ": "entertainment",
+    "国際": "world",
+
+    # 영어 키 (직접 요청 방지용)
+    "politics": "politics",
+    "business": "business",
+    "science": "science",
+    "technology": "technology",
+    "sports": "sports",
+    "health": "health",
+    "entertainment": "entertainment",
+    "world": "world"
+}
 
 # ✅ 난이도 분류 기준
 def classify_level(score):
@@ -24,8 +44,7 @@ def classify_level(score):
     else:
         return "고급"
 
-
-# ✅ 본문 분석 함수
+# ✅ 형태소 분석 + 난이도 계산
 def analyze_text(text):
     sentences = re.split(r'(?<=[。！？])', text)
     total_chars = sum(len(s) for s in sentences)
@@ -84,26 +103,59 @@ def analyze_text(text):
         "sentences_analyzed": total_sentences
     }
 
-
-# ✅ 새 엔드포인트: POST로 본문 받아서 분석
-@app.route("/analyze-japanese-news", methods=["POST"])
-
+# ✅ 통합된 GET/POST 라우트
+@app.route("/analyze-japanese-news", methods=["GET", "POST"])
 def analyze_japanese_news():
     try:
-        data = request.get_json()
-        text = data.get("text", "")
-        if not text.strip():
-            return jsonify({"error": "텍스트가 비어 있습니다."}), 400
+        if request.method == "POST":
+            data = request.get_json()
+            text = data.get("text", "")
+            if not text.strip():
+                return jsonify({"error": "텍스트가 비어 있습니다."}), 400
 
-        analysis = analyze_text(text)
-        return jsonify(analysis)
+            print(f"📩 단일 기사 분석 요청 수신됨. 길이: {len(text)}자")
+            analysis = analyze_text(text)
+            print(f"✅ 분석 완료 → 점수: {analysis['score']}, 레벨: {analysis['level']}")
+            return jsonify(analysis)
 
+        else:  # GET 방식: category별 뉴스 분석
+            original = request.args.get("category", "政治")
+            category = category_mapping.get(original, "general")
+            print(f"🔍 카테고리 분석 요청: {original} → {category}")
+
+            articles = fetch_news(category)
+            print(f"📰 가져온 기사 수: {len(articles)}")
+
+            results = []
+            for article in articles:
+                title = article.get("title", "")
+                desc = article.get("description", "")
+                combined_text = f"{title}\n{desc}".strip()
+
+                if not combined_text:
+                    print("⚠️ 빈 기사 스킵됨")
+                    continue
+
+                analysis = analyze_text(combined_text)
+                print(f"✅ 분석 완료: {title[:30]}... → 점수: {analysis['score']}, 레벨: {analysis['level']}")
+
+                results.append({
+                    "original": title,
+                    "url": article.get("link", ""),
+                    "description": desc,
+                    "publishedAt": article.get("publishedAt", ""),
+                    "analysis": analysis
+                })
+
+            return jsonify({
+                "keyword": original,
+                "results": results
+            })
 
     except Exception as e:
+        print(f"❌ 예외 발생: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 # ✅ 실행
 if __name__ == "__main__":
     app.run(debug=True, port=6100)
-
-

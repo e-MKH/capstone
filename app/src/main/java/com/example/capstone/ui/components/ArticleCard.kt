@@ -11,13 +11,13 @@ import com.example.capstone.data.model.ArticleCardItem
 @Composable
 fun ArticleCard(
     article: ArticleCardItem,
-    onClick: () -> Unit  // 🔍 콜백 추가
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .clickable(onClick = onClick), // ✅ 외부 콜백 실행
+            .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {

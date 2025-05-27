@@ -39,49 +39,38 @@ class NewsViewModel : ViewModel() {
     private val cacheTimestamps = mutableMapOf<String, Long>()
     private val difficultyCache = mutableMapOf<String, String>()
 
-    private val levelTarget = mapOf(
-        "beginner" to "초급",
-        "intermediate" to "중급",
-        "expert" to "고급"
-    )
-
     private val CACHE_TTL_MS = 10 * 60 * 1000L // 10분
 
     fun fetchNews(language: String, topic: String = _selectedCategory.value, forceRefresh: Boolean = false) {
         _currentLanguage.value = language
         _selectedCategory.value = topic
         isLoading.value = true
-        _articles.value = emptyList()
-        primaryArticles.value = emptyList()
-        secondaryArticles.value = emptyList()
 
         val cacheKey = "$language|$topic"
         val now = System.currentTimeMillis()
+
         val lastFetched = cacheTimestamps[cacheKey]
+        val hasCache = articleCache.containsKey(cacheKey)
+        val isCacheFresh = lastFetched != null && now - lastFetched < CACHE_TTL_MS
 
-        val cacheValid = !forceRefresh &&
-                articleCache.containsKey(cacheKey) &&
-                lastFetched != null &&
-                now - lastFetched < CACHE_TTL_MS
-
-        if (cacheValid) {
+        if (!forceRefresh && hasCache && isCacheFresh) {
+            Log.d("NewsViewModel", "✅ 캐시 사용됨: $cacheKey")
             _articles.value = articleCache[cacheKey]!!
             filterArticlesByUserLevel()
             isLoading.value = false
             return
         }
 
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                Log.d("NewsViewModel", "🌐 GNews API 요청: $cacheKey")
                 val response = GNewsApiService.api.getTopHeadlines(
                     lang = language,
                     topic = topic,
                     token = GNewsApiService.apiKey,
                     max = 10
                 )
-                    /** val originalArticles = response.articles.map {
-                        it.copy(language = language) // 
-                    } */
 
                 val analyzedArticles = response.articles.map { article ->
                     async { analyzeDifficulty(article) }
@@ -92,7 +81,6 @@ class NewsViewModel : ViewModel() {
                 cacheTimestamps[cacheKey] = now
 
                 filterArticlesByUserLevel()
-
 
             } catch (e: Exception) {
                 Log.e("NewsViewModel", "❌ 뉴스 요청 실패: ${e.message}")

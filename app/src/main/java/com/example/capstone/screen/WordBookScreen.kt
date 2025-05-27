@@ -20,17 +20,30 @@ fun WordBookScreen(
     modifier: Modifier = Modifier,
     wordViewModel: WordViewModel = viewModel()
 ) {
+    var rawWordList by remember { mutableStateOf(listOf<Vocabulary>()) }
     var wordList by remember { mutableStateOf(listOf<Vocabulary>()) }
-    var sortAlphabetically by remember { mutableStateOf(false) }
 
-    // 정렬 변경 시 리스트 업데이트
-    LaunchedEffect(sortAlphabetically) {
-        val list = wordViewModel.getAllWords()
-        wordList = if (sortAlphabetically) {
-            list.sortedBy { it.word.lowercase() }
-        } else {
-            list
+    val sortOptions = listOf("최신순", "알파벳순")
+    var selectedSort by remember { mutableStateOf("최신순") }
+    var expanded by remember { mutableStateOf(false) }
+
+    // 정렬 함수
+    fun applySorting() {
+        wordList = when (selectedSort) {
+            "알파벳순" -> rawWordList.sortedBy { it.word.lowercase() }
+            else -> rawWordList.sortedByDescending { it.vocaId }
         }
+    }
+
+    // 최초 로딩
+    LaunchedEffect(Unit) {
+        rawWordList = wordViewModel.getAllWords()
+        applySorting()
+    }
+
+    // 정렬 옵션 변경 시 정렬 적용
+    LaunchedEffect(selectedSort) {
+        applySorting()
     }
 
     Column(
@@ -41,17 +54,36 @@ fun WordBookScreen(
         Text("📘 내 단어장", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 정렬 스위치
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        // 정렬 드롭다운
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
         ) {
-            Text("알파벳순 정렬", style = MaterialTheme.typography.bodyLarge)
-            Switch(
-                checked = sortAlphabetically,
-                onCheckedChange = { sortAlphabetically = it }
+            TextField(
+                value = selectedSort,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("정렬 방식") },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
             )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                sortOptions.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(option) },
+                        onClick = {
+                            selectedSort = option
+                            expanded = false
+                        }
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -82,7 +114,8 @@ fun WordBookScreen(
 
                         IconButton(onClick = {
                             wordViewModel.deleteWord(word)
-                            wordList = wordList.filter { it.vocaId != word.vocaId }
+                            rawWordList = rawWordList.filter { it.vocaId != word.vocaId }
+                            applySorting()
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "삭제")
                         }

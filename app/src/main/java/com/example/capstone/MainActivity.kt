@@ -19,20 +19,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.capstone.navigation.NavGraph
 import com.example.capstone.navigation.Screen
 import com.example.capstone.theme.SampleTheme
-import com.example.capstone.viewmodel.SharedTextViewModel
-import com.example.capstone.viewmodel.SharedUrlViewModel
+import com.example.capstone.viewmodel.*
 import kotlinx.coroutines.launch
 import com.example.capstone.data.local.AppDatabase
 import com.example.capstone.data.local.entity.Code
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // ✅ 언어 코드 선삽입
+        // 언어 코드 선삽입 (DB용)
         val db = AppDatabase.getDatabase(applicationContext)
         val codeDao = db.codeDao()
         val defaultCodes = listOf(
@@ -55,18 +53,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BottomNavigationBar(
-    navController: NavHostController,
-    language: String
+    navController: NavHostController
 ) {
-    // ✅ 언어별 아이템 분기
-    val items = when (language) {
-        "ja" -> listOf(Screen.PrimaryNewsJa, Screen.SecondaryNewsJa)
-        "es" -> listOf(Screen.PrimaryNewsEs, Screen.SecondaryNewsEs)
-        else -> listOf(Screen.PrimaryNews, Screen.SecondaryNews) // 기본 영어
-    }
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val items = when {
+        currentRoute?.contains("ja") == true ->
+            listOf(Screen.PrimaryNewsJa, Screen.SecondaryNewsJa)
+        currentRoute?.contains("es") == true ->
+            listOf(Screen.PrimaryNewsEs, Screen.SecondaryNewsEs)
+        else ->
+            listOf(Screen.PrimaryNews, Screen.SecondaryNews)
+    }
 
     NavigationBar {
         items.forEach { screen ->
@@ -110,10 +109,6 @@ fun MyApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // ✅ 언어 상태 받아오기 (ja, en, es)
-    val language by sharedTextViewModel.language.collectAsState()
-
-    // ✅ 하단바를 표시할 route만 정의
     val showBottomBar = currentRoute in listOf(
         Screen.PrimaryNews.route, Screen.SecondaryNews.route,
         Screen.PrimaryNewsJa.route, Screen.SecondaryNewsJa.route,
@@ -157,7 +152,7 @@ fun MyApp() {
             },
             bottomBar = {
                 if (showBottomBar) {
-                    BottomNavigationBar(navController = navController, language = language)
+                    BottomNavigationBar(navController = navController)
                 }
             }
         ) { innerPadding ->

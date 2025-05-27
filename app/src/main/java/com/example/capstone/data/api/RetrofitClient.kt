@@ -27,7 +27,7 @@ object RetrofitClient {
     private const val EXTRACT_BASE_URL = "http://10.0.2.2:5000/"
 
     // 일본어 난이도 분석 서버 주소 (Flask 서버: 포트 6300)
-    private const val JAPANESE_NLP_BASE_URL = "http://10.0.2.2:6300/"
+    private const val JAPANESE_NLP_BASE_URL = "http://10.0.2.2:6100/"
 
     // 네트워크 타임아웃이 설정된 OkHttpClient
     private val okHttpClient = OkHttpClient.Builder()

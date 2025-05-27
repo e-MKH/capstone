@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.capstone.data.api.RetrofitClient
+import com.example.capstone.data.api.model.ArticleResult
 import com.example.capstone.data.model.GNewsArticle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,53 +25,62 @@ class JaNewsViewModel : ViewModel() {
     private val _secondaryArticles = MutableStateFlow<List<GNewsArticle>>(emptyList())
     val secondaryArticles: StateFlow<List<GNewsArticle>> = _secondaryArticles
 
-    private val _selectedCategory = MutableStateFlow("politics")
+    private val _selectedCategory = MutableStateFlow("政治")
     val selectedCategory: StateFlow<String> = _selectedCategory
 
-    val userLevel = "beginner"
+    val userLevel = "beginner" // TODO: 사용자 기반 레벨 자동 설정 예정
+
 
     private val categoryToKeyword = mapOf(
-        "politics" to "政治",
-        "business" to "経済",
-        "world" to "国際",
-        "technology" to "技術",
-        "science" to "科学",
-        "entertainment" to "エンタメ",
-        "health" to "健康",
-        "sports" to "スポーツ"
+        "政治" to "politics",
+        "経済" to "business",
+        "国際" to "world",
+        "技術" to "technology",
+        "科学" to "science",
+        "エンタメ" to "entertainment",
+        "健康" to "health",
+        "スポーツ" to "sports"
     )
+
+    private val articleCache = mutableMapOf<String, List<GNewsArticle>>()
+    private val cacheTimestamps = mutableMapOf<String, Long>()
+    private val CACHE_TTL_MS = 10 * 60 * 1000L // 10분
 
     fun setCategory(category: String) {
         _selectedCategory.value = category
+        fetchJapaneseNews(category, forceRefresh = true)
     }
 
-    fun fetchJapaneseNews(category: String) {
+    fun fetchJapaneseNews(category: String, forceRefresh: Boolean = false) {
+        _selectedCategory.value = category
         _isLoading.value = true
+
+        val keyword = categoryToKeyword[category] ?: "politics"
+        val cacheKey = "ja|$keyword"
+        val now = System.currentTimeMillis()
+        val lastFetched = cacheTimestamps[cacheKey]
+
+        val cacheValid = !forceRefresh &&
+                articleCache.containsKey(cacheKey) &&
+                lastFetched != null &&
+                now - lastFetched < CACHE_TTL_MS
+
+        if (cacheValid) {
+            val cached = articleCache[cacheKey] ?: emptyList()
+            _articles.value = cached
+            filterArticlesByLevel(cached)
+            _isLoading.value = false
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val keyword = categoryToKeyword[category] ?: "政治"
                 val response = RetrofitClient.japaneseNlpService.analyzeJapaneseNews(keyword)
-                val resultList = response.results
-
-                val converted = resultList.map { article ->
-                    val difficulty = when (article.analysis.level) {
-                        "하 (易)" -> "초급"
-                        "중 (中)" -> "중급"
-                        "상 (難)" -> "고급"
-                        else -> "분석불가"
-                    }
-                    GNewsArticle(
-                        title = article.original.take(30),
-                        description = "난이도 점수: ${article.analysis.score}",
-                        url = "",
-                        image = null,
-                        publishedAt = "",
-                        difficulty = difficulty,
-                        content = article.original
-                    )
-                }
+                val converted = convertToGNewsArticles(response.results)
 
                 _articles.value = converted
+                articleCache[cacheKey] = converted
+                cacheTimestamps[cacheKey] = now
                 filterArticlesByLevel(converted)
 
             } catch (e: Exception) {
@@ -81,12 +91,43 @@ class JaNewsViewModel : ViewModel() {
         }
     }
 
-    private fun filterArticlesByLevel(all: List<GNewsArticle>) {
-        val (primary, secondary) = when (userLevel) {
-            "beginner" -> all.partition { it.difficulty == "초급" }
-            "intermediate" -> all.partition { it.difficulty == "중급" }
-            else -> all.partition { it.difficulty == "고급" }
+    private fun convertToGNewsArticles(results: List<ArticleResult>): List<GNewsArticle> {
+        return results.map { article ->
+            val fallbackDescription = article.original
+                .split(Regex("[。．！？]"))
+                .take(2)
+                .joinToString("。") + "。"
+
+            Log.d("Convert", "기사 제목: ${article.original.take(20)}... | 난이도: ${article.analysis.level}")
+
+            GNewsArticle(
+                title = article.original.take(50),
+                description = article.description?.takeIf { it.isNotBlank() } ?: fallbackDescription,
+                url = article.url,
+                image = null,
+                publishedAt = article.publishedAt ?: "",
+                difficulty = article.analysis.level,
+                content = article.original
+            )
         }
+    }
+
+    private fun filterArticlesByLevel(all: List<GNewsArticle>) {
+        val validArticles = all.filter {
+            it.difficulty == "초급" || it.difficulty == "중급" || it.difficulty == "고급"
+        }
+
+        val counts = validArticles.groupingBy { it.difficulty }.eachCount()
+        Log.d("Filter", "난이도 분포: $counts")
+
+        val (primary, secondary) = when (userLevel) {
+            "beginner" -> validArticles.partition { it.difficulty == "초급" }
+            "intermediate" -> validArticles.partition { it.difficulty == "중급" }
+            else -> validArticles.partition { it.difficulty == "고급" }
+        }
+
+        Log.d("Filter", "primary: ${primary.size}개, secondary: ${secondary.size}개")
+
         _primaryArticles.value = primary
         _secondaryArticles.value = secondary
     }

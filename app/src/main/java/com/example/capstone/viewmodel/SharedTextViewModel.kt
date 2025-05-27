@@ -16,7 +16,7 @@ class SharedTextViewModel : ViewModel() {
     val language: StateFlow<String> = _language
 
     /**
-     * ✅ 기사 본문과 언어, 제목을 함께 설정
+     * 기사 본문과 언어, 제목을 함께 설정
      */
     fun setText(newText: String, lang: String, newTitle: String) {
         _text.value = newText.trim()

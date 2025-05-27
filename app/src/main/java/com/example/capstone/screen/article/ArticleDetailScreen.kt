@@ -289,12 +289,13 @@ fun ArticleDetailScreen(
             if (showSynonymSheet.value) {
                 ModalBottomSheet(
                     onDismissRequest = { showSynonymSheet.value = false },
-                    sheetState = sheetState
+                    sheetState = sheetState,
+                    modifier = Modifier.wrapContentHeight()
                 ) {
                     Column(
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxHeight(0.8f)
+                            .wrapContentHeight()
                             .verticalScroll(rememberScrollState())
                     ) {
                         Text("🔁 유의어", style = MaterialTheme.typography.titleMedium)
@@ -327,6 +328,8 @@ fun ArticleDetailScreen(
                     }
                 }
             }
+
+
 
             if (showTranslationSheet.value) {
                 ModalBottomSheet(

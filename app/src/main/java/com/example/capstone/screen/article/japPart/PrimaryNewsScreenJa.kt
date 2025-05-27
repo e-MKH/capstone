@@ -1,4 +1,4 @@
-package com.example.capstone.screen.article.engPart
+package com.example.capstone.screen.article.jaPart
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.ui.components.ArticleCard
-import com.example.capstone.viewmodel.NewsViewModel
+import com.example.capstone.viewmodel.JaNewsViewModel
 import com.example.capstone.viewmodel.SharedTextViewModel
 import com.example.capstone.viewmodel.SharedUrlViewModel
 import kotlinx.coroutines.launch
@@ -24,11 +24,11 @@ import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrimaryNewsScreen(
+fun PrimaryNewsScreenJa(
     navController: NavController,
     sharedUrlViewModel: SharedUrlViewModel,
     sharedTextViewModel: SharedTextViewModel,
-    viewModel: NewsViewModel = viewModel()
+    viewModel: JaNewsViewModel = viewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -38,23 +38,21 @@ fun PrimaryNewsScreen(
     val isLoading by viewModel.isLoading.collectAsState()
 
     val categories = listOf(
-        "정치" to "politics",
-        "경제" to "business",
-        "사회" to "world",
-        "기술" to "technology",
-        "과학" to "science",
-        "건강" to "health",
-        "스포츠" to "sports",
-        "연예" to "entertainment"
+        "정치" to "政治",
+        "경제" to "経済",
+        "사회" to "国際",
+        "기술" to "技術",
+        "과학" to "科学",
+        "엔터테인먼트" to "エンタメ",
+        "건강" to "健康",
+        "스포츠" to "スポーツ"
     )
-
 
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expanded by remember { mutableStateOf(false) }
 
-
     LaunchedEffect(Unit) {
-        viewModel.fetchNews(language = "en", topic = selectedCategory)
+        viewModel.fetchJapaneseNews(selectedCategory, forceRefresh = true)
     }
 
     Scaffold { paddingValues ->
@@ -85,13 +83,12 @@ fun PrimaryNewsScreen(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {
-                        categories.forEach { (label, query) ->
+                        categories.forEach { (label, key) ->
                             DropdownMenuItem(
                                 text = { Text(label) },
                                 onClick = {
                                     expanded = false
-                                    viewModel.setCategory(query)
-                                    viewModel.fetchNews("en", query, forceRefresh = true)
+                                    viewModel.setCategory(key)
                                 }
                             )
                         }
@@ -100,9 +97,8 @@ fun PrimaryNewsScreen(
 
                 IconButton(
                     onClick = {
-                        viewModel.fetchNews("en", selectedCategory, forceRefresh = true)
-                    },
-                    modifier = Modifier.padding(start = 8.dp)
+                        viewModel.fetchJapaneseNews(selectedCategory, forceRefresh = true)
+                    }
                 ) {
                     Icon(Icons.Default.Refresh, contentDescription = "새로고침")
                 }
@@ -119,23 +115,13 @@ fun PrimaryNewsScreen(
                     items(articles) { article ->
                         ArticleCard(article = article) {
                             coroutineScope.launch {
-                                try {
-                                    sharedUrlViewModel.setUrl(article.url)
-                                    val response = RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
-                                    if (response.isSuccessful) {
-                                        val text = response.body()?.text ?: ""
-                                        sharedTextViewModel.setText(
-                                            newText = text,
-                                            lang = "en",
-                                            newTitle = article.title
-                                        )
-                                        navController.navigate("detail")
-                                    } else {
-                                        Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()
-                                    }
-                                } catch (e: Exception) {
-                                    Toast.makeText(context, "에러: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
+                                sharedUrlViewModel.setUrl(article.url)
+                                sharedTextViewModel.setText(
+                                    newText = article.content ?: "",
+                                    lang = "ja",
+                                    newTitle = article.title
+                                )
+                                navController.navigate("detail")
                             }
                         }
                     }
@@ -144,3 +130,5 @@ fun PrimaryNewsScreen(
         }
     }
 }
+
+

@@ -13,12 +13,12 @@ import kotlinx.coroutines.withContext
 
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
-    // ✅ 정렬 옵션 정의 (알파벳 오름차순만 유지)
+    // 정렬 옵션 정의 (알파벳 오름차순만 유지)
     enum class SortOption {
         ALPHABET_ASC
     }
 
-    // ✅ Repository 객체 초기화
+    // Repository 객체 초기화
     private val repository: WordRepository
 
     init {
@@ -27,7 +27,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * ✅ 단어 저장 함수
+     * 단어 저장 함수
      */
     fun saveWord(
         word: String,
@@ -47,7 +47,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * ✅ 단일 단어 삭제 (Entity 기반)
+     * 단일 단어 삭제 (Entity 기반)
      */
     fun deleteWord(word: Vocabulary) {
         viewModelScope.launch {
@@ -57,7 +57,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * ✅ 복수 단어 삭제 (vocaId 기준)
+     * 복수 단어 삭제 (vocaId 기준)
      */
     fun deleteWordsByIds(vocaIdList: List<Long>) {
         viewModelScope.launch {
@@ -76,7 +76,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * ✅ 알파벳 오름차순 정렬 기준으로 단어 불러오기
+     * 알파벳 오름차순 정렬 기준으로 단어 불러오기
      */
     suspend fun getWordsSortedBy(option: SortOption): List<Vocabulary> {
         return withContext(Dispatchers.IO) {
