@@ -31,6 +31,7 @@ android {
         // BuildConfig를 통해 API 키를 코드 내에서 안전하게 사용 가능
         val gnewsApiKey = localProperties.getProperty("GNEWS_API_KEY") ?: ""
         buildConfigField("String", "GNEWS_API_KEY", "\"$gnewsApiKey\"")
+
     }
 
     buildTypes {

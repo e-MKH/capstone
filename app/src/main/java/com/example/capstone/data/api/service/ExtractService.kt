@@ -1,5 +1,7 @@
-package com.example.capstone.data.api
+package com.example.capstone.data.api.service
 
+import com.example.capstone.data.api.model.ExtractResponse
+import com.example.capstone.data.api.model.NlpResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.Response
@@ -29,13 +31,3 @@ interface ExtractService {
     suspend fun extractArticle(@Body urlMap: Map<String, String>): Response<ExtractResponse>
 }
 
-/**
- * [ExtractResponse]
- * Flask 서버의 /extract 응답 데이터를 담는 데이터 클래스
- * @property url  - 분석 요청한 기사 URL
- * @property text - 해당 기사에서 추출된 본문 텍스트
- */
-data class ExtractResponse(
-    val url: String,
-    val text: String
-)

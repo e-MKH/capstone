@@ -1,26 +1,51 @@
 package com.example.capstone.data.api
 
+import com.example.capstone.data.api.service.ExtractService
+import com.example.capstone.data.api.service.GNewsService
+import com.example.capstone.data.api.service.NlpService
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
-/**
- * [RetrofitInstance]
- * GNews API에 요청을 보내기 위한 Retrofit 인스턴스를 생성하는 객체
- * 싱글톤 패턴으로 앱 전역에서 재사용됨
- */
 object RetrofitInstance {
 
-    /**
-     * GNewsService 구현체 (lazy 초기화)
-     * - 실제 네트워크 통신 객체는 최초 사용 시점에 생성됨
-     * - GNews API의 Base URL은 "https://gnews.io/api/v4/"
-     * - 응답 JSON은 Gson으로 파싱
-     */
+    // OkHttpClient 설정: 타임아웃 30초로 지정
+    private val okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .build()
+
+    // GNews API용 Retrofit 서비스
     val api: GNewsService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://gnews.io/api/v4/") // GNews API 기본 엔드포인트
-            .addConverterFactory(GsonConverterFactory.create()) // JSON 파싱을 위한 GSON 설정
+            .baseUrl("https://gnews.io/api/v4/")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(GNewsService::class.java) // GNewsService 인터페이스와 연결
+            .create(GNewsService::class.java)
     }
+
+
+    // 기사 본문 추출 API
+    val extractService: ExtractService by lazy {
+        Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:5000/")  // 본문 추출 Flask 서버
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ExtractService::class.java)
+    }
+
+    // NLP 분석 API
+    val nlpService: NlpService by lazy {
+        Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:5000/")  // NLP Flask 서버
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(NlpService::class.java)
+    }
+
 }
+

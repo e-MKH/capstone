@@ -1,6 +1,4 @@
-
-// JapaneseNewsResponse.kt
-package com.example.capstone.data.api
+package com.example.capstone.data.api.model
 
 data class ArticleAnalysis(
     val score: Double,
@@ -15,8 +13,16 @@ data class ArticleAnalysis(
 
 data class ArticleResult(
     val original: String,
-    val analysis: ArticleAnalysis
+    val description: String?,
+    val url: String,
+    val publishedAt: String?,
+    val analysis: AnalysisResult
 )
+
+data class AnalysisResult(
+    val level: String
+)
+
 
 data class JapaneseNewsResponse(
     val keyword: String,

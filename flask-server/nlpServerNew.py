@@ -1,19 +1,20 @@
 from flask import Flask, request, jsonify
 from google.cloud import language_v1
-from google.oauth2 import service_account
-import spacy
 import os
+import spacy
+from dotenv import load_dotenv
 
-# ✅ 직접 API 키 경로 입력 (절대 Git에 업로드하지 말 것!)
-GOOGLE_API_KEY_PATH = "nlp-capstone-project-58081b65c2b7.json"  # <-- 여기를 키 JSON 경로로 바꾸세요
+# ✅ 환경변수 로드
+load_dotenv(dotenv_path=".env.nlp")
+google_credential_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if google_credential_path:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credential_path
+else:
+    raise Exception("❌ GOOGLE_APPLICATION_CREDENTIALS가 설정되지 않았습니다.")
 
 # ✅ 앱 생성
 app = Flask(__name__)
 nlp = spacy.load("en_core_web_sm")
-
-# ✅ Google NLP 클라이언트 초기화
-credentials = service_account.Credentials.from_service_account_file(GOOGLE_API_KEY_PATH)
-client = language_v1.LanguageServiceClient(credentials=credentials)
 
 def get_tree_depth(token):
     if not list(token.children):
@@ -63,6 +64,7 @@ def analyze_text():
 
         total_words, avg_word_len, tree_depth, avg_dep_len, clause_count = compute_syntactic_features(article_text)
 
+        client = language_v1.LanguageServiceClient()
         document = language_v1.Document(content=article_text, type_=language_v1.Document.Type.PLAIN_TEXT)
         entity_response = client.analyze_entities(request={"document": document})
         entities = entity_response.entities
@@ -121,4 +123,4 @@ def analyze_text():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=6000)
+    app.run(debug=True, host="0.0.0.0", port=6000) 
