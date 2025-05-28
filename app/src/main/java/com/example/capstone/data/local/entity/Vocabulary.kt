@@ -33,5 +33,5 @@ data class Vocabulary(
     @ColumnInfo(name = "pronunciation")
     val pronunciation: String,  // 발음 기호
     @ColumnInfo(name = "is_favorite")
-    val isFavorite : Boolean = false    // 즐겨찾기
+    val isFavorite : Boolean    // 즐겨찾기
 )
