@@ -54,7 +54,7 @@ class NewsViewModel : ViewModel() {
         val isCacheFresh = lastFetched != null && now - lastFetched < CACHE_TTL_MS
 
         if (!forceRefresh && hasCache && isCacheFresh) {
-            Log.d("NewsViewModel", "✅ 캐시 사용됨: $cacheKey")
+            Log.d("NewsViewModel", "캐시 사용됨: $cacheKey")
             _articles.value = articleCache[cacheKey]!!
             filterArticlesByUserLevel()
             isLoading.value = false
@@ -64,7 +64,7 @@ class NewsViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                Log.d("NewsViewModel", "🌐 GNews API 요청: $cacheKey")
+                Log.d("NewsViewModel", "GNews API 요청: $cacheKey")
                 val response = GNewsApiService.api.getTopHeadlines(
                     lang = language,
                     topic = topic,
