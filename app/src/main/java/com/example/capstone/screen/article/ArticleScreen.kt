@@ -23,7 +23,7 @@ import com.example.capstone.navigation.Screen
 fun ArticleScreen(
     navController: NavController
 ) {
-    val cardShape = RoundedCornerShape(32.dp) // 버튼 모양 둥글게 설정
+    val cardShape = RoundedCornerShape(32.dp)
 
     Column(
         modifier = Modifier
@@ -35,27 +35,27 @@ fun ArticleScreen(
         // 영어 뉴스 버튼
         ArticleButton(
             text = "영어 기사",
-            onClick = { navController.navigate(Screen.EnglishNews.route) },
+            onClick = { navController.navigate(Screen.PrimaryNews.route) },
             shape = cardShape
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 일본어 뉴스 버튼 (향후 확장 예정)
+        // 일본어 뉴스 버튼
         ArticleButton(
             text = "일본어 기사",
-            onClick = { /* 일본어 이동 예정 */ },
+            onClick = { navController.navigate(Screen.PrimaryNewsJa.route) },
             shape = cardShape
         )
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 중국어 뉴스 버튼 (향후 확장 예정)
+        // 스페인어 뉴스 버튼
         ArticleButton(
-            text = "중국어 기사",
-            onClick = { /* 중국어 이동 예정 */ },
+            text = "스페인어 기사",
+            onClick = { navController.navigate(Screen.PrimaryNewsEs.route) },
             shape = cardShape
         )
+
     }
 }
 

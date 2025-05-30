@@ -5,32 +5,93 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.capstone.navigation.NavGraph
+import com.example.capstone.navigation.Screen
 import com.example.capstone.theme.SampleTheme
-import com.example.capstone.viewmodel.SharedUrlViewModel
-import com.example.capstone.viewmodel.SharedTextViewModel
+import com.example.capstone.viewmodel.*
 import kotlinx.coroutines.launch
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.ui.unit.dp
+import com.example.capstone.data.local.AppDatabase
+import com.example.capstone.data.local.entity.Code
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
-/**
- * [MainActivity]
- * 앱의 진입점이자 전체 UI를 Compose로 구성하는 액티비티
- */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 언어 코드 선삽입 (DB용)
+        val db = AppDatabase.getDatabase(applicationContext)
+        val codeDao = db.codeDao()
+        val defaultCodes = listOf(
+            Code(code = "en", info = "영어"),
+            Code(code = "ja", info = "일본어"),
+            Code(code = "es", info = "스페인어")
+        )
+        CoroutineScope(Dispatchers.IO).launch {
+            codeDao.insertAll(defaultCodes)
+        }
+
         enableEdgeToEdge()
         setContent {
             SampleTheme {
-                MyApp() // 앱 메인 UI 시작
+                MyApp()
             }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(
+    navController: NavHostController
+) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val items = when {
+        currentRoute?.contains("ja") == true ->
+            listOf(Screen.PrimaryNewsJa, Screen.SecondaryNewsJa)
+        currentRoute?.contains("es") == true ->
+            listOf(Screen.PrimaryNewsEs, Screen.SecondaryNewsEs)
+        else ->
+            listOf(Screen.PrimaryNews, Screen.SecondaryNews)
+    }
+
+    NavigationBar {
+        items.forEach { screen ->
+            NavigationBarItem(
+                selected = currentRoute == screen.route,
+                onClick = {
+                    if (currentRoute != screen.route) {
+                        navController.navigate(screen.route) {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                        }
+                    }
+                },
+                icon = { Icon(Icons.Default.List, contentDescription = null) },
+                label = {
+                    Text(
+                        when (screen) {
+                            is Screen.PrimaryNews, Screen.PrimaryNewsJa, Screen.PrimaryNewsEs -> "My level"
+                            else -> "Other Level"
+                        }
+                    )
+                }
+            )
         }
     }
 }
@@ -39,65 +100,45 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp() {
     val navController = rememberNavController()
-
-    // 공유 ViewModel 초기화
     val sharedUrlViewModel: SharedUrlViewModel = viewModel()
     val sharedTextViewModel: SharedTextViewModel = viewModel()
 
-    // Drawer 상태 및 코루틴 스코프 설정
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    // 사이드 메뉴 Drawer
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val showBottomBar = currentRoute in listOf(
+        Screen.PrimaryNews.route, Screen.SecondaryNews.route,
+        Screen.PrimaryNewsJa.route, Screen.SecondaryNewsJa.route,
+        Screen.PrimaryNewsEs.route, Screen.SecondaryNewsEs.route
+    )
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Text(
-                    "메뉴",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-                // 메뉴 항목: 홈
-                NavigationDrawerItem(
-                    label = { Text("Home") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate("article")
-                    }
-                )
-                // 메뉴 항목: 단어장
-                NavigationDrawerItem(
-                    label = { Text("WordBook") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate("wordbook")
-                    }
-                )
-                // 메뉴 항목: 설정
-                NavigationDrawerItem(
-                    label = { Text("Settings") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate("settings")
-                    }
-                )
-                // 메뉴 항목: 앱 정보
-                NavigationDrawerItem(
-                    label = { Text("Info") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate("info")
-                    }
-                )
+                Text("메뉴", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(16.dp))
+                NavigationDrawerItem(label = { Text("Home") }, selected = false, onClick = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screen.Article.route)
+                })
+                NavigationDrawerItem(label = { Text("WordBook") }, selected = false, onClick = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screen.WordBook.route)
+                })
+                NavigationDrawerItem(label = { Text("Settings") }, selected = false, onClick = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screen.Settings.route)
+                })
+                NavigationDrawerItem(label = { Text("Info") }, selected = false, onClick = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screen.Info.route)
+                })
             }
         }
     ) {
-        // 상단 앱바 + 본문 영역을 포함하는 Scaffold
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -108,9 +149,13 @@ fun MyApp() {
                         }
                     }
                 )
+            },
+            bottomBar = {
+                if (showBottomBar) {
+                    BottomNavigationBar(navController = navController)
+                }
             }
         ) { innerPadding ->
-            // 실제 화면 라우팅은 NavGraph에서 처리
             NavGraph(
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,

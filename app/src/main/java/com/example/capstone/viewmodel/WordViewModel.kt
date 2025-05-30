@@ -1,49 +1,89 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.capstone.data.local.AppDatabase
 import com.example.capstone.data.local.entity.Vocabulary
+import com.example.capstone.data.repository.WordRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-/**
- * [WordViewModel]
- * 단어장 기능을 담당하는 ViewModel
- * - Room DB를 통해 단어 데이터를 저장/조회/삭제
- * - Application context가 필요한 경우를 대비해 AndroidViewModel 사용
- */
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
-    // DAO 객체 생성 (Room DB에 접근)
-//    private val wordDao = AppDatabase.getDatabase(application).
-//
+    // 정렬 옵션 정의 (알파벳 오름차순만 유지)
+    enum class SortOption {
+        ALPHABET_ASC
+    }
+
+    // Repository 객체 초기화
+    private val repository: WordRepository
+
+    init {
+        val dao = AppDatabase.getDatabase(application).vocabularyDao()
+        repository = WordRepository(dao)
+    }
+
     /**
      * 단어 저장 함수
-     * @param word 저장할 단어 원문
-     * @param meaning 번역된 단어 의미
      */
-    fun saveWord(word: String, meaning: String) {
+    fun saveWord(
+        word: String,
+        langCode: String,
+        meaning: String,
+        pronunciation: String = "",
+        isFavorite: Boolean = false
+    ) {
         viewModelScope.launch {
-//            wordDao.insertWord(Vocabulary(word = word, meaning = meaning))
+            val result = repository.insertVocabulary(word, langCode, meaning, pronunciation, isFavorite)
+            if (result > 0) {
+                Log.d("WordViewModel", "✅ 단어 저장 성공: $word")
+            } else {
+                Log.d("WordViewModel", "⚠️ 단어 이미 존재함: $word")
+            }
         }
     }
 
     /**
-     * 단어 삭제 함수
-     * @param word 삭제할 단어 객체 (WordEntity)
+     * 단일 단어 삭제 (Entity 기반)
      */
     fun deleteWord(word: Vocabulary) {
         viewModelScope.launch {
-//            wordDao.deleteWord(word)
+            repository.deleteWord(word)
+            Log.d("WordViewModel", "🗑 단어 삭제: ${word.word}")
         }
     }
 
     /**
-     * 모든 단어 리스트 조회 함수
-     * @return 저장된 모든 단어 리스트
+     * 복수 단어 삭제 (vocaId 기준)
      */
-//    suspend fun getAllWords(): List<Vocabulary> {
-//        return wordDao.getAllWords()
-//    }
+    fun deleteWordsByIds(vocaIdList: List<Long>) {
+        viewModelScope.launch {
+            repository.deleteWordsByIds(vocaIdList)
+            Log.d("WordViewModel", "🗑 복수 삭제: $vocaIdList")
+        }
+    }
+
+    /**
+     * ✅ 전체 단어 불러오기 (정렬 없음)
+     */
+    suspend fun getAllWords(): List<Vocabulary> {
+        return withContext(Dispatchers.IO) {
+            repository.getAllWords()
+        }
+    }
+
+    /**
+     * 알파벳 오름차순 정렬 기준으로 단어 불러오기
+     */
+    suspend fun getWordsSortedBy(option: SortOption): List<Vocabulary> {
+        return withContext(Dispatchers.IO) {
+            val list = repository.getAllWords()
+            when (option) {
+                SortOption.ALPHABET_ASC -> list.sortedBy { it.word.lowercase() }
+            }
+        }
+    }
 }

@@ -6,10 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.capstone.data.local.converter.DateConverter
+import com.example.capstone.data.local.dao.CodeDao
+import com.example.capstone.data.local.dao.VocabularyDao
+import com.example.capstone.data.local.entity.Code
 import com.example.capstone.data.local.entity.User
+import com.example.capstone.data.local.entity.Vocabulary
 
 @Database(
-    entities = [User::class],
+    entities = [
+        User::class,
+        Vocabulary::class,
+        Code::class
+    ],
     version = 1,
     exportSchema = false
 )
@@ -17,6 +25,8 @@ import com.example.capstone.data.local.entity.User
 abstract class AppDatabase : RoomDatabase() {
     // DAO 접근 메서드
 //    abstract fun userDao(): UserDao
+    abstract fun vocabularyDao(): VocabularyDao
+    abstract fun codeDao(): CodeDao
 
     companion object {
         // 싱글톤 인스턴스

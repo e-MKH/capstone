@@ -14,38 +14,80 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capstone.viewmodel.WordViewModel
 import com.example.capstone.data.local.entity.Vocabulary
 
-/**
- * [WordBookScreen]
- * 사용자가 저장한 단어들을 목록으로 보여주는 화면입니다.
- * - 단어 클릭 시 아무 동작은 없고,
- * - 우측 쓰레기통 버튼으로 삭제 가능
- *
- * @param modifier 화면 전체 레이아웃에 적용할 Modifier
- * @param wordViewModel Room DB 연동을 위한 ViewModel
- */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WordBookScreen(
     modifier: Modifier = Modifier,
     wordViewModel: WordViewModel = viewModel()
 ) {
-    // 단어장에 저장된 단어 리스트 상태
+    var rawWordList by remember { mutableStateOf(listOf<Vocabulary>()) }
     var wordList by remember { mutableStateOf(listOf<Vocabulary>()) }
 
-    // 화면 진입 시 단어 불러오기 (1회 실행)
-//    LaunchedEffect(Unit) {
-//        wordList = wordViewModel.getAllWords()
-//    }
+    val sortOptions = listOf("최신순", "알파벳순")
+    var selectedSort by remember { mutableStateOf("최신순") }
+    var expanded by remember { mutableStateOf(false) }
+
+    // 정렬 함수
+    fun applySorting() {
+        wordList = when (selectedSort) {
+            "알파벳순" -> rawWordList.sortedBy { it.word.lowercase() }
+            else -> rawWordList.sortedByDescending { it.vocaId }
+        }
+    }
+
+    // 최초 로딩
+    LaunchedEffect(Unit) {
+        rawWordList = wordViewModel.getAllWords()
+        applySorting()
+    }
+
+    // 정렬 옵션 변경 시 정렬 적용
+    LaunchedEffect(selectedSort) {
+        applySorting()
+    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // 화면 상단 제목
         Text("📘 내 단어장", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 단어 리스트 표시
+        // 정렬 드롭다운
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            TextField(
+                value = selectedSort,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("정렬 방식") },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
+            )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                sortOptions.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(option) },
+                        onClick = {
+                            selectedSort = option
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         LazyColumn {
             items(wordList) { word ->
                 Card(
@@ -61,28 +103,19 @@ fun WordBookScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-
                         Column {
-                            // 단어 본문
+                            Text(word.word, style = MaterialTheme.typography.titleMedium)
                             Text(
-                                text = word.word,
-                                style = MaterialTheme.typography.titleMedium
+                                word.meaning,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.outline
                             )
-
-                            // 단어 뜻이 있다면 함께 표시
-                            word.meaning?.let { meaning ->
-                                Text(
-                                    text = meaning,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.outline
-                                )
-                            }
                         }
 
-                        // 삭제 버튼
                         IconButton(onClick = {
-                            wordViewModel.deleteWord(word) // DB에서 삭제
-                            wordList = wordList.filter { it.word != word.word } // UI에서도 제거
+                            wordViewModel.deleteWord(word)
+                            rawWordList = rawWordList.filter { it.vocaId != word.vocaId }
+                            applySorting()
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "삭제")
                         }
