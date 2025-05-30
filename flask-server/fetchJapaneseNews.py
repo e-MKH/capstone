@@ -1,4 +1,4 @@
-#newsdata.io API로 기사 수집하기
+#newsdata.io API로 일본어 기사 수집하기
 
 import requests
 from dotenv import load_dotenv
