@@ -60,7 +60,7 @@ fun NavGraph(
         }
 
         // 영어 뉴스 화면
-        composable(Screen.PrimaryNews.route) {
+        composable(Screen.PrimaryNews.route) { backStackEntry ->
             PrimaryNewsScreen(
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,
@@ -68,13 +68,14 @@ fun NavGraph(
             )
         }
 
-        composable(Screen.SecondaryNews.route) {
+        composable(Screen.SecondaryNews.route) { backStackEntry ->
             SecondaryNewsScreen(
                 navController = navController,
                 sharedUrlViewModel = sharedUrlViewModel,
                 sharedTextViewModel = sharedTextViewModel
             )
         }
+
 
         // 일본어 뉴스 화면
         composable(Screen.PrimaryNewsJa.route) {

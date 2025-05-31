@@ -25,7 +25,7 @@ class JaNewsViewModel : ViewModel() {
     private val _secondaryArticles = MutableStateFlow<List<GNewsArticle>>(emptyList())
     val secondaryArticles: StateFlow<List<GNewsArticle>> = _secondaryArticles
 
-    private val _selectedCategory = MutableStateFlow("政治")
+    private val _selectedCategory = MutableStateFlow("国際")
     val selectedCategory: StateFlow<String> = _selectedCategory
 
     val userLevel = "beginner" // TODO: 사용자 기반 레벨 자동 설정 예정

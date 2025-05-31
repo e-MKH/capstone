@@ -12,26 +12,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.ui.components.ArticleCard
 import com.example.capstone.viewmodel.NewsViewModel
 import com.example.capstone.viewmodel.SharedTextViewModel
 import com.example.capstone.viewmodel.SharedUrlViewModel
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimaryNewsScreen(
-    navController: NavController,
+    navController: NavHostController,
     sharedUrlViewModel: SharedUrlViewModel,
     sharedTextViewModel: SharedTextViewModel,
-    viewModel: NewsViewModel = viewModel()
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    val owner = LocalViewModelStoreOwner.current
+    val viewModel: NewsViewModel = viewModel(viewModelStoreOwner = owner!!)
+
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val articles by viewModel.primaryArticles.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
@@ -48,73 +50,72 @@ fun PrimaryNewsScreen(
         "연예" to "entertainment"
     )
 
-
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expanded by remember { mutableStateOf(false) }
 
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchNews(language = "en", topic = selectedCategory)
+    LaunchedEffect(selectedCategory) {
+        viewModel.fetchNews("en", selectedCategory)
     }
 
-    Scaffold { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .padding(16.dp)
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded },
+                modifier = Modifier.weight(1f)
             ) {
-                ExposedDropdownMenuBox(
+                TextField(
+                    value = currentLabel,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("카테고리") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                    modifier = Modifier.menuAnchor()
+                )
+                DropdownMenu(
                     expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                    onDismissRequest = { expanded = false }
                 ) {
-                    TextField(
-                        value = currentLabel,
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("카테고리 선택") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                        modifier = Modifier.menuAnchor()
-                    )
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        categories.forEach { (label, query) ->
-                            DropdownMenuItem(
-                                text = { Text(label) },
-                                onClick = {
-                                    expanded = false
-                                    viewModel.setCategory(query)
-                                    viewModel.fetchNews("en", query, forceRefresh = true)
-                                }
-                            )
-                        }
+                    categories.forEach { (label, query) ->
+                        DropdownMenuItem(
+                            text = { Text(label) },
+                            onClick = {
+                                expanded = false
+                                viewModel.setCategory(query)
+                                viewModel.fetchNews("en", query, forceRefresh = true)
+                            }
+                        )
                     }
-                }
-
-                IconButton(
-                    onClick = {
-                        viewModel.fetchNews("en", selectedCategory, forceRefresh = true)
-                    },
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Icon(Icons.Default.Refresh, contentDescription = "새로고침")
                 }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            IconButton(
+                onClick = {
+                    viewModel.fetchNews("en", selectedCategory, forceRefresh = true)
+                }
+            ) {
+                Icon(Icons.Default.Refresh, contentDescription = "새로고침")
+            }
+        }
 
-            if (isLoading && articles.isEmpty()) {
+        Spacer(modifier = Modifier.height(12.dp))
+
+        when {
+            isLoading && articles.isEmpty() -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
-            } else {
+            }
+            !isLoading && articles.isEmpty() -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("표시할 기사가 없습니다.", style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+            else -> {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(articles) { article ->
                         ArticleCard(article = article) {
@@ -124,11 +125,7 @@ fun PrimaryNewsScreen(
                                     val response = RetrofitClient.extractService.extractArticle(mapOf("url" to article.url))
                                     if (response.isSuccessful) {
                                         val text = response.body()?.text ?: ""
-                                        sharedTextViewModel.setText(
-                                            newText = text,
-                                            lang = "en",
-                                            newTitle = article.title
-                                        )
+                                        sharedTextViewModel.setText(newText = text, lang = "en", newTitle = article.title)
                                         navController.navigate("detail")
                                     } else {
                                         Toast.makeText(context, "본문 추출 실패", Toast.LENGTH_SHORT).show()

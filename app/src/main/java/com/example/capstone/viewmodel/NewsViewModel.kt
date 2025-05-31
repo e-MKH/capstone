@@ -38,8 +38,13 @@ class NewsViewModel : ViewModel() {
     private val articleCache = mutableMapOf<String, List<GNewsArticle>>()
     private val cacheTimestamps = mutableMapOf<String, Long>()
     private val difficultyCache = mutableMapOf<String, String>()
+    private val fetchStatus = mutableMapOf<String, Boolean>()
 
     private val CACHE_TTL_MS = 10 * 60 * 1000L // 10분
+
+    fun hasFetched(category: String, lang: String): Boolean {
+        return fetchStatus["$lang|$category"] == true
+    }
 
     fun fetchNews(language: String, topic: String = _selectedCategory.value, forceRefresh: Boolean = false) {
         _currentLanguage.value = language
@@ -53,18 +58,15 @@ class NewsViewModel : ViewModel() {
         val hasCache = articleCache.containsKey(cacheKey)
         val isCacheFresh = lastFetched != null && now - lastFetched < CACHE_TTL_MS
 
-        if (!forceRefresh && hasCache && isCacheFresh) {
-            Log.d("NewsViewModel", "캐시 사용됨: $cacheKey")
-            _articles.value = articleCache[cacheKey]!!
-            filterArticlesByUserLevel()
+        if (fetchStatus[cacheKey] == true && !forceRefresh) {
+            Log.d("NewsViewModel", "⛔ 이미 처리된 요청 생략: $cacheKey")
             isLoading.value = false
             return
         }
 
-
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                Log.d("NewsViewModel", "GNews API 요청: $cacheKey")
+                Log.d("NewsViewModel", "🌐 GNews API 요청: $cacheKey")
                 val response = GNewsApiService.api.getTopHeadlines(
                     lang = language,
                     topic = topic,
@@ -73,12 +75,13 @@ class NewsViewModel : ViewModel() {
                 )
 
                 val analyzedArticles = response.articles.map { article ->
-                    async { analyzeDifficulty(article) }
+                    async { analyzeDifficulty(article, forceRefresh = forceRefresh) }
                 }.awaitAll()
 
                 _articles.value = analyzedArticles
                 articleCache[cacheKey] = analyzedArticles
                 cacheTimestamps[cacheKey] = now
+                fetchStatus[cacheKey] = true
 
                 filterArticlesByUserLevel()
 
@@ -94,9 +97,9 @@ class NewsViewModel : ViewModel() {
         _selectedCategory.value = newCategory
     }
 
-    suspend fun analyzeDifficulty(article: GNewsArticle): GNewsArticle {
-        difficultyCache[article.url]?.let {
-            return article.copy(difficulty = it)
+    suspend fun analyzeDifficulty(article: GNewsArticle, forceRefresh: Boolean = false): GNewsArticle {
+        if (!forceRefresh && difficultyCache.containsKey(article.url)) {
+            return article.copy(difficulty = difficultyCache[article.url])
         }
 
         return try {

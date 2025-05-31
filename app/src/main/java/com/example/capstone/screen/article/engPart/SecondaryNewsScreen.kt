@@ -11,14 +11,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.capstone.data.api.RetrofitClient
 import com.example.capstone.ui.components.ArticleCard
-import com.example.capstone.viewmodel.*
+import com.example.capstone.viewmodel.NewsViewModel
+import com.example.capstone.viewmodel.SharedTextViewModel
+import com.example.capstone.viewmodel.SharedUrlViewModel
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,8 +28,10 @@ fun SecondaryNewsScreen(
     navController: NavHostController,
     sharedUrlViewModel: SharedUrlViewModel,
     sharedTextViewModel: SharedTextViewModel,
-    viewModel: NewsViewModel = viewModel()
 ) {
+    val owner = LocalViewModelStoreOwner.current
+    val viewModel: NewsViewModel = viewModel(viewModelStoreOwner = owner!!)
+
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -63,11 +67,9 @@ fun SecondaryNewsScreen(
         "연예" to "entertainment"
     )
 
-
     val currentLabel = categories.firstOrNull { it.second == selectedCategory }?.first ?: "정치"
     var expandedCategory by remember { mutableStateOf(false) }
     var expandedSort by remember { mutableStateOf(false) }
-
 
     LaunchedEffect(Unit) {
         if (allArticles.isEmpty()) {
