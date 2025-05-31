@@ -3,10 +3,21 @@ import re
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from google.cloud import language_v1
+from pathlib import Path
 
-# ✅ 환경 변수 로딩
-load_dotenv(dotenv_path=".env.dev")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+# ✅ 현재 파일 기준으로 .env.dev 로드
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=BASE_DIR / ".env.dev")
+
+# ✅ 환경 변수 확인 및 경로 설정
+creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+
+if not creds_path:
+    raise EnvironmentError("❌ GOOGLE_APPLICATION_CREDENTIALS 환경변수가 설정되지 않았습니다.")
+else:
+    # 절대경로가 아닌 경우 BASE_DIR 기준으로 변환
+    full_path = os.path.join(BASE_DIR, creds_path) if not os.path.isabs(creds_path) else creds_path
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = full_path
 
 # ✅ Flask 앱 생성
 app = Flask(__name__)
@@ -21,7 +32,7 @@ def classify_level(score):
     else:
         return "고급"
 
-# ✅ 본문 분석 함수 (스페인어)
+# ✅ 본문 분석 함수
 def analyze_spanish_text(text):
     # 문장 분리
     sentences = re.split(r'[.!?\n]+', text)
@@ -95,6 +106,7 @@ def analyze_spanish_news():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# ✅ 실행 (중복 방지를 위해 포트 6400 사용)
+# ✅ 실행
 if __name__ == "__main__":
     app.run(debug=True, port=6400)
+
